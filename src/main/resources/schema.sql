@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS utilisateur(
 	email VARCHAR (50) NOT NULL,
 	first_name VARCHAR (50),
 	last_name VARCHAR (50),
-	balance FLOAT,
+	balance FLOAT NOT NULL,
 	password VARCHAR (50) NOT NULL,
 	PRIMARY KEY (email)
 );
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS connection(
 	/*INDEX utilisateur_connection_fk, 
 	INDEX utilisateur_connection_fk, */
 	
-	FOREIGN KEY (fk_payer_email) REFERENCES utilisateur (email) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (fk_payee_email) REFERENCES utilisateur (email) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (fk_payer_email) REFERENCES utilisateur (email) ,
+	FOREIGN KEY (fk_payee_email) REFERENCES utilisateur (email) 
 );
 
 CREATE TABLE IF NOT EXISTS payment(
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS bank_account(
 	balance FLOAT,
 	PRIMARY KEY (iban),
 	/*INDEX utilisateur_bank_account_fk,*/
-	FOREIGN KEY (fk_utilisateur_email) REFERENCES utilisateur (email) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (fk_utilisateur_email) REFERENCES utilisateur (email)
 );
 
 CREATE TABLE IF NOT EXISTS transaction(
@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS transaction(
 	fk_iban INTEGER NOT NULL,
 	amount FLOAT,
 	transaction_date DATE,
+	from_bank BOOLEAN,
 	PRIMARY KEY (id),
 	/*INDEX bank_account_transaction_fk,*/
 	FOREIGN KEY (fk_iban) REFERENCES bank_account (iban)
