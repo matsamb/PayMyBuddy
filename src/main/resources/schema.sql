@@ -1,17 +1,28 @@
-DROP database prodPaymybuddy;
+DROP database IF EXISTS prodPaymybuddy;
 
 CREATE DATABASE IF NOT EXISTS prodPaymybuddy;
 
 USE prodPaymybuddy;
 
-CREATE TABLE IF NOT EXISTS utilisateur(
+CREATE TABLE IF NOT EXISTS users(
 	email VARCHAR (50) NOT NULL,
-	first_name VARCHAR (50),
+/*	first_name VARCHAR (50),
 	last_name VARCHAR (50),
-	balance FLOAT NOT NULL,
-	password VARCHAR (50) NOT NULL,
+	balance FLOAT,*/
+	password VARCHAR (64) NOT NULL,
+	enabled BOOLEAN NOT NULL,
 	PRIMARY KEY (email)
 );
+
+CREATE TABLE IF NOT EXISTS authorities(
+	fk_email VARCHAR (50) NOT NULL,
+	authority VARCHAR (50) NOT NULL, 
+	
+	CONSTRAINT fk_authorities_users FOREIGN KEY (fk_email) REFERENCES users (email)
+		
+);
+
+CREATE UNIQUE INDEX ix_auth_fkemail ON authorities (fk_email, authority);
 
 CREATE TABLE IF NOT EXISTS connection(
 	id INTEGER NOT NULL AUTO_INCREMENT,
@@ -22,8 +33,8 @@ CREATE TABLE IF NOT EXISTS connection(
 	/*INDEX utilisateur_connection_fk, 
 	INDEX utilisateur_connection_fk, */
 	
-	FOREIGN KEY (fk_payer_email) REFERENCES utilisateur (email) ,
-	FOREIGN KEY (fk_payee_email) REFERENCES utilisateur (email) 
+	CONSTRAINT fk_connection_payers FOREIGN KEY (fk_payer_email) REFERENCES users (email) ,
+	CONSTRAINT fk_connection_payees FOREIGN KEY (fk_payee_email) REFERENCES users (email) 
 );
 
 CREATE TABLE IF NOT EXISTS payment(
@@ -33,16 +44,16 @@ CREATE TABLE IF NOT EXISTS payment(
 	payment_date DATE,
 	PRIMARY KEY (id),
 	/*INDEX connection_payment_fk, */
-	FOREIGN KEY (fk_connection_id) REFERENCES connection (id)
+	CONSTRAINT fk_payment_connection FOREIGN KEY (fk_connection_id) REFERENCES connection (id)
 );
 
 CREATE TABLE IF NOT EXISTS bank_account(
 	iban INTEGER NOT NULL AUTO_INCREMENT,
-	fk_utilisateur_email VARCHAR (50) NOT NULL,
+	fk_users_email VARCHAR (50) NOT NULL,
 	balance FLOAT,
 	PRIMARY KEY (iban),
 	/*INDEX utilisateur_bank_account_fk,*/
-	FOREIGN KEY (fk_utilisateur_email) REFERENCES utilisateur (email)
+	CONSTRAINT fk_bank_users FOREIGN KEY (fk_users_email) REFERENCES users (email)
 );
 
 CREATE TABLE IF NOT EXISTS transaction(
@@ -53,5 +64,5 @@ CREATE TABLE IF NOT EXISTS transaction(
 	from_bank BOOLEAN,
 	PRIMARY KEY (id),
 	/*INDEX bank_account_transaction_fk,*/
-	FOREIGN KEY (fk_iban) REFERENCES bank_account (iban)
+	CONSTRAINT fk_transaction_bank FOREIGN KEY (fk_iban) REFERENCES bank_account (iban)
 );
