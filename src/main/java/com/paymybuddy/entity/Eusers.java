@@ -3,24 +3,28 @@ package com.paymybuddy.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class Eutilisateur implements Cloneable{
+@AllArgsConstructor
+@NoArgsConstructor
+public class Eusers implements Cloneable{
 
 	@Id
-	String email;
+	String username;
 	
 	String password;
 	
 	Integer balance;
 	
 	public Object clone() {
-		Eutilisateur copy = null;
+		Eusers copy = null;
 		
 		try {
-			copy = (Eutilisateur) super.clone();
+			copy = (Eusers) super.clone();
 			
 		}catch(CloneNotSupportedException e) {
 			e.printStackTrace();

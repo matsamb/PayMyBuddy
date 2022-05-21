@@ -318,6 +318,8 @@ div[class* = "col-md-6 col-xs-12"]{
 							<tr th:if="${connections.empty}">
 								<td colspan="3">No registered connection</td>
 							</tr>
+
+
 							<tr th:each="connection, stat: ${pConex.get(1)}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
@@ -325,8 +327,9 @@ div[class* = "col-md-6 col-xs-12"]{
 								<td><span th:text="${connection.payerUserName}">Description</span></td>
 								<td><span th:text="${connection.payeeUserName}">Amount</span></td>
 							</tr>
+
+
 						</table>
-						
 						<div class="paging">
 							<nav th:if="${pConex.keySet().size()>0}"
 								th:each="pageCount: ${pConex.keySet()}">
@@ -334,6 +337,7 @@ div[class* = "col-md-6 col-xs-12"]{
 									th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
 									th:text="${pageCount}"
 									th:class="${pageCount==pagedConex.getPage? 'active':''}"></a>
+
 
 							</nav>
 
@@ -343,6 +347,9 @@ div[class* = "col-md-6 col-xs-12"]{
 
 				<div class="col-md-3"></div>
 			</div>
+
+
+
 		</div>
 
 	</section>

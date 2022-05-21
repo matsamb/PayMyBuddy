@@ -15,8 +15,8 @@ public class EbankAccount {
 	
 	Float balance;
 
-	@Column(name="fk_utilisateur_email")
-	String ownerEmail;
+	@Column(name="fk_username")
+	String userName;
 	
 	public Object clone() {
 		EbankAccount copy = null;
