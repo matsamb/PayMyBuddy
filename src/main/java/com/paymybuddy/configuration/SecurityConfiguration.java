@@ -80,14 +80,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	.withUser("user").password(passwordEncoder().encode("u123")).roles("USER")
 		.and()
 	.withUser("admin").password(passwordEncoder().encode("a123")).roles("ADMIN","USER");
-	}*/
-	
-/*	@Override
+	}
+	*************************
+	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 	auth.userDetailsService(paymybuddyUserDetailsService)	
 	;
 	}*/
-	
+/************************************/	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 	auth.jdbcAuthentication()
@@ -96,7 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.usersByUsernameQuery("select username, password, true from users where username = ?")
 			.authoritiesByUsernameQuery("select fk_username, authority from authorities where fk_username = ? ")
 			;
-	}
+	}/********************************/
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {

@@ -52,7 +52,7 @@ public class HomeController {
 	@GetMapping("/home")
 	public String getHome(Model model) {
 		
-int displayedRows = 2;
+int displayedRows = 3;
 		
 		List<Econnection> econex = new ArrayList<>();
 
@@ -90,18 +90,37 @@ int displayedRows = 2;
 		return "home";
 	}
 	
-/*	@RolesAllowed("USER")
-	@GetMapping("/conex")
-	public String getConex() {
-		return "conex";
+	
+	@RolesAllowed("USER")
+	@GetMapping("/test")
+	public String getTest() {
+		
+		return "test";
 	}
 	
 	
 	@RolesAllowed("USER")
-	@PostMapping("/conex")
-	public ModelAndView getConnection(Model model) {
+	@PostMapping("/test")
+	public ModelAndView getValues() {
+		
+		
+		
+		return new ModelAndView("redirect:/home");
+	}
+	
+	
+	@RolesAllowed("USER")
+	@GetMapping("/conex")
+	public String getConex() {
+		return "conex";
+	}
 
-		int displayedRows = 2;
+	
+	@RolesAllowed("USER")
+	@PostMapping("/conex")
+	public ModelAndView getConnection(/*@RequestParam("page") int page,*/ Model model) {
+
+		int displayedRows = 3;
 		
 		List<Econnection> econex = new ArrayList<>();
 
@@ -136,9 +155,9 @@ int displayedRows = 2;
 		model.addAttribute("connections", econex);
 		model.addAttribute("pagesList", pagesList);
 
-		return new ModelAndView("redirect:/home?size=2&page=1");
+		return new ModelAndView("redirect:/conex?size=3&page=1");
 
-	} */
+	}
 
 	@RolesAllowed("USER")
 	@PostMapping("/home")

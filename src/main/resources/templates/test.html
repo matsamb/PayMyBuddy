@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	<title>login</title>
+<!-- <link th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" > -->
+	
+</head>
+
+<body>
+	<section id="section_one">
+		<div class="container">
+			<div class="row" >
+<form name="signin_form" th:action="@{/test}" method="post">
+				
+					<h1><em id="pay_label">Pay My Buddy</em>
+					</h1>					
+					<p><input  type="text" name="firstname" id="firstname" size="50" placeholder="firs name" required/>
+					</p>
+					<p><input  type="text" name="lastname" id="lastname" size="50" placeholder="last name" required/>
+
+					<p><input type="submit" name="loginbutton" id="login_button" value="Sign In">
+					</p>
+</form>
+			</div>			
+		</div>		
+	</section>
+</body>
+
+</html>

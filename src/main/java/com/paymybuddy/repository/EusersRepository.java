@@ -12,4 +12,6 @@ public interface EusersRepository extends JpaRepository<Eusers, String> {
 	
 	public Page<Eusers> findEusersByUsername(String username, Pageable pageable);
 	
+	public Page<Eusers> findAll(Pageable pageable);
+	
 }

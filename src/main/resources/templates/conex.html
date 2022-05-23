@@ -336,7 +336,7 @@ div[class* = "col-md-6 col-xs-12"]{
 									th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
 									th:text="${pageCount}"
 									th:name="${pageCount}"
-									></a>
+									th:class="${pageCount==pagedConex.getPage? 'active':''}"></a>
 
 							</nav>
 

@@ -1,10 +1,10 @@
-DROP database IF EXISTS prodPaymybuddy;
+/* DROP database IF EXISTS prodPaymybuddy;
 DROP database IF EXISTS testPaymybuddy;
 
 CREATE DATABASE IF NOT EXISTS prodPaymybuddy;
-CREATE DATABASE IF NOT EXISTS testPaymybuddy;
+CREATE DATABASE IF NOT EXISTS testPaymybuddy;  */
 
-USE prodPaymybuddy;
+USE testPaymybuddy;
 
 CREATE TABLE IF NOT EXISTS users(
 	username VARCHAR (50) NOT NULL,
@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS authorities(
 	CONSTRAINT fk_authorities_users FOREIGN KEY (fk_username) REFERENCES users (username)
 		
 );
-
+/*
 CREATE UNIQUE INDEX ix_auth_fkusername ON authorities (fk_username, authority);
-
-CREATE TABLE IF NOT EXISTS connection(
+*/
+CREATE TABLE IF NOT EXISTS econnection(
 	id INTEGER NOT NULL AUTO_INCREMENT,
 	fk_payer_username VARCHAR (50) NOT NULL,
 	fk_payee_username VARCHAR (50) NOT NULL,
@@ -35,18 +35,20 @@ CREATE TABLE IF NOT EXISTS connection(
 	/*INDEX utilisateur_connection_fk, 
 	INDEX utilisateur_connection_fk, */
 	
-	CONSTRAINT fk_connection_payers FOREIGN KEY (fk_payer_username) REFERENCES users (username) ,
-	CONSTRAINT fk_connection_payees FOREIGN KEY (fk_payee_username) REFERENCES users (username) 
+	CONSTRAINT fk_econnection_payers FOREIGN KEY (fk_payer_username) REFERENCES users (username) ,
+	CONSTRAINT fk_econnection_payees FOREIGN KEY (fk_payee_username) REFERENCES users (username) 
 );
+
+
 
 CREATE TABLE IF NOT EXISTS payment(
 	id INTEGER NOT NULL AUTO_INCREMENT,
-	fk_connection_id INTEGER NOT NULL,
+	fk_econnection_id INTEGER NOT NULL,
 	amount FLOAT,
 	payment_date DATE,
 	PRIMARY KEY (id),
 	/*INDEX connection_payment_fk, */
-	CONSTRAINT fk_payment_connection FOREIGN KEY (fk_connection_id) REFERENCES connection (id)
+	CONSTRAINT fk_payment_econnection FOREIGN KEY (fk_econnection_id) REFERENCES econnection (id)
 );
 
 CREATE TABLE IF NOT EXISTS bank_account(

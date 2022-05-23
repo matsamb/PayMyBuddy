@@ -24,6 +24,7 @@ public class PaymybuddyUserDetailsService implements UserDetailsService {
 		if(Objects.isNull(eUsers)) {
 			throw new UsernameNotFoundException(username+" not found");
 		}
+	
 		return new PaymybuddyUserDetails(eUsers);
 	}
 
