@@ -12,15 +12,17 @@
 	<section id="section_one">
 		<div class="container">
 			<div class="row" >
-<form name="signin_form" th:action="@{/test}" method="post">
+<form name="signin_form" th:action="@{/test}" method="post" >
 				
 					<h1><em id="pay_label">Pay My Buddy</em>
 					</h1>					
-					<p><input  type="text" name="firstname" id="firstname" size="50" placeholder="firs name" required/>
+					<p><input  type="text" name="username" placeholder="firs name" required/>
 					</p>
-					<p><input  type="text" name="lastname" id="lastname" size="50" placeholder="last name" required/>
-
-					<p><input type="submit" name="loginbutton" id="login_button" value="Sign In">
+					<p><input  type="text" name="password" placeholder="pass" required/>
+					</p>
+					<p><input  type="number" name="balance" placeholder="balance" required/>
+					</p>
+					<p><input type="submit" value="Sign In">
 					</p>
 </form>
 			</div>			

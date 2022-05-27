@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>home</title>
+<title>mytransaction</title>
 <link href="/static/css/style.css" th:href="@{/static/css/style.css}"
 	rel="stylesheet" type="text/css">
 </head>
@@ -325,7 +325,7 @@ div[class* = "col-md-6 col-xs-12"]{
 							<tr th:if="${connections.isEmpty}">
 								<td colspan="3">No registered connection</td>
 							</tr>
-							<tr th:each="connection, stat: ${pConex.get(activePage.page)}"
+							<tr th:each="connection, stat: ${pagedConex.getPageList}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
 								<td><span th:text="${connection.id}">Connections</span></td>
@@ -338,13 +338,14 @@ div[class* = "col-md-6 col-xs-12"]{
 						
 							<nav th:if="${pConex.keySet().size()>0}"
 								th:each="pageCount: ${pConex.keySet()}" th:object="${activePage}" >
-								<form name="page_form" th:action="${pageCount}" method="post">
+								<form name="page_form" th:action="${page_button}" method="post">
 								<a
-									th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
+									th:href="@{/mytransaction}"
 									th:text="${pageCount}"
 									th:name="${pageCount}"
 									th:field="*{page}"
-									></a>
+									><input type="submit" name="page_button" id="page_button"
+							th:value="${pageCount}"></a>
 								</form>
 							</nav>
 

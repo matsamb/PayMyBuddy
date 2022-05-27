@@ -163,7 +163,7 @@ div[class* = "col-md-6 col-xs-12"]{
 			<div class="row" >
 				<div class="col-md-3">					
 				</div>
-<form name="signin_form" th:action="@{/signin}" method="post" th:object="${eusers}" >
+<form name="signin_form" th:action="@{/signin}" method="post">
 				<div th:if="${param.error}" class="alert alert-error" >	Invalid email and password
 				</div>				
 				<div th:if="${param.logout}" class="alert alert-success">You 've been logged out
@@ -171,12 +171,12 @@ div[class* = "col-md-6 col-xs-12"]{
 				<div id="login_box" class="col-md-6 col-xs-12">					
 					<h1><em id="pay_label">Pay My Buddy</em>
 					</h1>					
-					<p><input type="text" name="firstname" id="firstname" size="50" placeholder="firs name" required/>
+			<!-- 		<p><input type="text" name="firstname" id="firstname" size="50" placeholder="firs name" required/>
 					</p>
 					<p><input type="text" name="lastname" id="lastname" size="50" placeholder="last name" required/>
-					</p>
+					</p>   -->
 					<p><input type="text" name="username" id="username" size="50" placeholder="&#9993 Email" required/>
-					</p>
+					</p>  
 					<p><input type="password" name="password" id="password" size="50" placeholder="* password" required/>
 					</p>
 					<p><input type="text" name="confirmpassword" id="confirmpassword" size="50" placeholder="confirm password" required/>

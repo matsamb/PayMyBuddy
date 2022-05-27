@@ -176,8 +176,6 @@ div[class* = "col-md-6 col-xs-12"]{
 .paging {
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
-
 }
 </style>
 
@@ -193,9 +191,9 @@ div[class* = "col-md-6 col-xs-12"]{
 
 				<div class="col-md-6" id="mostmenu">
 					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Home</em>
-						</h3>
+					<h3><a href="/home" th:href="@{/home}">						
+							<em>Home</em>						
+					</a></h3>
 					</div>
 					<div class="col-md-1" id="hmenu">
 						<h3>
@@ -241,11 +239,8 @@ div[class* = "col-md-6 col-xs-12"]{
 		<div class="container">
 
 			<div class="row" id="section_two_cap">
-				<p>
+				<p>	
 					<em id="home">Send Money</em>
-				</p>
-				<p>
-					<em id="transfert">Add Connection</em>
 				</p>
 			</div>
 
@@ -311,7 +306,7 @@ div[class* = "col-md-6 col-xs-12"]{
 					<div class="scroll_table_div">
 
 
-						<table class="scroll_table" id="table_one">
+					<!--  	<table class="scroll_table" id="table_one">
 							<tr id="connection_table_head">
 								<th>Connections</th>
 								<th>Description</th>
@@ -320,32 +315,38 @@ div[class* = "col-md-6 col-xs-12"]{
 							<tr th:if="${connections.isEmpty}">
 								<td colspan="3">No registered connection</td>
 							</tr>
+
+
 							<tr th:each="connection, stat: ${pConex.get(1)}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
 								<td><span th:text="${connection.id}">Connections</span></td>
-								<td><span th:text="${connection.fkPayerUserName}">Description</span></td>
-								<td><span th:text="${connection.fkPayeeUserName}">Amount</span></td>
+								<td><span th:text="${connection.payerUserName}">Description</span></td>
+								<td><span th:text="${connection.payeeUserName}">Amount</span></td>
 							</tr>
+
+
 						</table>
-						
 						<div class="paging">
 							<nav th:if="${pConex.keySet().size()>0}"
 								th:each="pageCount: ${pConex.keySet()}">
 								<a
 									th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
 									th:text="${pageCount}"
-									th:name="${pageCount}"
 									th:class="${pageCount==pagedConex.getPage? 'active':''}"></a>
+
 
 							</nav>
 
-						</div>
+						</div>-->
 					</div>
 				</div>
 
 				<div class="col-md-3"></div>
 			</div>
+
+
+
 		</div>
 
 	</section>

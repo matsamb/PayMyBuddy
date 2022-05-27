@@ -16,33 +16,33 @@ import com.paymybuddy.service.connection.AddConnectionService;
 
 @RolesAllowed("USER")
 @Controller
-public class AddConnectionController {
+public class MakePaymentController {
 
 	final static Logger addConnectionControllerLogger = LogManager.getLogger("AddConnectionController");
 	
-	@Autowired
-	AddConnectionService addConnectionServiceAtAddConectionController;
+/*	@Autowired
+	AddPaymentService addPaymentServiceAtMakePaymentController;*/
 	
-	AddConnectionController(AddConnectionService addConnectionServiceAtAddConectionController){
-		this.addConnectionServiceAtAddConectionController = addConnectionServiceAtAddConectionController;
-	}
+/*	MakePaymentController(AddPaymentService addPaymentServiceAtMakePaymentController){
+		this.addPaymentServiceAtMakePaymentController = addPaymentServiceAtMakePaymentController;
+	}*/
 	
 	
-	@GetMapping("/addconnection")
+	@GetMapping("/makepayment")
 	public String getAddConnection() {
 		
-		addConnectionServiceAtAddConectionController.addConnection(1,"bowl", "ywa");
-		addConnectionControllerLogger.info("Connection requested");
+/*		addPaymentServiceAtMakePaymentController.addPayment(1,"bowl", "ywa");
+		addConnectionControllerLogger.info("Payment initiated");*/
 		
-		return "addconnection";
+		return "/makepayment";
 		
 	}
 	
-	@PostMapping("/addconnection")
+	@PostMapping("/makepayment")
 	public String createConnection(@Validated Eusers euser, BindingResult bindingResult) {
 		
-		addConnectionServiceAtAddConectionController.addConnection(1,"bowl", "ywa");
-		addConnectionControllerLogger.info("Connection requested");
+/*		addConnectionServiceAtAddConectionController.addConnection(1,"bowl", "ywa");
+		addConnectionControllerLogger.info("Connection requested");*/
 		
 		return "/home";
 		

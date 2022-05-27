@@ -191,9 +191,9 @@ div[class* = "col-md-6 col-xs-12"]{
 
 				<div class="col-md-6" id="mostmenu">
 					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Home</em>
-						</h3>
+					<h3><a href="/home" th:href="@{/home}">						
+							<em>Home</em>						
+					</a></h3>
 					</div>
 					<div class="col-md-1" id="hmenu">
 						<h3>
@@ -240,9 +240,6 @@ div[class* = "col-md-6 col-xs-12"]{
 
 			<div class="row" id="section_two_cap">
 				<p>
-					<em id="home">Send Money</em>
-				</p>
-				<p>
 					<em id="transfert">Add Connection</em>
 				</p>
 			</div>
@@ -253,30 +250,13 @@ div[class* = "col-md-6 col-xs-12"]{
 				<div class="col-md-3"></div>
 				<form name="pay_form" th:action="${pay_button}" method="post">
 					<div id="money_box" class="col-md-6 col-xs-12">
-
-						<div id="select_connectionP">
-
-							<select name="connection" id="connection">
-								<option value="Select A Connection">Select A Connection</option>
-								<option value="con1">con1</option>
-								<option value="con2">con2</option>
-								<option value="con3">con3</option>
-
-							</select>
-
-
+						<div id="connection">
+							<input type="text" name="connection" id="connection" size="50"
+								placeholder="Enter connection email">
 						</div>
-
-						<div id="amountP">
-							<input type="number" name="amount" id="amount" size="30"
-								placeholder="Amount">
-
-						</div>
-
-						<!--	<form method="post" action="">pour info</form> -->
 						<div>
 							<input type="submit" name="pay_button" id="pay_button"
-								value="Pay">
+								value="Search connection">
 						</div>
 
 					</div>
