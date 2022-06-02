@@ -17,13 +17,14 @@ public class LoginController{
 	PaymybuddyUserDetailsService userDetails;
 
 	@GetMapping("/login")
-	public String login() {		
+	public String login() {	
+		loginControllerLogger.info("Log In page displayed");
 		return "login";
 	}
 
 	@PostMapping("/login")
 	public ModelAndView checkUsers() {	
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/home?size=3&page=1");
 	}
 	
 	

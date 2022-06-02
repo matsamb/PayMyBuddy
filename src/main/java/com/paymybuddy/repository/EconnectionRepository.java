@@ -18,5 +18,7 @@ public interface EconnectionRepository extends JpaRepository<Econnection, Intege
 	Econnection findByFkPayerUserNameAndFkPayeeUserName(@Param(value="payer") String payerUserName, @Param(value="payee") String payeeUserName);
 	
 	Page<Econnection> findByFkPayerUserName(String payerUserName, Pageable pageable);
+
+	List<Econnection> findByFkPayerUserName(String fkPayerUsername); 
 	
 }

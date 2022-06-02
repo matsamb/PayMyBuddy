@@ -8,19 +8,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.paymybuddy.entity.Eusers;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.repository.EusersRepository;
+import com.paymybuddy.entity.Users;
+import com.paymybuddy.repository.UsersRepository;
 
 @Service
 public class PaymybuddyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	EusersRepository eusersRepository;
+	UsersRepository usersRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Eusers eUsers = eusersRepository.findEusersByUsername(username);
+		Users eUsers = usersRepository.findEusersByUsername(username);
 		if(Objects.isNull(eUsers)) {
 			throw new UsernameNotFoundException(username+" not found");
 		}

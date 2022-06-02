@@ -147,8 +147,15 @@ div[class* = "col-md-6 col-xs-12"]{
 	background-color: rgba(245, 245, 245, 255)
 }
 
+.menu{
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+}
 .hmenu {
-	width: 50px;
+	width: 100px;
 }
 
 #paymenu {
@@ -166,6 +173,9 @@ div[class* = "col-md-6 col-xs-12"]{
 #table_one {
 	width: 950px;
 	height: 350px;
+	
+	border: solid;
+	border-color: lightgrey;
 }
 
 #connection_table_head {
@@ -177,45 +187,60 @@ div[class* = "col-md-6 col-xs-12"]{
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	
+	font-size: 25px;
+	
+	margin-top: 1px;
+}
 
+#pageindex {
+	border: solid;
+	border-width: 1px;
+	
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-color: lightgray;
 }
 </style>
 
 <body>
 	<header>
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row" id="menu">
 				<div class="col-md-6" id="paymenu">
 					<h1>
 						<em id="pay_label">Pay My Buddy</em>
 					</h1>
 				</div>
-
-				<div class="col-md-6" id="mostmenu">
-					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Home</em>
-						</h3>
-					</div>
-					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Transfer</em>
-						</h3>
-					</div>
-					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Profile</em>
-						</h3>
-					</div>
-					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Contact</em>
-						</h3>
-					</div>
-					<div class="col-md-1" id="menu">
-						<h3>
-							<a th:href="@{/logout}"><em>Log Off</em></a>
-						</h3>
+				<div>
+					<div class="col-md-6" id="mostmenu">
+						<div class="col-md-1" id="hmenu">
+							<h3>
+								<em>Home</em>
+							</h3>
+						</div>
+						<div class="col-md-1" id="hmenu">
+							<h3>
+								<em>Transfer</em>
+							</h3>
+						</div>
+						<div class="col-md-1" id="hmenu">
+							<h3>
+								<em>Profile</em>
+							</h3>
+						</div>
+						<div class="col-md-1" id="hmenu">
+							<h3>
+								<em>Contact</em>
+							</h3>
+						</div>
+						<div class="col-md-1" id="hmenu">
+							<h3>
+								<a th:href="@{/logout}"><em>Log Off</em></a>
+							</h3>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -242,15 +267,14 @@ div[class* = "col-md-6 col-xs-12"]{
 
 			<div class="row" id="section_two_cap">
 				<p>
-				<a href="/makepayment">
-					<em id="home">Send Money</em>
+					<a href="/makepayment"> <em id="home">Send Money</em>
 					</a>
 				</p>
-				<p>					
-					<a href="/addconnection">
-						<em id="transfert">Add Connection</em>
+				<p>
+					<a href="/addconnection"> <em id="transfert">Add
+							Connection</em>
 					</a>
-					
+
 				</p>
 			</div>
 
@@ -258,7 +282,7 @@ div[class* = "col-md-6 col-xs-12"]{
 			<div class="row" id="menu">
 
 				<div class="col-md-3"></div>
-				<form name="pay_form" th:action="${pay_button}" method="post">
+				<form name="pay_form" th:action="@{/home}" method="post">
 					<div id="money_box" class="col-md-6 col-xs-12">
 
 						<div id="select_connectionP">
@@ -282,7 +306,7 @@ div[class* = "col-md-6 col-xs-12"]{
 
 						<!--	<form method="post" action="">pour info</form> -->
 						<div>
-							<input type="submit" name="pay_button" id="pay_button"
+						<input  type="submit" name="pay_button" id="pay_button"
 								value="Pay">
 						</div>
 
@@ -328,23 +352,22 @@ div[class* = "col-md-6 col-xs-12"]{
 							<tr th:each="connection, stat: ${pConex.get(activePage.page)}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
-								<td><span th:text="${connection.id}">Connections</span></td>
-								<td><span th:text="${connection.fkPayerUserName}">Description</span></td>
-								<td><span th:text="${connection.fkPayeeUserName}">Amount</span></td>
+								<td><span th:text="${connection.connection}">Connections</span></td>
+								<td><span th:text="${connection.description}">Description</span></td>
+								<td><span th:text="${connection.amount}">Amount</span></td>
 							</tr>
 						</table>
-						
+
 						<div class="paging">
-						
+
 							<nav th:if="${pConex.keySet().size()>0}"
-								th:each="pageCount: ${pConex.keySet()}" th:object="${activePage}" >
+								th:each="pageCount: ${pConex.keySet()}"
+								th:object="${activePage}">
 								<form name="page_form" th:action="${pageCount}" method="post">
-								<a
-									th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
-									th:text="${pageCount}"
-									th:name="${pageCount}"
-									th:field="*{page}"
-									></a>
+									<a
+										th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
+										th:text="${pageCount}" th:name="${pageCount}"
+										th:field="*{page}" id="pageindex"></a>
 								</form>
 							</nav>
 

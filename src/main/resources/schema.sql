@@ -23,6 +23,16 @@ CREATE TABLE IF NOT EXISTS authorities(
 	CONSTRAINT fk_authorities_users FOREIGN KEY (fk_username) REFERENCES users (username)
 		
 );
+
+CREATE TABLE IF NOT EXISTS balance(
+	fk_username VARCHAR (50) NOT NULL,
+	first_name VARCHAR (50),
+	last_name VARCHAR (50),
+	balance INTEGER NOT NULL,
+	
+	CONSTRAINT fk_balance_users FOREIGN KEY (fk_username) REFERENCES users (username)
+);
+
 /*
 CREATE UNIQUE INDEX ix_auth_fkusername ON authorities (fk_username, authority);
 */
@@ -41,11 +51,12 @@ CREATE TABLE IF NOT EXISTS econnection(
 
 
 
-CREATE TABLE IF NOT EXISTS payment(
+CREATE TABLE IF NOT EXISTS epayment(
 	id INTEGER NOT NULL AUTO_INCREMENT,
 	fk_econnection_id INTEGER NOT NULL,
+	description VARCHAR(100),
 	amount FLOAT,
-	payment_date DATE,
+	payment_date TIMESTAMP,
 	PRIMARY KEY (id),
 	/*INDEX connection_payment_fk, */
 	CONSTRAINT fk_payment_econnection FOREIGN KEY (fk_econnection_id) REFERENCES econnection (id)
@@ -64,7 +75,7 @@ CREATE TABLE IF NOT EXISTS transaction(
 	id INTEGER NOT NULL AUTO_INCREMENT,
 	fk_iban INTEGER NOT NULL,
 	amount FLOAT,
-	transaction_date DATE,
+	transaction_date TIMESTAMP,
 	from_bank BOOLEAN,
 	PRIMARY KEY (id),
 	/*INDEX bank_account_transaction_fk,*/

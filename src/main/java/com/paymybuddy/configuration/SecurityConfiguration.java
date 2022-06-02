@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.formLogin()
 		.loginPage("/login")
 		//.loginProcessingUrl("/perform_login")
-		.defaultSuccessUrl("/home")
+		.defaultSuccessUrl("/home?size=3&page=1")
 		.failureUrl("/login?error=true")
 		.and()
 		.rememberMe()

@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.dao.ConnectionDAO;
+import com.paymybuddy.entity.Econnection;
 import com.paymybuddy.repository.EconnectionRepository;
 
 @Service
@@ -30,7 +31,7 @@ public class AddConnectionService {
 		this.connectionDAOAtAddConnectionService = connectionDAOAtAddConnectionService;
 	}
 	
-	public void addConnection(int id, String payerUserName, String payeeUserName) {
+/*	public void addConnectionByAttributes(int id, String payerUserName, String payeeUserName) {
 		
 		if(Objects.isNull(connectionRepositoryAtAddConnection.findByFkPayerUserNameAndFkPayeeUserName(payerUserName, payeeUserName))) {
 			connectionDAOAtAddConnectionService.saveConnection(id, payerUserName, payeeUserName);
@@ -38,5 +39,17 @@ public class AddConnectionService {
 		}else {
 			addConnectionServiceLogger.info("Connection between "+payerUserName+" and "+payeeUserName+" all ready exists");
 		}
+	}*/
+
+	public void addConnection(Econnection newConnection) {
+		
+		if(Objects.isNull(connectionRepositoryAtAddConnection.findByFkPayerUserNameAndFkPayeeUserName(newConnection.fkPayerUserName, newConnection.fkPayeeUserName))){
+			addConnectionServiceLogger.info("Connection between "+newConnection.fkPayerUserName+" and "+newConnection.fkPayeeUserName+" created");
+			connectionRepositoryAtAddConnection.save(newConnection);
+		}else {
+			addConnectionServiceLogger.info("Connection between "+newConnection.fkPayeeUserName+" and "+newConnection.fkPayerUserName+" all ready exists");
+		}
+		
+			
 	}
 }

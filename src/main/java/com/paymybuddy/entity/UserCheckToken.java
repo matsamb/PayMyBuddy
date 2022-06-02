@@ -11,7 +11,7 @@ public class UserCheckToken {
 	@Id
 	private Integer tokenId; 
 	
-	private Eusers user;
+	private Users user;
 	
 	private Calendar endDate; 
 

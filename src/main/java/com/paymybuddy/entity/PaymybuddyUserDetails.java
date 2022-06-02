@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.stereotype.Component;
 
 import lombok.NoArgsConstructor;
@@ -19,9 +18,9 @@ public class PaymybuddyUserDetails implements UserDetails {
 	 * 
 	 */
 	private static final long serialVersionUID = 4692176737626072920L;
-	private Eusers eUser;
+	private Users eUser;
 
-	public PaymybuddyUserDetails(Eusers eUser) {
+	public PaymybuddyUserDetails(Users eUser) {
 		this.eUser = eUser;
 	}
 	

@@ -11,20 +11,20 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Eusers implements Cloneable{
+public class Users implements Cloneable{
 
 	@Id
 	String username;
 	
 	String password;
 	
-	Integer balance;
+	Boolean enabled;
 	
 	public Object clone() {
-		Eusers copy = null;
+		Users copy = null;
 		
 		try {
-			copy = (Eusers) super.clone();
+			copy = (Users) super.clone();
 			
 		}catch(CloneNotSupportedException e) {
 			e.printStackTrace();

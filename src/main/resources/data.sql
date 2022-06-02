@@ -8,7 +8,7 @@ INSERT IGNORE INTO users (username,password,enabled) VALUES ("bowl","$2y$10$Ylwc
 
 
 INSERT IGNORE INTO authorities (fk_username,authority) VALUES ("user","ROLE_USER");
-INSERT IGNORE INTO authorities (fk_username,authority) VALUES ("admin","ROLE_ADMIN");
+INSERT IGNORE INTO authorities (fk_username,authority) VALUES ("admin","{ROLE_USER,ROLE_ADMIN}");
 INSERT IGNORE INTO authorities (fk_username,authority) VALUES ("man","ROLE_USER");
 INSERT IGNORE INTO authorities (fk_username,authority) VALUES ("ywa","ROLE_USER");
 INSERT IGNORE INTO authorities (fk_username,authority) VALUES ("bowl","ROLE_USER");

@@ -248,29 +248,28 @@ div[class* = "col-md-6 col-xs-12"]{
 			<div class="row" id="menu">
 
 				<div class="col-md-3"></div>
-				<form name="pay_form" th:action="${pay_button}" method="post">
+				<form name="pay_form" th:action="@{/makepayment}" method="post">
+					<div th:if="${param.error}" class="alert alert-error" >Payment failed
+					</div>
+					<div th:if="${param.success}" class="alert alert-success" >Successful payment
+					</div>
 					<div id="money_box" class="col-md-6 col-xs-12">
 
 						<div id="select_connectionP">
 
-							<select name="connection" id="connection">
-								<option value="Select A Connection">Select A Connection</option>
-								<option value="con1">con1</option>
-								<option value="con2">con2</option>
-								<option value="con3">con3</option>
-
+							<select name="connection" id="connection"  > 
+								<option value="Select A Connection" disabled selected>Select a connection</option>
+								<option th:each="connection: ${econnections}" th:value="${connection.getFkPayeeUserName}" th:text="${connection.getFkPayeeUserName}" ></option> 
 							</select>
-
-
 						</div>
-
 						<div id="amountP">
 							<input type="number" name="amount" id="amount" size="30"
 								placeholder="Amount">
-
 						</div>
-
-						<!--	<form method="post" action="">pour info</form> -->
+						<div id="descriptionP">
+							<input type="text" name="description" id="description" size="50"
+								placeholder="Description">
+						</div>
 						<div>
 							<input type="submit" name="pay_button" id="pay_button"
 								value="Pay">
@@ -278,70 +277,6 @@ div[class* = "col-md-6 col-xs-12"]{
 
 					</div>
 				</form>
-				<div class="col-md-3"></div>
-			</div>
-
-
-
-		</div>
-
-	</section>
-
-	<section id="section_three">
-		<div class="container">
-
-			<div class="row" id="section_two_cap">
-				<p>
-					<em id="home">My Transactions</em>
-				</p>
-			</div>
-
-
-			<div class="row" id="menu">
-
-				<div class="col-md-3"></div>
-
-				<div id="transactions_table" class="col-md-6 col-xs-12">
-
-					<div class="scroll_table_div">
-
-
-					<!--  	<table class="scroll_table" id="table_one">
-							<tr id="connection_table_head">
-								<th>Connections</th>
-								<th>Description</th>
-								<th>Amount</th>
-							</tr>
-							<tr th:if="${connections.isEmpty}">
-								<td colspan="3">No registered connection</td>
-							</tr>
-
-
-							<tr th:each="connection, stat: ${pConex.get(1)}"
-								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
-
-								<td><span th:text="${connection.id}">Connections</span></td>
-								<td><span th:text="${connection.payerUserName}">Description</span></td>
-								<td><span th:text="${connection.payeeUserName}">Amount</span></td>
-							</tr>
-
-
-						</table>
-						<div class="paging">
-							<nav th:if="${pConex.keySet().size()>0}"
-								th:each="pageCount: ${pConex.keySet()}">
-								<a
-									th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
-									th:text="${pageCount}"
-									th:class="${pageCount==pagedConex.getPage? 'active':''}"></a>
-
-
-							</nav>
-
-						</div>-->
-					</div>
-				</div>
-
 				<div class="col-md-3"></div>
 			</div>
 
