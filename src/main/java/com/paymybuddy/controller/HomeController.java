@@ -94,23 +94,12 @@ public class HomeController {
 			}
 		}
 		
-		paymentList.forEach(System.out::println);
+	/*	paymentList.forEach(System.out::println);
 		connList.forEach(System.out::println);
-		viewPaymentList.forEach(System.out::println);
+		viewPaymentList.forEach(System.out::println);*/
+		
 		List<ViewPayment> econex = new ArrayList<>();
 		econex.addAll(List.copyOf(viewPaymentList));
-		
-/*
-		Econnection econ1 = new Econnection(1, "user", "user2");
-		econex.add(econ1);
-		Econnection econ2 = new Econnection(2, "user", "user3");
-		econex.add(econ2);
-		Econnection econ3 = new Econnection(3, "user", "user4");
-		econex.add(econ3);
-		Econnection econ4 = new Econnection(4, "user", "user5");
-		econex.add(econ4);
-		Econnection econ5 = new Econnection(5, "user", "user6");
-		econex.add(econ5);*/
 
 		PagedListHolder<ViewPayment> pagedConex = new PagedListHolder<>(econex);
 
@@ -180,25 +169,12 @@ public class HomeController {
 					}					
 				}
 			}
-			
-			paymentList.forEach(System.out::println);
-			connList.forEach(System.out::println);
-			viewPaymentList.forEach(System.out::println);
-			
-			List<Econnection> econex = new ArrayList<>();
 
-			Econnection econ1 = new Econnection(1, "user", "user2");
-			econex.add(econ1);
-			Econnection econ2 = new Econnection(2, "user", "user3");
-			econex.add(econ2);
-			Econnection econ3 = new Econnection(3, "user", "user4");
-			econex.add(econ3);
-			Econnection econ4 = new Econnection(4, "user", "user5");
-			econex.add(econ4);
-			Econnection econ5 = new Econnection(5, "user", "user6");
-			econex.add(econ5);
+			List<ViewPayment> econex = new ArrayList<>();
+			econex.addAll(List.copyOf(viewPaymentList));
 
-			PagedListHolder<Econnection> pagedConex = new PagedListHolder<>(econex);
+
+			PagedListHolder<ViewPayment> pagedConex = new PagedListHolder<>(econex);
 
 			pagedConex.setPageSize(displayedRows);
 			pagedConex.setPage(activePage.getPage());
@@ -206,7 +182,7 @@ public class HomeController {
 			List<Integer> pagesList = IntStream.rangeClosed(1, pagedConex.getPageCount()).boxed()
 					.collect(Collectors.toList());
 
-			Map<Integer, List<Econnection>> pConex = new HashMap<>();
+			Map<Integer, List<ViewPayment>> pConex = new HashMap<>();
 
 			for (Integer i : pagesList) {
 				pagedConex.setPage(i - 1);
