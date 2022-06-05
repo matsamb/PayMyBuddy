@@ -12,10 +12,10 @@ import com.paymybuddy.entity.Econnection;
 
 public interface EconnectionRepository extends JpaRepository<Econnection, Integer> {
 
-	Econnection findByFkPayeeUserName(String payeeUserName);
+	List<Econnection> findByFkPayeeUserName(String payeeUserName);
 	
 	//@Query(value="SELECT * FROM econnection WHERE fk_payer_username = :payer AND fk_payee_username = :payee", nativeQuery=true)
-	Econnection findByFkPayerUserNameAndFkPayeeUserName(@Param(value="payer") String payerUserName, @Param(value="payee") String payeeUserName);
+	List<Econnection> findByFkPayerUserNameAndFkPayeeUserName(@Param(value="payer") String payerUserName, @Param(value="payee") String payeeUserName);
 	
 	Page<Econnection> findByFkPayerUserName(String payerUserName, Pageable pageable);
 

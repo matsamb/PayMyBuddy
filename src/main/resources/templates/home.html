@@ -13,30 +13,16 @@
 <style type="text/css">
 body {
 	background-color: white;
-	text-align: center;
+	/*text-align: center;*/
 	height: auto;
 }
 
-/*
-div[class* = "col-md-6 col-xs-12"]{
-  
-  border-color: darkred;
-
-  display : flex;
-  flex-direction: column ;
-  justify-content: space-around ;
-
-  text-align: center;
-  align-items: centre;
-}
-*/
 [class^="row"] {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-between;
 }
-
-/* login style sheet */
+/*
 #login_box {
 	margin-top: 40px;
 	padding-left: 20px;
@@ -50,7 +36,7 @@ div[class* = "col-md-6 col-xs-12"]{
 	justify-content: space-around;
 	text-align: center;
 	align-items: centre;
-}
+}*/
 
 #pay_label {
 	background: linear-gradient(to right, rgba(98, 185, 89, 255),
@@ -65,7 +51,7 @@ div[class* = "col-md-6 col-xs-12"]{
 	border-radius: 10px;
 	font-style: normal;
 }
-
+/*
 #email {
 	padding-left: 5px;
 	padding-right: 25px;
@@ -106,16 +92,27 @@ div[class* = "col-md-6 col-xs-12"]{
 	padding-bottom: 10px;
 	border-radius: 10px;
 }
+*/ 
 
-/* transfert style sheet */
-
-/* sub_menu */
 #sub_menu {
 	display: flex;
 	flex-direction: row;
 	justify-content: left;
 	padding-left: 30px;
 	background-color: rgba(245, 245, 245, 255);
+}
+
+#menu {
+	font-style: normal;
+}
+
+#mostmenu {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 350px;
+	font-style: normal;
+
 }
 
 #home {
@@ -129,11 +126,7 @@ div[class* = "col-md-6 col-xs-12"]{
 	color: grey;
 	font-size: 20px;
 }
-
-#menu {
-	font-style: normal;
-}
-
+/*idsharp*/
 #money_box {
 	display: flex;
 	flex-direction: row;
@@ -141,39 +134,41 @@ div[class* = "col-md-6 col-xs-12"]{
 	align-items: center;
 	height: 88px;
 	width: 950px;
-	/*	border: solid;
-	border-radius: 5px;
-	border-color: lightgrey; */
 	background-color: rgba(245, 245, 245, 255)
 }
-
+/*classdot*/
+/*
 .menu{
 	
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-around;
 
-}
+}*/
+
 .hmenu {
 	width: 100px;
 }
 
-#paymenu {
-	/*	align-content: left;*/
-	justify-content: flex-start;
-	margin-left: 5px;
+#section_two_cap{
+	justify-content:space-around;
 }
 
-#mostmenu {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+#section_three_cap{
+	justify-content: space-around;
+	
+}
+
+#paymenu {
+	
+	justify-content: flex-start;
+	margin-left: 5px;
 }
 
 #table_one {
 	width: 950px;
 	height: 350px;
-	
+	text-align: center;
 	border: solid;
 	border-color: lightgrey;
 }
@@ -189,20 +184,24 @@ div[class* = "col-md-6 col-xs-12"]{
 	justify-content: center;
 	
 	font-size: 25px;
-	
+
+	height: 50px;
 	margin-top: 1px;
+	padding-top: 10px;
 }
 
 #pageindex {
 	border: solid;
 	border-width: 1px;
 	
-	padding-left: 25px;
-	padding-right: 25px;
-	padding-top: 10px;
+	
 	padding-bottom: 10px;
+	padding-left: 25px;
+	padding-right: 25px; 
+	padding-top: 10px;
 	border-color: lightgray;
 }
+
 </style>
 
 <body>
@@ -214,8 +213,7 @@ div[class* = "col-md-6 col-xs-12"]{
 						<em id="pay_label">Pay My Buddy</em>
 					</h1>
 				</div>
-				<div>
-					<div class="col-md-6" id="mostmenu">
+				<div class="col-md-6" id="mostmenu">
 						<div class="col-md-1" id="hmenu">
 							<h3>
 								<em>Home</em>
@@ -241,7 +239,6 @@ div[class* = "col-md-6 col-xs-12"]{
 								<a th:href="@{/logout}"><em>Log Off</em></a>
 							</h3>
 						</div>
-					</div>
 				</div>
 			</div>
 
@@ -287,27 +284,15 @@ div[class* = "col-md-6 col-xs-12"]{
 
 						<div id="select_connectionP">
 
-							<select name="connection" id="connection">
-								<option value="Select A Connection">Select A Connection</option>
-								<option value="con1">con1</option>
-								<option value="con2">con2</option>
-								<option value="con3">con3</option>
-
-							</select>
-
-
 						</div>
 
-						<div id="amountP">
-							<input type="number" name="amount" id="amount" size="30"
-								placeholder="Amount">
-
+						<div id="amountP" >
+				
+				<!-- 	<p>BALANCE : <strong th:text="${available}" th:style="${available} >0 ? 'color:green;'"></strong></p>    -->	
 						</div>
 
-						<!--	<form method="post" action="">pour info</form> -->
 						<div>
-						<input  type="submit" name="pay_button" id="pay_button"
-								value="Pay">
+
 						</div>
 
 					</div>
@@ -324,9 +309,12 @@ div[class* = "col-md-6 col-xs-12"]{
 	<section id="section_three">
 		<div class="container">
 
-			<div class="row" id="section_two_cap">
+			<div class="row" id="section_three_cap">
 				<p>
 					<em id="home">My Transactions</em>
+				</p>
+				<p >
+					<em id="home" hidden=true>My Transactions</em>   
 				</p>
 			</div>
 
@@ -342,7 +330,7 @@ div[class* = "col-md-6 col-xs-12"]{
 
 						<table class="scroll_table" id="table_one">
 							<tr id="connection_table_head">
-								<th>Connections</th>
+								<th>Connection</th>
 								<th>Description</th>
 								<th>Amount</th>
 							</tr>
@@ -352,12 +340,14 @@ div[class* = "col-md-6 col-xs-12"]{
 							<tr th:each="connection, stat: ${pConex.get(activePage.page)}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
-								<td><span th:text="${connection.connection}">Connections</span></td>
-								<td><span th:text="${connection.description}">Description</span></td>
-								<td><span th:text="${connection.amount}">Amount</span></td>
+								<td><span th:text="${connection.connection}" th:style="${connection.amount}<0 ? 'color: red;'">Connection</span></td>
+								<td><span th:text="${connection.description}" th:style="${connection.amount}<0 ? 'color: red;'">Description</span></td>
+								<td><span th:text="${connection.amount}" th:style="${connection.amount}<0 ? 'color: red;'">Amount</span></td>
 							</tr>
 						</table>
-
+						</div>
+						
+						
 						<div class="paging">
 
 							<nav th:if="${pConex.keySet().size()>0}"
@@ -372,7 +362,7 @@ div[class* = "col-md-6 col-xs-12"]{
 							</nav>
 
 						</div>
-					</div>
+					
 				</div>
 
 				<div class="col-md-3"></div>

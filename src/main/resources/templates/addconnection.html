@@ -13,30 +13,16 @@
 <style type="text/css">
 body {
 	background-color: white;
-	text-align: center;
+	/*text-align: center;*/
 	height: auto;
 }
 
-/*
-div[class* = "col-md-6 col-xs-12"]{
-  
-  border-color: darkred;
-
-  display : flex;
-  flex-direction: column ;
-  justify-content: space-around ;
-
-  text-align: center;
-  align-items: centre;
-}
-*/
 [class^="row"] {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-between;
 }
-
-/* login style sheet */
+/*
 #login_box {
 	margin-top: 40px;
 	padding-left: 20px;
@@ -50,7 +36,7 @@ div[class* = "col-md-6 col-xs-12"]{
 	justify-content: space-around;
 	text-align: center;
 	align-items: centre;
-}
+}*/
 
 #pay_label {
 	background: linear-gradient(to right, rgba(98, 185, 89, 255),
@@ -65,7 +51,7 @@ div[class* = "col-md-6 col-xs-12"]{
 	border-radius: 10px;
 	font-style: normal;
 }
-
+/*
 #email {
 	padding-left: 5px;
 	padding-right: 25px;
@@ -106,16 +92,27 @@ div[class* = "col-md-6 col-xs-12"]{
 	padding-bottom: 10px;
 	border-radius: 10px;
 }
+*/ 
 
-/* transfert style sheet */
-
-/* sub_menu */
 #sub_menu {
 	display: flex;
 	flex-direction: row;
 	justify-content: left;
 	padding-left: 30px;
 	background-color: rgba(245, 245, 245, 255);
+}
+
+#menu {
+	font-style: normal;
+}
+
+#mostmenu {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 350px;
+	font-style: normal;
+
 }
 
 #home {
@@ -129,11 +126,7 @@ div[class* = "col-md-6 col-xs-12"]{
 	color: grey;
 	font-size: 20px;
 }
-
-#menu {
-	font-style: normal;
-}
-
+/*idsharp*/
 #money_box {
 	display: flex;
 	flex-direction: row;
@@ -141,31 +134,43 @@ div[class* = "col-md-6 col-xs-12"]{
 	align-items: center;
 	height: 88px;
 	width: 950px;
-	/*	border: solid;
-	border-radius: 5px;
-	border-color: lightgrey; */
 	background-color: rgba(245, 245, 245, 255)
 }
+/*classdot*/
+/*
+.menu{
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+
+}*/
 
 .hmenu {
-	width: 50px;
+	width: 100px;
+}
+
+#section_two_cap{
+	justify-content:space-around;
+}
+
+#section_three_cap{
+	justify-content: space-around;
+	
 }
 
 #paymenu {
-	/*	align-content: left;*/
+	
 	justify-content: flex-start;
 	margin-left: 5px;
-}
-
-#mostmenu {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
 }
 
 #table_one {
 	width: 950px;
 	height: 350px;
+	text-align: center;
+	border: solid;
+	border-color: lightgrey;
 }
 
 #connection_table_head {
@@ -176,7 +181,27 @@ div[class* = "col-md-6 col-xs-12"]{
 .paging {
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
+	
+	font-size: 25px;
+
+	height: 50px;
+	margin-top: 1px;
+	padding-top: 10px;
 }
+
+#pageindex {
+	border: solid;
+	border-width: 1px;
+	
+	
+	padding-bottom: 10px;
+	padding-left: 25px;
+	padding-right: 25px; 
+	padding-top: 10px;
+	border-color: lightgray;
+}
+
 </style>
 
 <body>
