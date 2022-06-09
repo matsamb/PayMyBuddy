@@ -1,5 +1,7 @@
 package com.paymybuddy.controller;
 
+import java.sql.SQLException;
+
 import javax.annotation.security.RolesAllowed;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +47,8 @@ public class AddConnectionController {
 	
 	
 	@GetMapping("/addconnection")
-	public String getAddConnection() {
+	public String getAddConnection(Authentication auth, ViewConnection vConnec, BindingResult binding) {	
+		
 		return "addconnection";	
 	}
 	
@@ -66,7 +69,11 @@ public class AddConnectionController {
 			
 			addConnectionControllerLogger.debug(newConnection);
 			
-			addConnectionServiceAtAddConectionController.addConnection(newConnection);
+			try {
+				addConnectionServiceAtAddConectionController.addConnection(newConnection);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			
 			result = new ModelAndView("redirect:/addconnection?success=true");
 			addConnectionControllerLogger.info("Connection between "+vConnec.getConnection()+" and "+user.getUsername()+" created");

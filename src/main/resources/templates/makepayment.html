@@ -283,7 +283,7 @@ body {
 						<div id="select_connectionP" >
 
 							<select name="connection" id="connection" > 
-								<option value="Select A Connection" disabled selected>Select a connection</option>
+								<option value="Select A Connection" >Select a connection</option> <!-- disabled selected -->
 								<option th:each="connection: ${econnections}" th:value="${connection.getFkPayeeUserName}" th:text="${connection.getFkPayeeUserName}"></option> 
 							</select>
 						</div>

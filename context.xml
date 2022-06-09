@@ -12,21 +12,9 @@
         https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- this is the service object that we want to make transactional -->
-    <bean id="saveAuthorityService" class="com.paymybuddy.service.authority.AuthoritiesSaveAuthorityService"/>
-    
-    <bean id="findBalanceService" class="com.paymybuddy.service.balance.FindBalanceService"/>
-    <bean id="saveBalanceService" class="com.paymybuddy.service.balance.SaveBalanceService"/>
-    <bean id="updateBalanceService" class="com.paymybuddy.service.balance.UpdateBalanceService"/>
-    
-    <bean id="addConnectionService" class="com.paymybuddy.service.connection.AddConnectionService"/>
-    <bean id="findByPayeeConnectionService" class="com.paymybuddy.service.connection.FindEconnectionByPayeeUsernameService"/>
-    <bean id="findByPayerConnectionService" class="com.paymybuddy.service.connection.FindEconnectionByPayerUsernameService"/>
-    
-    <bean id="findPaymentByEconnectionIdService" class="com.paymybuddy.service.payment.FindPaymentByEconnectionIdService"/>
-    <bean id="savePaymentService" class="com.paymybuddy.service.payment.SavePaymentService"/>
-
-    <bean id="checkUsersService" class="com.paymybuddy.service.users.CheckUsersService"/>
-    <bean id="saveUserService" class="com.paymybuddy.service.users.UsersSaveUserService"/>
+    <bean id="saveAuthorityService" class="com.security.dao.authorities.SaveAuthorityDAO"/>
+ 
+    <bean id="saveUserDao" class="com.security.dao.users.SaveUserDAO"/>
     
 
     <!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
@@ -43,8 +31,8 @@
  <!-- ensure that the above transactional advice runs for any execution
         of an operation defined by the Services  -->
     <aop:config>
-        <aop:pointcut id="serviceOperation" expression="execution(* com.paymybuddy.service..*Service.*(..))"/>
-        <aop:advisor pointcut-ref="serviceOperation" advice-ref="txAdvice"/>
+        <aop:pointcut id="daoOperation" expression="execution(* com.paymybuddy.dao..*DAO.*(..))"/>
+        <aop:advisor pointcut-ref="daoOperation" advice-ref="txAdvice"/>
     </aop:config>
 
     <!-- don't forget the DataSource -->

@@ -63,7 +63,7 @@ public class MakePaymentController {
 	
 		model.addAttribute("econnections", connectionList);
 		
-		makePaymentControllerLogger.info("Connection requested");
+		makePaymentControllerLogger.info(connectionList);
 	
 		return "/makepayment";
 		
