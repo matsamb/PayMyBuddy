@@ -1,4 +1,4 @@
-package com.paymybuddy.controller;
+package com.paymybuddy.restcontroller;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -11,17 +11,12 @@ import com.paymybuddy.dto.ViewPayment;
 
 @RestController
 @RolesAllowed("USER")
-public class BankTransactionController {
+public class PostBankTransactionController {
 
-	@GetMapping("/banktransaction")//?iban=<iban>
-	public Iterable<ViewPayment> getBankTransaction(@RequestParam String iban){
+
 	
-		return null;
-		
-	}
-	
-	@PostMapping("/banktransaction")
-	public Iterable<ViewPayment> addBankTransaction(){
+	@PostMapping("/banktransaction")//?iban=<iban>
+	public Iterable<ViewPayment> addBankTransaction(@RequestParam String iban){
 		return null;
 		
 	}

@@ -13,7 +13,7 @@ import com.paymybuddy.entity.Epayment;
 import com.paymybuddy.repository.EconnectionRepository;
 import com.paymybuddy.repository.PaymentRepository;
 
-@Service
+/*@Service
 public class FindPaymentByEconnectionIdService {
 
 	static final Logger findPaymentByEconnectionIdServiceLogger = LogManager.getLogger("FindPaymentByEconnectionIdService");
@@ -31,4 +31,4 @@ public class FindPaymentByEconnectionIdService {
 	
 	
 	
-}
+}*/

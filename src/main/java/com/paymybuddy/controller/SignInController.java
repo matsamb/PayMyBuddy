@@ -1,13 +1,16 @@
 package com.paymybuddy.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
+import javax.activation.MimeType;
+
+import org.apache.catalina.startup.Tomcat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +19,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.paymybuddy.entity.Authorities;
-import com.paymybuddy.entity.Users;
+import com.paymybuddy.entity.ActivationToken;
+import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.model.ViewUser;
+import com.paymybuddy.service.ActivationTokenService;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
-import com.paymybuddy.service.PaymybuddyUserDetailsService;
-import com.paymybuddy.service.authority.AuthoritiesSaveAuthorityService;
-import com.paymybuddy.service.users.UsersSaveUserService;
+import com.paymybuddy.service.SavePaymybuddyUserDetailsService;
+import com.paymybuddy.service.email.EmailSenderService;
+import com.paymybuddy.service.users.UserRole;
 
 @Controller
 public class SignInController {
@@ -30,19 +34,24 @@ public class SignInController {
 	private final Logger SignInControllerLogger = LogManager.getLogger("SignInController");
 	
 	@Autowired
-	UsersSaveUserService usersSaveUserService;
+	SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService;
+
+	@Autowired
+	ActivationTokenService activationTokenService;
 	
 	@Autowired
-	AuthoritiesSaveAuthorityService authoritiesSaveAuthorityService;
+	EmailSenderService emailSenderService;
 	
 	@Autowired
 	PaymybuddyPasswordEncoder paymybuddyPasswordEncoder;
 	
-	SignInController(UsersSaveUserService usersSaveUserService
-					,AuthoritiesSaveAuthorityService authoritiesSaveAuthorityService
-					){
-		this.usersSaveUserService = usersSaveUserService;
-		this.authoritiesSaveAuthorityService = authoritiesSaveAuthorityService;
+	SignInController(SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService		
+				,ActivationTokenService activationTokenService
+				,EmailSenderService emailSenderService
+			){
+		this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
+		this.activationTokenService = activationTokenService;
+		this.emailSenderService = emailSenderService;
 	}
 	
 
@@ -53,54 +62,79 @@ public class SignInController {
 	}
 
 	@PostMapping("/signin")
-	public ModelAndView checkSignin(ViewUser neweuser, String confirmpassword, BindingResult bindingresult) {	
+	public ModelAndView checkSignin(ViewUser neweuser, Float balance, String name, String confirmpassword, BindingResult bindingresult, Model model) {	
 
 		ModelAndView result = null;
+						
+		PaymybuddyUserDetails buddyUser = new PaymybuddyUserDetails();
 		
-		Users user = new Users();
-		System.out.println(confirmpassword);
-		
-		Boolean mailReturn = true;
+		Boolean mailReturn = false;
 		SignInControllerLogger.info("Mail confirmation data recovered");
-
-		List<String> roles = new ArrayList<>();
-		roles.add("ROLE_USER");
-		roles.add("ROLE_ADMIN");
 		
-		Authorities newAuthority = new Authorities();
-		
-		if(mailReturn==true && Objects.equals(neweuser.getPassword(),confirmpassword)) {
+		if(mailReturn==false && Objects.equals(neweuser.getPassword(),confirmpassword)) {
 	
-			user.setUsername(neweuser.getUsername());
-			neweuser.setPassword(paymybuddyPasswordEncoder
+			SignInControllerLogger.info("email confirmed and password confirmed");
+			
+			buddyUser.setEmail(neweuser.getUsername());
+			SignInControllerLogger.debug("email set");
+			buddyUser.setUsername(name);
+			SignInControllerLogger.debug("pseudo set");
+			
+			buddyUser.setBalance(balance);
+			SignInControllerLogger.debug("balance set");
+			
+		/*	neweuser.setPassword(paymybuddyPasswordEncoder
 									.getPasswordEncoder()
 									.encode(neweuser.getPassword())
-									);
-			String pass = neweuser.getPassword().substring(8);
-			user.setPassword(pass);
-			user.setEnabled(mailReturn);
+									);*/
+			SignInControllerLogger.debug("password encoded");
+			PasswordEncoder passWordEncoder = paymybuddyPasswordEncoder
+					.getPasswordEncoder();
+			String pass = passWordEncoder
+					.encode(neweuser.getPassword());//.substring(8);
+			buddyUser.setPassword(pass);
+			SignInControllerLogger.debug("password set");
+
+			buddyUser.setEnabled(mailReturn);
+			SignInControllerLogger.debug("email verified");
+			buddyUser.setUserRole(UserRole.USER);
+			SignInControllerLogger.debug("role set");
 			
-			newAuthority.setUsername(neweuser.getUsername());
-			newAuthority.setAuthority(roles.get(0));
+			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(buddyUser);
 			
-			usersSaveUserService.saveUser(user);
-			authoritiesSaveAuthorityService.saveAuthorities(newAuthority);
+			ActivationToken activationToken = new ActivationToken();
+			String token = UUID.randomUUID().toString();
+			int tokenMinuteLength = 1;
+			Timestamp startTime = new Timestamp(System.currentTimeMillis());
+			Timestamp endTime = new Timestamp(System.currentTimeMillis()+tokenMinuteLength*60*1000);
+			activationToken.setStartTime(startTime);
+			activationToken.setExpirationTime(endTime);
+			activationToken.setUser(buddyUser);
+			activationToken.setToken(token);
+			
+			activationTokenService.saveActivationToken(activationToken);
+			
+			int port = 9080;
+			String address = activationToken.getUser().getEmail();
+			String url = "http://localhost:"+port+"/accountactivation?token="+activationToken.getToken();
+			String message = "To activate your account click <a href='"+url+"'>here</a>";
+			
+			emailSenderService.send(address, message);
+			
 			result = new ModelAndView("redirect:/signinconfirm");
-			SignInControllerLogger.info("Sign data retrieved and loaded to database");
+			SignInControllerLogger.info("New User's data retrieved and loaded to database");
 
 		}else {
 			result = new ModelAndView("redirect:/signin?error2=true");
 			SignInControllerLogger.info("data entry error");
-
 		}
-		
+		SignInControllerLogger.info("Sign In posted");
 		return result;
 	}
 	
 	@GetMapping("/signinconfirm")
 	public String signinconfirm() {	
 		SignInControllerLogger.info("Sign In confirmation page displayed");
-
 		return "signinconfirm";
 	}
 	

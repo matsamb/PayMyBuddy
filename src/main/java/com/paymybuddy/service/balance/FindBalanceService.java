@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.paymybuddy.entity.Balance;
 import com.paymybuddy.repository.BalanceRepository;
 
-@Service
+/*@Service
 public class FindBalanceService {
 
 	static final Logger findBalanceServiceLogger = LogManager.getLogger("FindBalanceService");
@@ -28,4 +28,4 @@ public class FindBalanceService {
 		return result;
 	}
 	
-}
+}*/

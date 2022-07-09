@@ -3,18 +3,27 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:int-mail="http://www.springframework.org/schema/integration/mail"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         https://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop
-        https://www.springframework.org/schema/aop/spring-aop.xsd">
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/integration/mail
+    	https://www.springframework.org/schema/integration/mail/spring-integration-mail.xsd">
 
     <!-- this is the service object that we want to make transactional -->
-    <bean id="saveAuthorityService" class="com.security.dao.authorities.SaveAuthorityDAO"/>
- 
-    <bean id="saveUserDao" class="com.security.dao.users.SaveUserDAO"/>
+    <bean id="authoritiesRepository" class="com.paymybuddy.repository.AuthoritiesRepository"/>
+    <bean id="accountDetailsRepository" class="com.paymybuddy.repository.AccountDetailsRepository"/> 
+    <bean id="bankAccountRepository" class="com.paymybuddy.repository.BankAccountRepository"/>
+    <bean id="balanceRepository" class="com.paymybuddy.repository.BalanceRepository"/>
+    <bean id="eConnectionRepository" class="com.paymybuddy.repository.EconnectionRepository"/>
+    <bean id="paymentRepository" class="com.paymybuddy.repository.PaymentRepository"/>
+    <bean id="transactionRepository" class="com.paymybuddy.repository.TransactionRepository"/>
+    <bean id="usersRepository" class="com.paymybuddy.repository.UsersRepository"/>
+    
     
 
     <!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
@@ -31,23 +40,41 @@
  <!-- ensure that the above transactional advice runs for any execution
         of an operation defined by the Services  -->
     <aop:config>
-        <aop:pointcut id="daoOperation" expression="execution(* com.paymybuddy.dao..*DAO.*(..))"/>
+        <aop:pointcut id="daoOperation" expression="execution(* com.paymybuddy.repository..*Repository.*(..))"/>
         <aop:advisor pointcut-ref="daoOperation" advice-ref="txAdvice"/>
     </aop:config>
 
-    <!-- don't forget the DataSource -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="javax.sql.DataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
     </bean>
-
     <!-- similarly, don't forget the TransactionManager -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- other <bean/> definitions here -->
+	<bean id="paymybuddyUserDetails" class="com.paymybuddy.entity.PaymybuddyUserDetails"/>
+	
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+	  	<property name="host" value="${spring.mail.host}" />  
+	    <property name="username" value="${spring.mail.username}" />  
+	    <property name="password" value="${spring.mail.password}" />  
+	    <property name="javaMailProperties">  
+	       <props>  
+	       		<prop key="mail.smtp.auth">true</prop>  
+	              <prop key="mail.smtp.socketFactory.port">"${spring.mail.port}"</prop>  
+	              <prop key="mail.smtp.socketFactory.class">javax.net.tls.TLSSocketFactory</prop>  
+	              <prop key="mail.smtp.port">"${spring.mail.port}"</prop>
+	       
+	        <!--  <prop key="mail.smtp.auth">true</prop>  
+	              <prop key="mail.smtp.socketFactory.port">465</prop>  
+	              <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>  
+	              <prop key="mail.smtp.port">465</prop> -->   
+	        </props>  
+	    </property>  
+	</bean>  
+
 
 </beans> 

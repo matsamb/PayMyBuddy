@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.paymybuddy.entity.Econnection;
 
-public interface EconnectionRepository extends JpaRepository<Econnection, Integer> {
+/*public interface EconnectionRepository extends JpaRepository<Econnection, Integer> {
 
 	List<Econnection> findByFkPayeeUserName(String payeeUserName);
 	
@@ -21,4 +21,4 @@ public interface EconnectionRepository extends JpaRepository<Econnection, Intege
 
 	List<Econnection> findByFkPayerUserName(String fkPayerUsername); 
 	
-}
+}*/

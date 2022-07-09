@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.entity.Authorities;
 import com.paymybuddy.repository.AuthoritiesRepository;
 
-@Service
+/*@Service
 public class AuthoritiesSaveAuthorityService {
 
 	public static Logger authoritiesSaveAuthorityServiceLogger = LogManager.getLogger("AuthoritiesSaveAuthorityService");
@@ -28,4 +28,4 @@ public class AuthoritiesSaveAuthorityService {
 	}
 
 	
-}
+}*/

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.paymybuddy.repository.UsersRepository;
 
-@Service
+/*@Service
 public class CheckUsersService {
 
 	public final Logger findUsersServiceLogger = LogManager.getLogger("FindUsersService");
@@ -33,4 +33,4 @@ public class CheckUsersService {
 	
 	
 	
-}
+}*/

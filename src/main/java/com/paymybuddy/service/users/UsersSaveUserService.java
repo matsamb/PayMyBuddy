@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.entity.Users;
 import com.paymybuddy.repository.UsersRepository;
 
-@Service
+/*@Service
 public class UsersSaveUserService {
 
 	private static Logger eusersSaveEuserServiceLogger = LogManager.getLogger("EusersSaveEuserService");
@@ -25,4 +25,4 @@ public class UsersSaveUserService {
 		eusersSaveEuserServiceLogger.info("new user: "+neweuser.getUsername()+" registered");
 	}
 		
-}
+}*/

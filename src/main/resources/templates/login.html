@@ -185,6 +185,11 @@ div[class* = "col-md-6 col-xs-12"]{
 					<p id="signin">
 						<a href="/signin" th:href="@{/signin}">Sign In</a>									
 					</p>
+					
+					<h3>login with OAuth</h3>
+					<p>
+				<!-- <a href="/oauth2/authorization/github">GitHub</a> --> <img src="/img/icon_google.png" th:src="@{/img/icon_google.png}" alt="google" title="to google authentication" />  <a th:href="@{/oauth2/authorization/google}">GOOGLE</a>
+					</p>
 				</div>
 </form>
 				<div class="col-md-3">	

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import com.paymybuddy.dto.ActivePage;
 import com.paymybuddy.dto.ViewPayment;
 import com.paymybuddy.entity.Econnection;
 import com.paymybuddy.entity.Epayment;
+import com.paymybuddy.entity.GoogleOAuth2User;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.connection.FindEconnectionByPayerUsernameService;
 import com.paymybuddy.service.payment.FindPaymentByEconnectionIdService;
@@ -37,21 +39,19 @@ import com.paymybuddy.service.payment.FindPaymentByEconnectionIdService;
 public class HomeController {
 
 	static final Logger homeControllerLogger = LogManager.getLogger("HomeController");
-	
+
 	@Autowired
 	FindEconnectionByPayerUsernameService findEconnectionByPayerUsernameServiceAtHomeController;
-	
+
 	@Autowired
-	FindPaymentByEconnectionIdService findPaymentByEconnectionIdServiceAtHomeController;	
-	
-	HomeController(FindEconnectionByPayerUsernameService findEconnectionByPayerUsernameServiceAtHomeController
-				, FindPaymentByEconnectionIdService findPaymentByEconnectionIdServiceAtHomeController
-			){
+	FindPaymentByEconnectionIdService findPaymentByEconnectionIdServiceAtHomeController;
+
+	HomeController(FindEconnectionByPayerUsernameService findEconnectionByPayerUsernameServiceAtHomeController,
+			FindPaymentByEconnectionIdService findPaymentByEconnectionIdServiceAtHomeController) {
 		this.findEconnectionByPayerUsernameServiceAtHomeController = findEconnectionByPayerUsernameServiceAtHomeController;
 		this.findPaymentByEconnectionIdServiceAtHomeController = findPaymentByEconnectionIdServiceAtHomeController;
 	}
-	
-	
+
 	@RolesAllowed("USER")
 	@GetMapping("/home")
 	public String getHome(ActivePage activePage, BindingResult bindingResult, Model model, Authentication oth) {
@@ -61,21 +61,42 @@ public class HomeController {
 		System.out.println(activePage);
 		
 		UserDetails currentUser = new PaymybuddyUserDetails();
-		currentUser = (UserDetails) oth.getPrincipal();
+		OAuth2User currentOAuth = new GoogleOAuth2User();
+		
+		
+		
+		
 		List<Epayment> paymentList = new ArrayList<>();
 		List<Econnection> connList = new ArrayList<>();
 		
 		List<ViewPayment> viewPaymentList = new ArrayList<>();
 		ViewPayment viewPayment = new ViewPayment();
-
-		connList.addAll(findEconnectionByPayerUsernameServiceAtHomeController.findByFkPayerUsername(currentUser.getUsername()));
-		for(Econnection c: connList) {
-			if(Objects.isNull(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId())) ) {
-				homeControllerLogger.info("No payment found for "+c.getFkPayeeUserName());
-			}else {
-				paymentList.addAll(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId()));
-			}
+		
+		if(oth.getPrincipal() instanceof UserDetails) {
 			
+			currentUser = (UserDetails) oth.getPrincipal();
+			System.out.println(oth.getPrincipal().toString());
+			connList.addAll(findEconnectionByPayerUsernameServiceAtHomeController.findByFkPayerUsername(currentUser.getUsername()));
+			
+			for(Econnection c: connList) {
+				if(Objects.isNull(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId())) ) {
+					homeControllerLogger.info("No payment found for "+c.getFkPayeeUserName());
+				}else {
+					paymentList.addAll(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId()));
+				}
+			}
+		}else {
+			
+			currentOAuth = (OAuth2User) oth.getPrincipal();
+			System.out.println(oth.getPrincipal().toString());
+			connList.addAll(findEconnectionByPayerUsernameServiceAtHomeController.findByFkPayerUsername(currentUser.getUsername()));
+			for(Econnection c: connList) {
+				if(Objects.isNull(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId())) ) {
+					homeControllerLogger.info("No payment found for "+c.getFkPayeeUserName());
+				}else {
+					paymentList.addAll(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId()));
+				}
+			}
 		}
 		
 		if(Objects.isNull(paymentList)) {
@@ -128,51 +149,50 @@ public class HomeController {
 	@PostMapping("/home")
 	public ModelAndView userOut(ActivePage activePage, BindingResult bindingResult, Model model, Authentication oth) {
 		ModelAndView result;
-		
-		
+
 		if (activePage.equals(1)) {
 
 			int displayedRows = 3;
 
 			System.out.println(activePage);
-			
+
 			UserDetails currentUser = new PaymybuddyUserDetails();
 			currentUser = (UserDetails) oth.getPrincipal();
 			List<Epayment> paymentList = new ArrayList<>();
 			List<Econnection> connList = new ArrayList<>();
-			
+
 			List<ViewPayment> viewPaymentList = new ArrayList<>();
 			ViewPayment viewPayment = new ViewPayment();
 
-			connList.addAll(findEconnectionByPayerUsernameServiceAtHomeController.findByFkPayerUsername(currentUser.getUsername()));
-			for(Econnection c: connList) {
-				if(Objects.isNull(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId())) ) {
-					homeControllerLogger.info("No payment found for "+c.getFkPayeeUserName());
-				}else {
+			connList.addAll(findEconnectionByPayerUsernameServiceAtHomeController
+					.findByFkPayerUsername(currentUser.getUsername()));
+			for (Econnection c : connList) {
+				if (Objects.isNull(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId()))) {
+					homeControllerLogger.info("No payment found for " + c.getFkPayeeUserName());
+				} else {
 					paymentList.addAll(findPaymentByEconnectionIdServiceAtHomeController.findPaymentById(c.getId()));
 				}
-				
+
 			}
-			
-			if(Objects.isNull(paymentList)) {
+
+			if (Objects.isNull(paymentList)) {
 				homeControllerLogger.info("No payment available");
 			} else {
-				for(Econnection c: connList) {
-					for(Epayment e: paymentList) {
-							if(Objects.equals(c.getId(), e.getIdConnection())) {
-						viewPayment.setConnection(c.getFkPayeeUserName());
-						viewPayment.setDescription(e.getDescription());
-						viewPayment.setAmount(e.getAmount());
-						
-						viewPaymentList.add((ViewPayment)viewPayment.clone());
-						}				
-					}					
+				for (Econnection c : connList) {
+					for (Epayment e : paymentList) {
+						if (Objects.equals(c.getId(), e.getIdConnection())) {
+							viewPayment.setConnection(c.getFkPayeeUserName());
+							viewPayment.setDescription(e.getDescription());
+							viewPayment.setAmount(e.getAmount());
+
+							viewPaymentList.add((ViewPayment) viewPayment.clone());
+						}
+					}
 				}
 			}
 
 			List<ViewPayment> econex = new ArrayList<>();
 			econex.addAll(List.copyOf(viewPaymentList));
-
 
 			PagedListHolder<ViewPayment> pagedConex = new PagedListHolder<>(econex);
 

@@ -3,6 +3,7 @@ package com.paymybuddy.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
@@ -11,12 +12,13 @@ import lombok.Data;
 public class EbankAccount {
 
 	@Id
-	Integer iban;
+	String iban;
 	
-	Float balance;
+	/*Float balance;*/
 
-	@Column(name="fk_username")
-	String userName;
+	//@Column(name="fk_username")
+	@ManyToOne
+	PaymybuddyUserDetails user;
 	
 	public Object clone() {
 		EbankAccount copy = null;

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.paymybuddy.entity.Users;
 
-public interface UsersRepository extends JpaRepository<Users, String> {
+/*public interface UsersRepository extends JpaRepository<Users, String> {
 
 	public Users findEusersByUsername(String username);
 	
@@ -14,4 +14,4 @@ public interface UsersRepository extends JpaRepository<Users, String> {
 	
 	public Page<Users> findAll(Pageable pageable);
 	
-}
+}*/

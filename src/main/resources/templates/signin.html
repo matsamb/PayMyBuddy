@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	<title>login</title>
-<!-- <link th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" > -->
+	<link href="/static/css/style.css" th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" >
 	
 	<style type="text/css">
 
@@ -172,10 +172,10 @@ div[class* = "col-md-6 col-xs-12"]{
 					<h1><em id="pay_label">Pay My Buddy</em>
 					</h1>					
 			<!-- 		<p><input type="text" name="firstname" id="firstname" size="50" placeholder="firs name" required/>
-					</p>
-					<p><input type="text" name="lastname" id="lastname" size="50" placeholder="last name" required/>
 					</p>   -->
-					<p><input type="text" name="username" id="username" size="50" placeholder="&#9993 Email" required/>
+					<p><input type="email" name="username" id="username" size="50" placeholder="&#9993 Email" required/>
+					</p>
+					<p><input type="text" name="name" id="name" size="50" placeholder="pseudo" required/>
 					</p>  
 					<p><input type="password" name="password" id="password" size="50" placeholder="* password" required/>
 					</p>
@@ -186,6 +186,10 @@ div[class* = "col-md-6 col-xs-12"]{
 					<p><input type="checkbox" name="terms" id="terms" required/><label for="terms" >I agree to terms and conditions</label>
 					</p>
 					<p><input type="submit" name="loginbutton" id="login_button" value="Sign In">
+					</p>
+					<h3>Sign in with OAuth</h3>
+					<p>
+						<a th:href="@{/oauth2/authorization/google}">GOOGLE</a>  <!-- <a href="/oauth2/authorization/github">GitHub</a>  	 <a href="/oauth2/authorization/google th:href="@{/oauth2/authorization/google}"><img src="static/img/icon_google.png" th:src="@{static/img/icon_google.png}" alt="google" title="to google authentication" /></a>  -->
 					</p>
 				</div>
 </form>

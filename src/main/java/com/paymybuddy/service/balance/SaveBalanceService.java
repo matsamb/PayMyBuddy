@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.paymybuddy.entity.Balance;
 import com.paymybuddy.repository.BalanceRepository;
 
-@Service
+/*@Service
 public class SaveBalanceService {
 
 	@Autowired
@@ -22,4 +22,4 @@ public class SaveBalanceService {
 		balanceRepository.save(balance);		
 	}
 	
-}
+}*/

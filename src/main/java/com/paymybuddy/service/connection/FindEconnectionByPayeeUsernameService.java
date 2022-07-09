@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.paymybuddy.entity.Econnection;
 import com.paymybuddy.repository.EconnectionRepository;
 
-@Service
+/*@Service
 public class FindEconnectionByPayeeUsernameService {
 
 	static final Logger findEconnectionByPayeeUsernameServiceLogger = LogManager.getLogger("FindEconnectionByPayeeUsernameService");
@@ -35,4 +35,4 @@ public class FindEconnectionByPayeeUsernameService {
 		}
 	}
 	
-}
+}*/

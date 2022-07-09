@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	<title>login</title>
+<!-- <link th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" > -->
+	
+	<style type="text/css">
+
+body{
+  background-color: white;
+
+   text-align: center;
+}
+
+/*
+div[class* = "col-md-6 col-xs-12"]{
+  
+  border-color: darkred;
+
+  display : flex;
+  flex-direction: column ;
+  justify-content: space-around ;
+
+  text-align: center;
+  align-items: centre;
+}
+*/
+[class^="row"]{
+  display : flex;
+  flex-direction: row ;
+  justify-content: space-around ;
+
+}
+
+/* login style sheet */
+
+#login_box{
+
+  margin-top: 40px;
+  
+  padding-left: 20px;
+  padding-right: 20px;
+  
+  padding-bottom: 30px;
+
+
+  border: solid;
+  border-color: lightgrey;
+  border-radius: 15px;
+
+  display : flex;
+  flex-direction: column ;
+  justify-content: space-around ;
+
+  text-align: center;
+  align-items: centre;
+}
+
+#pay_label{
+
+  background: linear-gradient(to right,rgba(98,185,89,255),rgba(136,194,75,255));
+  color: white;
+  text-align: justify;
+  margin-left: 0px;
+  
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border-radius: 10px;
+
+  font-style: normal;
+}
+
+#email{
+  padding-left: 5px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border: solid;
+  border-radius: 5px;
+  border-color: lightgrey;
+
+  font-size: 15px;
+
+}
+
+:required{
+
+  background-color: lightgrey;
+  border: solid;
+  border-color: darkred;
+}
+
+
+#pass{
+  padding-left: 5px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border: solid;
+  border-radius: 5px;
+  border-color: lightgrey;
+
+  font-size: 15px;
+}
+
+
+#login_button{
+
+  background-color: rgba(2,117,216,255);
+  color: white;
+  text-align: justify;
+  margin-left: 0px;
+
+  font-size: 20px;
+  
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border-radius: 10px;
+}
+
+/* transfert style sheet */
+
+/* sub_menu */
+#sub_menu{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  
+  padding-left: 30px;
+
+}
+
+#home{
+  font-style: normal;
+  color: dimgrey;
+  font-size: 20px;
+}
+
+#transfert{
+  font-style: normal;
+  color: dimgrey;
+  font-size: 20px;
+}
+	
+	</style> 
+	
+</head>
+
+<body>
+	<section id="section_one">
+		<div class="container">
+			<div class="row" >
+				<div class="col-md-3">					
+				</div>
+<form name="signin_form" th:action="@{/signin}" method="post">
+				<div th:if="${param.error}" class="alert alert-error" >	Invalid email and password
+				</div>				
+				<div th:if="${param.logout}" class="alert alert-success">You 've been logged out
+				</div>	
+				<div id="login_box" class="col-md-6 col-xs-12">					
+					<h1><em id="pay_label">Pay My Buddy</em>
+					</h1>					
+					<p> You are logged in 
+					</p>  
+					<p><a href="/home" >To home page</a>	
+					<input type="submit" name="loginbutton" id="login_button" value="To Login" hidden=true >
+					</p>
+				</div>
+</form>
+				<div class="col-md-3">					
+				</div>
+			</div>			
+		</div>		
+	</section>
+</body>
+
+</html>

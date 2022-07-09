@@ -27,8 +27,8 @@ public class AddConnectionController {
 
 	final static Logger addConnectionControllerLogger = LogManager.getLogger("AddConnectionController");
 	
-	@Autowired
-	PaymybuddyUserDetails paymybuddyUserDetailsAtAddConnectionController;
+	//@Autowired
+	//PaymybuddyUserDetails paymybuddyUserDetailsAtAddConnectionController;
 	
 	@Autowired
 	AddConnectionService addConnectionServiceAtAddConectionController;
@@ -38,11 +38,11 @@ public class AddConnectionController {
 	
 	AddConnectionController(AddConnectionService addConnectionServiceAtAddConectionController
 							,CheckUsersService checkUsersServiceAtAddConectionController
-							,PaymybuddyUserDetails paymybuddyUserDetailsAtAddConnectionController
+							//,PaymybuddyUserDetails paymybuddyUserDetailsAtAddConnectionController
 			){
 		this.addConnectionServiceAtAddConectionController = addConnectionServiceAtAddConectionController;
 		this.checkUsersServiceAtAddConectionController = checkUsersServiceAtAddConectionController;
-		this.paymybuddyUserDetailsAtAddConnectionController = paymybuddyUserDetailsAtAddConnectionController;
+		//this.paymybuddyUserDetailsAtAddConnectionController = paymybuddyUserDetailsAtAddConnectionController;
 	}
 	
 	

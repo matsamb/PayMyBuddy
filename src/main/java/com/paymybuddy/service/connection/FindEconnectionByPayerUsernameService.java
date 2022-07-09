@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.entity.Econnection;
 import com.paymybuddy.repository.EconnectionRepository;
 
-@Service
+/*@Service
 public class FindEconnectionByPayerUsernameService {
 
 	final static Logger findEconnectionByPayerUsernameServiceLogger = LogManager.getLogger("FindEconnectionByPayerUsernameService");
@@ -36,4 +36,4 @@ public class FindEconnectionByPayerUsernameService {
 	
 	
 	
-}
+}*/

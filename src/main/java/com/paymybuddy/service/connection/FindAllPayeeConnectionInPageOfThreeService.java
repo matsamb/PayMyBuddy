@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.entity.Econnection;
 import com.paymybuddy.repository.EconnectionRepository;
 
-@Service
+/*@Service
 public class FindAllPayeeConnectionInPageOfThreeService {
 
 	@Autowired
@@ -25,4 +25,4 @@ public class FindAllPayeeConnectionInPageOfThreeService {
 		
 	}
 	
-}
+}*/

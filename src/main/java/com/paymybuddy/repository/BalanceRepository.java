@@ -5,6 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.paymybuddy.entity.Balance;
 
-public interface BalanceRepository extends JpaRepository<Balance, String> {
+/*public interface BalanceRepository extends JpaRepository<Balance, String> {
 
-}
+}*/
