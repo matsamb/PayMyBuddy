@@ -1,4 +1,4 @@
-package com.paymybuddy.service;
+package com.paymybuddy.service.users;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +22,7 @@ public class SavePaymybuddyUserDetailsService {
 
 	public void savePaymybuddyUserDetails(PaymybuddyUserDetails buddyUser) {
 		paymybuddyUserDetailsRepository.save(buddyUser);
-		logger.info("processing "+buddyUser.getUsername()+" user details");
+		logger.info("Processing "+buddyUser.getEmail()+" user details");
 	}
 	
 }

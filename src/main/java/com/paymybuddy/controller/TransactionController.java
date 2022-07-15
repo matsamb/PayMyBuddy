@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.paymybuddy.dto.ActivePage;
-import com.paymybuddy.entity.Econnection;
 
 @Controller
 @RolesAllowed("USER")
@@ -31,7 +30,7 @@ public class TransactionController {
 		return "mytransaction";
 	}
 	
-	
+/*	
 	@RolesAllowed("USER")
 	@PostMapping("/mytransaction")
 	public ModelAndView seeConnection(ActivePage activePage, BindingResult bindingResult, Model model) {
@@ -42,7 +41,7 @@ public class TransactionController {
 		
 		List<Econnection> econex = new ArrayList<>();
 
-		Econnection econ1 = new Econnection(1, "user", "user2");
+*//*		Econnection econ1 = new Econnection(1, "user", "user2");
 		econex.add(econ1);
 		Econnection econ2 = new Econnection(2, "user", "user3");
 		econex.add(econ2);
@@ -51,7 +50,7 @@ public class TransactionController {
 		Econnection econ4 = new Econnection(4, "user", "user5");
 		econex.add(econ4);
 		Econnection econ5 = new Econnection(5, "user", "user6");
-		econex.add(econ5);
+		econex.add(econ5);*//*
 
 		PagedListHolder<Econnection> pagedConex = new PagedListHolder<>(econex);
 
@@ -76,6 +75,6 @@ public class TransactionController {
 		model.addAttribute("pagesList", pagesList);
 
 		return new ModelAndView("redirect:/mytransaction?size="+displayedRows+"&page="+activePage.getPage());
-	}
+	}*/
 	
 }

@@ -288,7 +288,7 @@ body {
 
 						<div id="amountP" >
 				
-				<!-- 	<p>BALANCE : <strong th:text="${available}" th:style="${available} >0 ? 'color:green;'"></strong></p>    -->	
+			 	<p>BALANCE : <strong th:text="${available}" th:style="${available} >0 ? 'color:green;'"></strong></p>   
 						</div>
 
 						<div>
@@ -340,9 +340,9 @@ body {
 							<tr th:each="connection, stat: ${pConex.get(activePage.page)}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
-								<td><span th:text="${connection.connection}" th:style="${connection.amount}<0 ? 'color: red;'">Connection</span></td>
-								<td><span th:text="${connection.description}" th:style="${connection.amount}<0 ? 'color: red;'">Description</span></td>
-								<td><span th:text="${connection.amount}" th:style="${connection.amount}<0 ? 'color: red;'">Amount</span></td>
+								<td><span th:text="${connection.connection}" >Connection</span></td>
+								<td><span th:text="${connection.description}" >Description</span></td>
+								<td><span th:text="${connection.amount}"  >Amount</span></td> <!-- th:style="${connection.amount} le 0.0 ? 'color: red;'" -->
 							</tr>
 						</table>
 						</div>

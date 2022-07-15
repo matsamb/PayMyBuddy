@@ -3,7 +3,6 @@ package com.paymybuddy.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,10 +11,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import com.paymybuddy.entity.GoogleOAuth2User;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
+import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -26,7 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	PaymybuddyUserDetailsService paymybuddyUserDetailsService;
 	
 	
-	GoogleOAuth2User googleOAuth2User;
+	//GoogleOAuth2User googleOAuth2User;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

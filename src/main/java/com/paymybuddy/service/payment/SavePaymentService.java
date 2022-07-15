@@ -11,17 +11,19 @@ import com.paymybuddy.repository.PaymentRepository;
 @Service
 public class SavePaymentService {
 
-	static final Logger savePaymentServiceLogger = LogManager.getLogger("SavePaymentService");
+	private static final Logger LOGGER = LogManager.getLogger("SavePaymentService");
 
 	@Autowired
-	PaymentRepository paymentRepositoryAtSavePaymentService;
+	PaymentRepository paymentRepository;
 	
-	SavePaymentService(PaymentRepository paymentRepositoryAtSavePaymentService){
-		this.paymentRepositoryAtSavePaymentService = paymentRepositoryAtSavePaymentService;
+	SavePaymentService(PaymentRepository paymentRepository){
+		this.paymentRepository = paymentRepository;
 	}
 
 	public void savePayment(Epayment ePayment) {
-		paymentRepositoryAtSavePaymentService.save(ePayment);	
+		
+		LOGGER.info(ePayment+" saved");
+		paymentRepository.save(ePayment);	
 	}
 	
 	

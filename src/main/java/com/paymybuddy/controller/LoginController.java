@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.paymybuddy.service.PaymybuddyUserDetailsService;
+import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
 
 @Controller
 public class LoginController{

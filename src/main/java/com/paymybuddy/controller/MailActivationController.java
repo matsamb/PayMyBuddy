@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paymybuddy.entity.ActivationToken;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.service.SavePaymybuddyUserDetailsService;
 import com.paymybuddy.service.activationtoken.FindActivationTokenByTokenService;
+import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 
 import lombok.AllArgsConstructor;
 

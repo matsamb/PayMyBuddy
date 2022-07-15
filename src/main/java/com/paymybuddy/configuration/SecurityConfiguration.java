@@ -16,16 +16,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import com.paymybuddy.service.CustomAuthenticationProvider;
-import com.paymybuddy.service.CustomOAuth2UserService;
-import com.paymybuddy.service.PaymybuddyUserDetailsService;
-
+import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
+ 
 @Configuration
 @Order(1)
 @EnableWebSecurity
@@ -46,17 +42,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
+				.and() 
+				.formLogin()
+					.loginPage("/login") 
+					.defaultSuccessUrl("/home")
+					.failureUrl("/login?error=true")
 				.and()
 				.oauth2Login()
 					.loginPage("/login")
 					.defaultSuccessUrl("/oauth2")
 					.failureUrl("/login?error=true")
 				.and() 
-				.formLogin()
-					.loginPage("/login") 
-					.defaultSuccessUrl("/home")
-					.failureUrl("/login?error=true")
-				.and()  
 				.logout()//.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout=true")
 				.deleteCookies("JSESSIONID")
@@ -65,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.rememberMe().tokenRepository(persistentTokenRepository())//.tokenValiditySeconds(60)
 
 		;
+		
 	}
 
 	@Bean
@@ -81,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		
-		auth.authenticationProvider(authProvider());
+		//auth.authenticationProvider(authProvider());
 		
 		auth.userDetailsService(paymybuddyUserDetailsService).passwordEncoder(passwordEncoder());
 		

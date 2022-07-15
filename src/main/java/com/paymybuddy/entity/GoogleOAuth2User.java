@@ -1,5 +1,6 @@
 package com.paymybuddy.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Entity
-@Component
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -27,9 +27,9 @@ public class GoogleOAuth2User implements OAuth2User {
 	@Id
 	private String email;
 	private String name;
-	private List<GrantedAuthority> authorities =
-			AuthorityUtils.createAuthorityList("ROLE_USER");
-	private Map<String, Object> attributes;
+	private ArrayList<GrantedAuthority> authorities =
+			(ArrayList<GrantedAuthority>) AuthorityUtils.createAuthorityList("ROLE_USER");
+	private HashMap<String, Object> attributes;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -37,7 +37,7 @@ public class GoogleOAuth2User implements OAuth2User {
 	}
 
 	@Override
-	public Map<String, Object> getAttributes() {
+	public HashMap<String, Object> getAttributes() {
 		if (this.attributes == null) {
 			this.attributes = new HashMap<>();
 			this.attributes.put("email", this.getEmail());

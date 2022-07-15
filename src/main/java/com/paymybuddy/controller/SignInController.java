@@ -24,11 +24,14 @@ import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.model.ViewUser;
 import com.paymybuddy.service.ActivationTokenService;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
-import com.paymybuddy.service.SavePaymybuddyUserDetailsService;
 import com.paymybuddy.service.email.EmailSenderService;
+import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.UserRole;
 
+import lombok.AllArgsConstructor;
+
 @Controller
+//@AllArgsConstructor
 public class SignInController {
 
 	private final Logger SignInControllerLogger = LogManager.getLogger("SignInController");

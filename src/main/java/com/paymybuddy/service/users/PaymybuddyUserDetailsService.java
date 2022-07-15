@@ -1,4 +1,4 @@
-package com.paymybuddy.service;
+package com.paymybuddy.service.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,7 +35,7 @@ public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2U
 
 			return currentUser;
 		}
-		return new PaymybuddyUserDetails();
+		return new PaymybuddyUserDetails("N_A");
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2U
 
 			return currentUser;
 		}
-		return new PaymybuddyUserDetails();
+		return new PaymybuddyUserDetails("N_A");
 	}
 
 }

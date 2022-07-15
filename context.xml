@@ -15,14 +15,11 @@
     	https://www.springframework.org/schema/integration/mail/spring-integration-mail.xsd">
 
     <!-- this is the service object that we want to make transactional -->
-    <bean id="authoritiesRepository" class="com.paymybuddy.repository.AuthoritiesRepository"/>
-    <bean id="accountDetailsRepository" class="com.paymybuddy.repository.AccountDetailsRepository"/> 
+    <bean id="activationTokenRepository" class="com.paymybuddy.repository.ActivationTokenRepository"/>
     <bean id="bankAccountRepository" class="com.paymybuddy.repository.BankAccountRepository"/>
-    <bean id="balanceRepository" class="com.paymybuddy.repository.BalanceRepository"/>
-    <bean id="eConnectionRepository" class="com.paymybuddy.repository.EconnectionRepository"/>
     <bean id="paymentRepository" class="com.paymybuddy.repository.PaymentRepository"/>
     <bean id="transactionRepository" class="com.paymybuddy.repository.TransactionRepository"/>
-    <bean id="usersRepository" class="com.paymybuddy.repository.UsersRepository"/>
+    <bean id="usersRepository" class="com.paymybuddy.repository.PaymybuddyUserDetailsRepository"/>
     
     
 

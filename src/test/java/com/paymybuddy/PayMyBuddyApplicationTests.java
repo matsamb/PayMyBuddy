@@ -23,8 +23,8 @@ import org.springframework.validation.BindingResult;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.model.ViewUser;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
-import com.paymybuddy.service.PaymybuddyUserDetailsService;
-import com.paymybuddy.service.SavePaymybuddyUserDetailsService;
+import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
+import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.UserRole;
 
 @SpringBootTest
