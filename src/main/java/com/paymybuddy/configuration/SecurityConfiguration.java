@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and() 
 				.formLogin()
 					.loginPage("/login") 
-					.defaultSuccessUrl("/home")
+					.defaultSuccessUrl("/home?size=3&page=1")
 					.failureUrl("/login?error=true")
 				.and()
 				.oauth2Login()

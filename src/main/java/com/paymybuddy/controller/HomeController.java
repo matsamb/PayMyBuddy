@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,9 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.paymybuddy.dto.ActivePage;
 import com.paymybuddy.dto.ViewPayment;
 import com.paymybuddy.entity.Epayment;
@@ -71,8 +69,8 @@ public class HomeController {
 	@RolesAllowed("USER")
 	@GetMapping("/home")
 	public String getHome(ActivePage activePage, BindingResult bindingResult, Model model, Authentication oth) {
+		
 		int displayedRows = 3;
-
 		Float available = 0.0f;
 		LOGGER.info(activePage);
 
@@ -141,6 +139,41 @@ public class HomeController {
 
 		LOGGER.info(paymentList);
 		LOGGER.info(paymentList.isEmpty());
+		
+		viewPayment.setConnection("TEST");
+		viewPayment.setDescription("TEST");
+		viewPayment.setAmount(10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(-10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(-10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(-10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(-10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPayment.setAmount(10f);
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+		viewPaymentList.add((ViewPayment) viewPayment.clone());
+
 
 		LOGGER.info("");
 		paymentList.forEach(System.out::println);
@@ -155,6 +188,15 @@ public class HomeController {
 		pagedConex.setPageSize(displayedRows);
 		pagedConex.setPage(activePage.getPage());
 
+		List<Integer> paginationRangeList = List.of(
+				Math.max(activePage.getPage()-2,1)
+				,Math.max(activePage.getPage()-1,1)
+				,activePage.getPage()
+				,Math.min(activePage.getPage()+1,pagedConex.getPageCount())
+				,Math.min(activePage.getPage()+2,pagedConex.getPageCount())
+				);
+		Set<Integer> paginationRange = paginationRangeList.stream().collect(Collectors.toSet());
+		
 		List<Integer> pagesList = IntStream.rangeClosed(1, pagedConex.getPageCount()).boxed()
 				.collect(Collectors.toList());
 
@@ -165,6 +207,10 @@ public class HomeController {
 			pConex.put(i, pagedConex.getPageList());
 		}
 
+		pConex.keySet().stream().sorted().toList().get(0);
+		pagedConex.getPage();		
+
+		model.addAttribute("paginationRange", paginationRange);
 		model.addAttribute("available", available);
 		model.addAttribute("pConex", pConex);
 		model.addAttribute("pagedConex", pagedConex);

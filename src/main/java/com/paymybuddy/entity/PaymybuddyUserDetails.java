@@ -40,9 +40,7 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 	 */
 	private static final long serialVersionUID = 4692176737626072920L;	
 	
-	@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-	        +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-	        +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+	@Pattern(regexp="^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
 	        message="{invalid.email}")          
 	//@ValidatedEmail
 	@Id
@@ -122,9 +120,10 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 			this.attributes = new HashMap<>();
 			this.attributes.put("email", this.getEmail());
 			this.attributes.put("name", this.getName());
+			this.attributes.put("username", this.getUsername());
 
 		}
-		return attributes;
+		return Map.copyOf(attributes);
 	}
 
 
@@ -169,19 +168,19 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 	}
 
 	public Set<PaymybuddyUserDetails> getMyconnection() {
-		return myconnection;
+		return Set.copyOf(myconnection);
 	}
 
 	public void setMyconnection(Set<PaymybuddyUserDetails> myconnection) {
-		this.myconnection = myconnection;
+		this.myconnection = Set.copyOf(myconnection);
 	}
 
 	public Set<EbankAccount> getMybankAccount() {
-		return mybankAccount;
+		return Set.copyOf(mybankAccount);
 	}
 
 	public void setMybankAccount(Set<EbankAccount> mybankAccount) {
-		this.mybankAccount = mybankAccount;
+		this.mybankAccount = Set.copyOf(mybankAccount);
 	}
 
 	public UserRole getUserRole() {
@@ -221,7 +220,7 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 	}
 
 	public void setAttributes(HashMap<String, Object> attributes) {
-		this.attributes = attributes;
+		this.attributes = (HashMap<String, Object>) Map.copyOf(attributes);
 	}
 
 	@Override

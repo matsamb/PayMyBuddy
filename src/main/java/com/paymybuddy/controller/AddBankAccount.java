@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.paymybuddy.dto.ViewConnection;
+import com.paymybuddy.dto.ViewIban;
+import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
+import com.paymybuddy.service.bankaccount.SaveBankAccountService;
 import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
@@ -31,11 +34,14 @@ import lombok.AllArgsConstructor;
 
 @RolesAllowed("USER")
 @Controller
-//@AllArgsConstructor
-public class AddConnectionController {
+@AllArgsConstructor
+public class AddBankAccount {
 
-	final static Logger LOGGER = LogManager.getLogger("AddConnectionController");
+	final static Logger LOGGER = LogManager.getLogger("AddBankAccount");
 
+	@Autowired
+	SaveBankAccountService saveBankAccountService;
+	
 	@Autowired
 	FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService;
 
@@ -45,31 +51,34 @@ public class AddConnectionController {
 	@Autowired
 	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
 
-	 AddConnectionController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
+/*	 AddBankAccount(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
 			 ,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService	
 			 ,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService
 			 ){ 
 		 this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
 		 this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
 		 this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
-	 }
+	 }*/
 
-	@GetMapping("/addconnection")
-	public String getAddConnection(Authentication auth, ViewConnection viewConnection, BindingResult binding) {
-		LOGGER.info("addconnection page displayed");
-		return "addconnection";
+	@GetMapping("/addbankaccount")
+	public String getAddConnection(Authentication auth, ViewIban viewIban, BindingResult binding) {
+		LOGGER.info("addbankaccount page displayed");
+		return "addbankaccount";
 	}
 
-	@PostMapping("/addconnection")
-	public ModelAndView createConnection(Authentication auth, ViewConnection viewConnection, BindingResult binding) {
+	@PostMapping("/addbankaccount")
+	public ModelAndView createConnection(Authentication auth, ViewIban viewIban, BindingResult binding) {
 
 		ModelAndView result;
 		
 		String loggedUserEmail;
+		
+		StringBuilder ibanBuilder = new StringBuilder();
+		
 
-		LOGGER.debug(viewConnection);
-		LOGGER.info("addconnection page displayed and connection posted");
-		LOGGER.debug(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
+		LOGGER.debug(viewIban);
+		LOGGER.info("addbankaccount page displayed and bank account posted");
+//		LOGGER.debug(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
 		
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
@@ -83,35 +92,37 @@ public class AddConnectionController {
 
 		}
 		
-		LOGGER.trace(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
+//		LOGGER.trace(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
 
+		ibanBuilder.append(viewIban.getCountry());
+		ibanBuilder.append(viewIban.getControlkey());
+		ibanBuilder.append(viewIban.getBankcode());
+		ibanBuilder.append(viewIban.getBranch());
+		ibanBuilder.append(viewIban.getAccountnumberA());
+		ibanBuilder.append(viewIban.getAccountnumberB());
+		ibanBuilder.append(viewIban.getAccountnumberC());
+		ibanBuilder.append(viewIban.getAccountkey());
+		LOGGER.info("builder bank account "+ibanBuilder);
 		
-		if (findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()).getEmail() != "N_A") {
-			LOGGER.info("User "+viewConnection.getConnection()+" found");
-
-			PaymybuddyUserDetails userToAdd = findPaymybuddyUserDetailsService
-					.findByEmail(viewConnection.getConnection());
-			
-			PaymybuddyUserDetails currentUser = findPaymybuddyUserDetailsService
-					.findByEmail(loggedUserEmail);
-
-			Set<PaymybuddyUserDetails> connectionSet = new HashSet<>();
-			connectionSet = currentUser.getMyconnection();
-			LOGGER.debug(connectionSet);
-			connectionSet.add(userToAdd);
-
-			currentUser.setMyconnection(Set.copyOf(connectionSet));
-			LOGGER.debug(currentUser);
-			
-			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(currentUser);
-			LOGGER.info(viewConnection + " added friend connection's list");
-			result = new ModelAndView("redirect:/addconnection?success=true");
-
-			
-		} else {
-			LOGGER.info(viewConnection + " is not  registered");
-			result = new ModelAndView("redirect:/addconnection?error=true");
-		}
+		String iban = ibanBuilder.toString();
+		LOGGER.info("iban "+iban);
+		
+		EbankAccount currentUserBankAccount = new EbankAccount();
+		Set<EbankAccount> currentUserBankAccountSet = new HashSet<>();
+		PaymybuddyUserDetails currentUser = findPaymybuddyUserDetailsService.findByEmail(loggedUserEmail);
+		LOGGER.info(currentUser);
+		
+		currentUserBankAccount.setIban(iban);
+		currentUserBankAccount.setUser(currentUser);	
+		LOGGER.info(iban);
+		saveBankAccountService.saveBankAccount(currentUserBankAccount);
+		
+		currentUserBankAccountSet.add(currentUserBankAccount);
+		currentUser.setMybankAccount(currentUserBankAccountSet);
+		LOGGER.info("loading into database "+currentUser);
+		
+		savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(currentUser);
+		result = new ModelAndView("redirect:/addbankaccount?success=true");
 
 		return result;
 

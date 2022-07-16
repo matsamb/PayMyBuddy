@@ -1,19 +1,14 @@
 package com.paymybuddy.controller;
 
-import java.util.Objects;
-
 import javax.annotation.security.RolesAllowed;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
@@ -50,6 +45,9 @@ public class OAuth2Controller {
 		String email = authentication.getPrincipal().getAttribute("email");
 		LOGGER.info(email);
 
+		if (findPaymybuddyUserDetailsService.findByEmail(email).getEmail() == "N_A") {
+			LOGGER.info("User not registered, loading into database initiated");
+
 			PaymybuddyUserDetails buddyUserDetails = new PaymybuddyUserDetails();
 			LOGGER.info(buddyUserDetails);
 			LOGGER.info(email);
@@ -61,7 +59,7 @@ public class OAuth2Controller {
 			String pass = passWordEncoder.encode(authentication.getName());// .substring(8);
 			buddyUserDetails.setPassword(pass);// pass
 
-			//buddyUserDetails.setBalance(100f);
+			buddyUserDetails.setBalance(0f);
 			LOGGER.info(buddyUserDetails);
 
 			buddyUserDetails.setUserRole(UserRole.USER);
@@ -70,9 +68,14 @@ public class OAuth2Controller {
 			LOGGER.info(buddyUserDetails);
 			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(buddyUserDetails);
 
-			//result = new ModelAndView("/oauth2");
 			result = "/oauth2";
 		
+		} else {
+			
+			LOGGER.info("User registered, redirected to home page");
+			result = "redirect:/home?size=3&page=1";
+		
+		}
 		return result;
 	}
 

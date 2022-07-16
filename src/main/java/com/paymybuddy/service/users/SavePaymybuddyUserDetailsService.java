@@ -22,7 +22,7 @@ public class SavePaymybuddyUserDetailsService {
 
 	public void savePaymybuddyUserDetails(PaymybuddyUserDetails buddyUser) {
 		paymybuddyUserDetailsRepository.save(buddyUser);
-		logger.info("Processing "+buddyUser.getEmail()+" user details");
+		logger.info("Saving "+buddyUser.getEmail()+" user details");
 	}
 	
 }
