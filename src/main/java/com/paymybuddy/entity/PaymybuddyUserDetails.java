@@ -3,9 +3,12 @@ package com.paymybuddy.entity;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,6 +25,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.thymeleaf.expression.Maps;
 
 import com.paymybuddy.service.users.UserRole;
 
@@ -33,15 +37,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 //@Data
 @AllArgsConstructor
-public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
+public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4692176737626072920L;	
 	
-	@Pattern(regexp="^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
-	        message="{invalid.email}")          
+	//@Pattern(regexp="[\\w-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}",
+	//        message="{invalid.email}")          
 	//@ValidatedEmail
 	@Id
 	private String email;
@@ -75,7 +79,12 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singletonList( new SimpleGrantedAuthority(userRole.name()));
+		if(userRole.name()!=null) {
+			return Collections.singletonList( new SimpleGrantedAuthority(userRole.name()));
+		}else {
+			return Collections.singletonList( new SimpleGrantedAuthority("USER"));
+		}
+		
 	}
 
 	public PaymybuddyUserDetails(String email) {
@@ -168,19 +177,37 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 	}
 
 	public Set<PaymybuddyUserDetails> getMyconnection() {
-		return Set.copyOf(myconnection);
+/*		if(myconnection.isEmpty()==false) {
+		Set<PaymybuddyUserDetails> t = new HashSet<>();
+		t.addAll(Set.copyOf(myconnection));		
+		return t;
+		}else {*/
+			return myconnection;
+		//}
 	}
 
 	public void setMyconnection(Set<PaymybuddyUserDetails> myconnection) {
-		this.myconnection = Set.copyOf(myconnection);
+		Set<PaymybuddyUserDetails> t = new HashSet<>();
+		t.addAll(Set.copyOf(myconnection));		
+		this.myconnection = t;
 	}
 
 	public Set<EbankAccount> getMybankAccount() {
-		return Set.copyOf(mybankAccount);
+/*		if(mybankAccount.isEmpty()==false) {
+			Set<EbankAccount> t = new HashSet<>();
+			t.addAll(Set.copyOf(mybankAccount));	
+			return t;
+		}else {*/
+			return mybankAccount;
+			//return (HashSet<EbankAccount>)Set.copyOf(mybankAccount);
+		//}
+		
 	}
 
 	public void setMybankAccount(Set<EbankAccount> mybankAccount) {
-		this.mybankAccount = Set.copyOf(mybankAccount);
+		Set<EbankAccount> t = new HashSet<>();
+		t.addAll(Set.copyOf(mybankAccount));
+		this.mybankAccount = t;
 	}
 
 	public UserRole getUserRole() {
@@ -228,5 +255,25 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User {
 		return "PaymybuddyUserDetails [email=" + email + ", name=" + name + ", username=" + username + "]";
 	}
 
+	public Object clone() {
+		PaymybuddyUserDetails copy = null;
+		
+		try {
+			copy = (PaymybuddyUserDetails) super.clone();
+			
+		}catch(CloneNotSupportedException e) {
+			e.printStackTrace();
+		}		
+		
+		if(attributes!=null) {
+			copy.attributes=(HashMap<String, Object>) Map.copyOf(attributes);
+		}
+
+			copy.mybankAccount=mybankAccount;
+
+			copy.myconnection=myconnection;
+		
+		return copy;
+	}
 
 }

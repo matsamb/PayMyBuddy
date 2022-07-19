@@ -142,12 +142,15 @@ body {
 	justify-content: space-around;
 
 }*/
-.hmenu {
+#hmenu {
 	width: 100px;
+	font-style: normal;
 }
 
 #section_two_cap {
-	justify-content: space-around;
+	width: 950px;
+	justify-content: centre;
+	margin: auto;
 }
 
 #section_three_cap {
@@ -213,27 +216,27 @@ body {
 				<div class="col-md-6" id="mostmenu">
 					<div class="col-md-1" id="hmenu">
 						<h3>
-							<em>Home</em>
+							Home
+						</h3>
+					</div>
+				<!--  <div class="col-md-1" id="hmenu">
+						<h3>
+						<a th:href="@{/maketransfer}" href="/maketransfer" > Transfer</a>
+						</h3>
+					</div> -->	
+					<div class="col-md-1" id="hmenu">
+						<h3>
+							Profile
 						</h3>
 					</div>
 					<div class="col-md-1" id="hmenu">
 						<h3>
-							<em>Transfer</em>
+							Contact
 						</h3>
 					</div>
 					<div class="col-md-1" id="hmenu">
 						<h3>
-							<em>Profile</em>
-						</h3>
-					</div>
-					<div class="col-md-1" id="hmenu">
-						<h3>
-							<em>Contact</em>
-						</h3>
-					</div>
-					<div class="col-md-1" id="hmenu">
-						<h3>
-							<a th:href="@{/logout}"><em>Log Off</em></a>
+							<a th:href="@{/logout}">Log Off</a>
 						</h3>
 					</div>
 				</div>
@@ -247,7 +250,7 @@ body {
 
 			<div class="row" id="sub_menu">
 				<p>
-					<em id="home"> Home / </em><em id="transfert">Transfert</em>
+					<em id="home"> Home / </em><em id="home"><a th:href="@{/maketransfer}" href="/maketransfer" > Transfer</a></em>
 				</p>
 			</div>
 
@@ -257,7 +260,7 @@ body {
 	</section>
 
 	<section id="section_two">
-		<div class="container">
+		<div class="container"  >
 
 			<div class="row" id="section_two_cap">
 				<p>
@@ -271,12 +274,13 @@ body {
 
 				</p>
 				<p>
-					<a href="/addbankaccount"> <em id="transfert">Add
-							Bank Account</em>
+					<a href="/addbankaccount"> <em id="transfert">Add Bank
+							Account</em>
 					</a>
 
 				</p>
 			</div>
+
 
 
 			<div class="row" id="menu">
@@ -355,26 +359,18 @@ body {
 						<span id="pageindex"> <a th:if="${activePage.page>1}"
 							th:href="@{/home(size=${pagedConex.getPageSize},page=1)}">FIRST</a>
 							<span th:unless="${activePage.page>1}">FIRST</span>
-						</span> 
-						
-						<span id="pageindex"> <a th:if="${activePage.page>1}"
+						</span> <span id="pageindex"> <a th:if="${activePage.page>1}"
 							th:href="@{/home(size=${pagedConex.getPageSize},page=${activePage.page-1})}">PREV.</a>
 							<span th:unless="${activePage.page>1}">PREV.</span>
-						</span> 
-						
-						<span id="pageindex" th:each="pageCount: ${paginationRange}"
+						</span> <span id="pageindex" th:each="pageCount: ${paginationRange}"
 							th:object="${activePage}"> <a
 							th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
 							th:text="${pageCount}" th:name="${pageCount}" th:field="*{page}"></a>
-						</span> 
-						
-						<span id="pageindex"> <a
+						</span> <span id="pageindex"> <a
 							th:if="${activePage.page lt pagedConex.pageCount}"
 							th:href="@{/home(size=${pagedConex.pageSize},page=${activePage.page+1})}">NEXT</a>
 							<span th:unless="${activePage.page lt pagedConex.pageCount}">NEXT</span>
-						</span> 
-						
-						<span id="pageindex"> <a
+						</span> <span id="pageindex"> <a
 							th:if="${activePage.page lt pagedConex.pageCount}"
 							th:href="@{/home(size=${pagedConex.pageSize},page=${pagedConex.pageCount})}">LAST</a>
 							<span th:unless="${activePage.page lt pagedConex.pageCount}">LAST</span>

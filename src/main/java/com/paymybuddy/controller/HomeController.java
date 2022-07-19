@@ -24,11 +24,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.paymybuddy.dto.ActivePage;
 import com.paymybuddy.dto.ViewPayment;
+import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.Epayment;
+import com.paymybuddy.entity.Etransaction;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
+import com.paymybuddy.service.bankaccount.FindBankAccountByUserEmailService;
 import com.paymybuddy.service.connection.FindFconnectionByPayerUsernameService;
 import com.paymybuddy.service.payment.FindPaymentByPayeeService;
 import com.paymybuddy.service.payment.FindPaymentByPayerService;
+import com.paymybuddy.service.transfer.FindTransactionByBankAccountService;
 import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 
@@ -38,7 +42,7 @@ import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 //@AllArgsConstructor
 @Transactional
 public class HomeController {
-//todo : pending payment
+//todo : add transfert , hrefs "/home?size=3&page=1" templates, monetization
 
 	private static final Logger LOGGER = LogManager.getLogger("HomeController");
 
@@ -57,6 +61,12 @@ public class HomeController {
 	@Autowired
 	FindPaymentByPayeeService findPaymentByPayeeService;
 
+	@Autowired
+	FindBankAccountByUserEmailService findBankAccountByUserEmailService;
+
+	@Autowired
+	FindTransactionByBankAccountService findTransactionByBankAccountService;
+
 	HomeController(FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService,
 			FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService,
 			FindPaymentByPayerService findPaymentByPayerService, FindPaymentByPayeeService findPaymentByPayeeService) {
@@ -69,15 +79,16 @@ public class HomeController {
 	@RolesAllowed("USER")
 	@GetMapping("/home")
 	public String getHome(ActivePage activePage, BindingResult bindingResult, Model model, Authentication oth) {
-		
+
 		int displayedRows = 3;
 		Float available = 0.0f;
 		LOGGER.info(activePage);
 
 		List<Epayment> paymentList = new ArrayList<>();
 		List<PaymybuddyUserDetails> connList = new ArrayList<>();
+		List<EbankAccount> bankAccountList = new ArrayList<>();
 
-		List<ViewPayment> viewPaymentList = new ArrayList<>();
+		List<Object> viewPaymentList = new ArrayList<>();
 		ViewPayment viewPayment = new ViewPayment();
 
 		String payerEmail;
@@ -106,6 +117,7 @@ public class HomeController {
 
 		if (findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail).get(0).getEmail() != "N_A") {
 			connList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail));
+			LOGGER.info("connections found for " + payerEmail);
 
 			if (findPaymentByPayerService.findByPayer(payerEmail).get(0).getPayerEmail() != "N_A") {
 				LOGGER.info(findPaymentByPayerService.findByPayer(payerEmail));
@@ -114,21 +126,21 @@ public class HomeController {
 					viewPayment.setConnection(e.getPayeeEmail());
 					viewPayment.setDescription(e.getDescription());
 					viewPayment.setAmount(-(e.getAmount()));
-					LOGGER.info(payerEmail+" as payer "+viewPayment);
+					LOGGER.info(payerEmail + " as payer " + viewPayment);
 					viewPaymentList.add((ViewPayment) viewPayment.clone());
 				}
 				paymentList.addAll(findPaymentByPayerService.findByPayer(payerEmail));
 
 			}
 
-			if (findPaymentByPayeeService.findByPayee(payerEmail).get(0).getPayeeEmail() != "N_A") {
+			if (findPaymentByPayeeService.findByPayee(payerEmail).get(0).getPayerEmail() != "N_A") {
 				LOGGER.info(findPaymentByPayerService.findByPayer(payerEmail));
 
 				for (Epayment e : findPaymentByPayeeService.findByPayee(payerEmail)) {
 					viewPayment.setConnection(e.getPayerEmail());
 					viewPayment.setDescription(e.getDescription());
 					viewPayment.setAmount(e.getAmount());
-					LOGGER.info(payerEmail+" as payee "+viewPayment);
+					LOGGER.info(payerEmail + " as payee " + viewPayment);
 					viewPaymentList.add((ViewPayment) viewPayment.clone());
 				}
 
@@ -137,9 +149,47 @@ public class HomeController {
 
 		}
 
+		if (findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail).get(0).getIban() != "N_A") {
+			LOGGER.info("bank accounts found for " + payerEmail);
+			bankAccountList.addAll(findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail));
+			LOGGER.info(bankAccountList);
+
+			for (EbankAccount a : bankAccountList) {
+
+				if (findTransactionByBankAccountService.findTransactionByBankAccount(a).get(0).getBankAccount()
+						.getIban() != "N_A") {
+					LOGGER.info("Transation found for " + payerEmail);
+
+					for (Etransaction e : findTransactionByBankAccountService.findTransactionByBankAccount(a)) {
+						LOGGER.info("Looping " + payerEmail + " transaction list");
+						LOGGER.info(e.getFromBank());
+						if (e.getFromBank() == false) {
+							viewPayment.setConnection(e.getBankAccount().getIban());
+							viewPayment.setDescription(e.getDescription());
+							viewPayment.setAmount(-(e.getAmount()));
+							LOGGER.info(payerEmail + " transfers into bank account " + viewPayment);
+							viewPaymentList.add((ViewPayment) viewPayment.clone());
+
+						} else {
+							viewPayment.setConnection(e.getBankAccount().getIban());
+							viewPayment.setDescription(e.getDescription());
+							viewPayment.setAmount(e.getAmount());
+							LOGGER.info(payerEmail + " transfers from bank account " + viewPayment);
+							viewPaymentList.add((ViewPayment) viewPayment.clone());
+
+						}
+					}
+					paymentList.addAll(findPaymentByPayerService.findByPayer(payerEmail));
+
+				}
+
+				
+			}
+		}
+
 		LOGGER.info(paymentList);
 		LOGGER.info(paymentList.isEmpty());
-		
+
 		viewPayment.setConnection("TEST");
 		viewPayment.setDescription("TEST");
 		viewPayment.setAmount(10f);
@@ -174,33 +224,29 @@ public class HomeController {
 		viewPaymentList.add((ViewPayment) viewPayment.clone());
 		viewPaymentList.add((ViewPayment) viewPayment.clone());
 
-
 		LOGGER.info("");
 		paymentList.forEach(System.out::println);
 		connList.forEach(System.out::println);
 		viewPaymentList.forEach(System.out::println);
 		LOGGER.info("");
-		List<ViewPayment> econex = new ArrayList<>();
+		List<Object> econex = new ArrayList<>();
 		econex.addAll(List.copyOf(viewPaymentList));
 
-		PagedListHolder<ViewPayment> pagedConex = new PagedListHolder<>(econex);
+		PagedListHolder<Object> pagedConex = new PagedListHolder<>(econex);
 
 		pagedConex.setPageSize(displayedRows);
 		pagedConex.setPage(activePage.getPage());
 
-		List<Integer> paginationRangeList = List.of(
-				Math.max(activePage.getPage()-2,1)
-				,Math.max(activePage.getPage()-1,1)
-				,activePage.getPage()
-				,Math.min(activePage.getPage()+1,pagedConex.getPageCount())
-				,Math.min(activePage.getPage()+2,pagedConex.getPageCount())
-				);
+		List<Integer> paginationRangeList = List.of(Math.max(activePage.getPage() - 2, 1),
+				Math.max(activePage.getPage() - 1, 1), activePage.getPage(),
+				Math.min(activePage.getPage() + 1, pagedConex.getPageCount()),
+				Math.min(activePage.getPage() + 2, pagedConex.getPageCount()));
 		Set<Integer> paginationRange = paginationRangeList.stream().collect(Collectors.toSet());
-		
+
 		List<Integer> pagesList = IntStream.rangeClosed(1, pagedConex.getPageCount()).boxed()
 				.collect(Collectors.toList());
 
-		Map<Integer, List<ViewPayment>> pConex = new HashMap<>();
+		Map<Integer, List<Object>> pConex = new HashMap<>();
 
 		for (Integer i : pagesList) {
 			pagedConex.setPage(i - 1);
@@ -208,7 +254,7 @@ public class HomeController {
 		}
 
 		pConex.keySet().stream().sorted().toList().get(0);
-		pagedConex.getPage();		
+		pagedConex.getPage();
 
 		model.addAttribute("paginationRange", paginationRange);
 		model.addAttribute("available", available);

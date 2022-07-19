@@ -33,6 +33,8 @@ public class Epayment {
 	
 	Float amount;
 	
+	Float fee;
+	
 	Timestamp paymentDate;
 	
 	public Epayment(String payerEmail) {

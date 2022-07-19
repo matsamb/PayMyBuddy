@@ -23,7 +23,6 @@ import com.paymybuddy.service.CustomAuthenticationProvider;
 import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
  
 @Configuration
-@Order(1)
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -70,15 +69,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		jdbcTokenRepositoryImpl.setDataSource(dataSource);
 		return jdbcTokenRepositoryImpl;
 	}
-	
-/*	private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-		return new CustomOAuth2UserService();
-	}*/
+
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		
-		//auth.authenticationProvider(authProvider());
+		auth.authenticationProvider(authProvider());
 		
 		auth.userDetailsService(paymybuddyUserDetailsService).passwordEncoder(passwordEncoder());
 		

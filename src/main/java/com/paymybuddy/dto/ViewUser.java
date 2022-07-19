@@ -1,4 +1,4 @@
-package com.paymybuddy.model;
+package com.paymybuddy.dto;
 
 import org.springframework.stereotype.Component;
 

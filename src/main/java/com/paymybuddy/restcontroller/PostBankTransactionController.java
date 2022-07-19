@@ -12,7 +12,7 @@ import com.paymybuddy.dto.ViewPayment;
 @RestController
 @RolesAllowed("USER")
 public class PostBankTransactionController {
-
+//todo : upadate balance for inbound payment
 
 	
 	@PostMapping("/banktransaction")//?iban=<iban>

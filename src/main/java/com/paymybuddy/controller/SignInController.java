@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.paymybuddy.dto.ViewUser;
 import com.paymybuddy.entity.ActivationToken;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.model.ViewUser;
 import com.paymybuddy.service.ActivationTokenService;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
 import com.paymybuddy.service.email.EmailSenderService;

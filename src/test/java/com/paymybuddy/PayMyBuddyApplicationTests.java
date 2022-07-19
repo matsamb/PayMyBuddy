@@ -20,8 +20,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
 
+import com.paymybuddy.dto.ViewUser;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.model.ViewUser;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
 import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
