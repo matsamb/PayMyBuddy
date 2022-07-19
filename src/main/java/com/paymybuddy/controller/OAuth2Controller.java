@@ -1,5 +1,7 @@
 package com.paymybuddy.controller;
 
+import java.security.Principal;
+
 import javax.annotation.security.RolesAllowed;
 
 import org.apache.logging.log4j.LogManager;
@@ -7,12 +9,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.paymybuddy.entity.GoogleOAuth2User;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
+import com.paymybuddy.repository.GoogleOAuth2UserRepository;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
 import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
@@ -30,11 +35,14 @@ public class OAuth2Controller {
 	private final Logger LOGGER = LogManager.getLogger("OAuth2Controller");
 
 	@Autowired
-	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
+	OAuth2AuthorizedClientService rizedClientService;
 	
 	@Autowired
-	GoogleOAuth2User googleOAuth2User;
+	GoogleOAuth2UserRepository googleOAuth2UserRepository;
 	
+	@Autowired
+	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
+
 	@Autowired
 	PaymybuddyUserDetailsService paymybuddyUserDetailsService;
 
@@ -49,11 +57,21 @@ public class OAuth2Controller {
 
 	@RolesAllowed({ "USER", "ADMIN" })
 	@GetMapping("/oauth2")
-	public String getOauth2(OAuth2AuthenticationToken authentication, Authentication oth) {
+	public String getOauth2(OAuth2AuthenticationToken authentication, Authentication oth, Principal user) {
 
 		String result;
+		
+		LOGGER.info("Oauth2 details "+authentication);
+		
 		String email = authentication.getPrincipal().getAttribute("email");
-		LOGGER.info(email);
+		String nameNumber = oth.getName();
+		
+		LOGGER.info(nameNumber);
+		OAuth2AuthenticationToken authKen = (OAuth2AuthenticationToken) user;
+		
+		OAuth2AuthorizedClient rizedClient =
+				this.rizedClientService.loadAuthorizedClient(authKen.getAuthorizedClientRegistrationId()
+						,authKen.getName());
 		
 /*		LOGGER.info(oth.getName() + " is instance of OAuth2AuthenticationToken");
 		String nameNumber = oth.getName();
@@ -65,9 +83,11 @@ public class OAuth2Controller {
 			LOGGER.info("User not registered, loading into database initiated");
 
 			PaymybuddyUserDetails buddyUserDetails = new PaymybuddyUserDetails();
+			GoogleOAuth2User OauthUser = new GoogleOAuth2User();
 			LOGGER.info(buddyUserDetails);
 			LOGGER.info(email);
 			buddyUserDetails.setEmail(email);
+			OauthUser.setEmail(email);
 			buddyUserDetails.setName(authentication.getName());
 			LOGGER.info(buddyUserDetails);
 
@@ -82,6 +102,7 @@ public class OAuth2Controller {
 			buddyUserDetails.setEnabled(true);
 
 			LOGGER.info(buddyUserDetails);
+			googleOAuth2UserRepository.save(OauthUser);
 			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(buddyUserDetails);
 
 			result = "/oauth2";

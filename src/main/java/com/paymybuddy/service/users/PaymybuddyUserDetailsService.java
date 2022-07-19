@@ -40,7 +40,7 @@ public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2U
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		
+	
 		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
 		String email = ((PaymybuddyUserDetails)currentAuth.getPrincipal()).getEmail();
 		PaymybuddyUserDetails loadedUser = usersRepository
@@ -53,6 +53,7 @@ public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2U
 			return currentUser;
 		}
 		return new PaymybuddyUserDetails("N_A");
+
 	}
 
 }
