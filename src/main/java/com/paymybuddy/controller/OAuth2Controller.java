@@ -115,5 +115,18 @@ public class OAuth2Controller {
 		}*/
 		return result;
 	}
+	
+	@GetMapping("/userinfo")
+	public String userinfo(OAuth2AuthenticationToken authentication) {
+		// authentication.getAuthorizedClientRegistrationId() returns the
+		// registrationId of the Client that was authorized during the Login flow
+		OAuth2AuthorizedClient authorizedClient = rizedClientService
+				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+		System.out.println(authentication.getCredentials());
+		String accessToken = authorizedClient.getAccessToken().getTokenValue();
+
+		return authentication.getPrincipal().getAttribute("email") + "____" + authentication.getName() + "__ATOK::"
+				+ accessToken;
+	}
 
 }
