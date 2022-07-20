@@ -57,15 +57,15 @@ public class OAuth2Controller {
 
 	@RolesAllowed({ "USER", "ADMIN" })
 	@GetMapping("/oauth2")
-	public String getOauth2(OAuth2AuthenticationToken authentication, Authentication oth, Principal user) {
+	public String getOauth2(OAuth2AuthenticationToken authentication) {
 
 		String result;
 		
 		LOGGER.info("Oauth2 details "+authentication);
 		
 		String email = authentication.getPrincipal().getAttribute("email");
-		String nameNumber = oth.getName();
-		
+/*		String nameNumber = oth.getName();
+	
 		LOGGER.info(nameNumber);
 		OAuth2AuthenticationToken authKen = (OAuth2AuthenticationToken) user;
 		
@@ -73,13 +73,13 @@ public class OAuth2Controller {
 				this.rizedClientService.loadAuthorizedClient(authKen.getAuthorizedClientRegistrationId()
 						,authKen.getName());
 		
-/*		LOGGER.info(oth.getName() + " is instance of OAuth2AuthenticationToken");
+		LOGGER.info(oth.getName() + " is instance of OAuth2AuthenticationToken");
 		String nameNumber = oth.getName();
 		PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 		String othEmail = foundOauth2.getEmail();
 		LOGGER.info(othEmail);*/
 
-//		if (findPaymybuddyUserDetailsService.findByEmail(email).getEmail() == "N_A") {
+		if (findPaymybuddyUserDetailsService.findByEmail(email).getEmail() == "N_A") {
 			LOGGER.info("User not registered, loading into database initiated");
 
 			PaymybuddyUserDetails buddyUserDetails = new PaymybuddyUserDetails();
@@ -102,31 +102,19 @@ public class OAuth2Controller {
 			buddyUserDetails.setEnabled(true);
 
 			LOGGER.info(buddyUserDetails);
-			googleOAuth2UserRepository.save(OauthUser);
+			//googleOAuth2UserRepository.save(OauthUser);
 			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(buddyUserDetails);
 
 			result = "/oauth2";
 		
-/*		} else {
+		} else {
 			
 			LOGGER.info("User registered, redirected to home page");
 			result = "redirect:/home?size=3&page=1";
 		
-		}*/
+		}
 		return result;
 	}
-	
-	@GetMapping("/userinfo")
-	public String userinfo(OAuth2AuthenticationToken authentication) {
-		// authentication.getAuthorizedClientRegistrationId() returns the
-		// registrationId of the Client that was authorized during the Login flow
-		OAuth2AuthorizedClient authorizedClient = rizedClientService
-				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
-		System.out.println(authentication.getCredentials());
-		String accessToken = authorizedClient.getAccessToken().getTokenValue();
 
-		return authentication.getPrincipal().getAttribute("email") + "____" + authentication.getName() + "__ATOK::"
-				+ accessToken;
-	}
 
 }

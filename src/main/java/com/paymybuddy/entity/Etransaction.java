@@ -18,42 +18,48 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Etransaction implements Cloneable{
-	
+public class Etransaction implements Cloneable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer transactionId;
-	
-	Float amount;
-	
-	String description;
-	
-	Float fee;
-	
-	@ManyToOne
-	EbankAccount bankAccount;
+	private Integer transactionId;
 
-	@Column(name="from_bank")
-	Boolean fromBank;
-	
-	@Column(name="transaction_date")
-	Timestamp date;
+	private Integer bankTransactionId;
+
+	private Float amount;
+
+	private String description;
+
+	private Float fee;
+
+	@ManyToOne
+	private EbankAccount bankAccount;
+
+	@Column(name = "from_bank")
+	private Boolean fromBank;
+
+	@Column(name = "transaction_date")
+	private Timestamp date;
 
 	public Etransaction(EbankAccount account) {
-		this.bankAccount = (EbankAccount)account.clone();
+		this.bankAccount = (EbankAccount) account.clone();
+	}
+
+	public Etransaction(Integer bankTransactionId) {
+		this.bankTransactionId = bankTransactionId;
 	}
 
 	public Object clone() {
 		Etransaction copy = null;
-		
+
 		try {
-			
-			copy = (Etransaction)super.clone();
-		}catch(CloneNotSupportedException e) {
+
+			copy = (Etransaction) super.clone();
+		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		
+
 		return copy;
 	}
-	
+
 }

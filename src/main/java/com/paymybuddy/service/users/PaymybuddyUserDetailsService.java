@@ -18,12 +18,11 @@ import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.repository.PaymybuddyUserDetailsRepository;
 
 @Service
-public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class PaymybuddyUserDetailsService implements UserDetailsService/*, OAuth2UserService<OAuth2UserRequest, OAuth2User>*/ {
 
 	@Autowired
 	PaymybuddyUserDetailsRepository usersRepository;
 
-	// @Bean
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -38,9 +37,11 @@ public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2U
 		return new PaymybuddyUserDetails("N_A");
 	}
 
-	@Override
+/*	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 	
+		userRequest.getAccessToken().getScopes();
+		
 		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
 		String email = ((PaymybuddyUserDetails)currentAuth.getPrincipal()).getEmail();
 		PaymybuddyUserDetails loadedUser = usersRepository
@@ -54,6 +55,6 @@ public class PaymybuddyUserDetailsService implements UserDetailsService, OAuth2U
 		}
 		return new PaymybuddyUserDetails("N_A");
 
-	}
+	}*/
 
 }

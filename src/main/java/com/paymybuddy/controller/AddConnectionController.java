@@ -33,7 +33,7 @@ import lombok.AllArgsConstructor;
 @Controller
 //@AllArgsConstructor
 public class AddConnectionController {
-
+//todo : add connection confirmation
 	final static Logger LOGGER = LogManager.getLogger("AddConnectionController");
 
 	@Autowired

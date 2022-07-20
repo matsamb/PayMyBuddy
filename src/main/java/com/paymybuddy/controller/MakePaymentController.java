@@ -59,45 +59,43 @@ public class MakePaymentController {
 
 	@Autowired
 	FindBankAccountByUserEmailService findBankAccountByUserEmailService;
-	
+
 	@Autowired
 	FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService;
 
 	@Autowired
 	SavePaymentService savePaymentServiceAtMakePaymentController;
-	
+
 	@Autowired
 	SaveTransferService saveTransferService;
-
 
 	@GetMapping("/makepayment")
 	public String getAddConnection(ViewPayment payment, Users euser, BindingResult bindingResult, Authentication auth,
 			Model model) {
 
 		LOGGER.info("get method");
-		
-		//Epayment ePayment = new Epayment();
+
+		// Epayment ePayment = new Epayment();
 
 		List<PaymybuddyUserDetails> connectionList = new ArrayList<>();
 		List<EbankAccount> bankAccountList = new ArrayList<>();
 
 		String email;
-		
-		Float available = 0.0f;
 
+		Float available = 0.0f;
 
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			email = auth.getName();
-			
+
 			available = findPaymybuddyUserDetailsService.findByEmail(email).getBalance();
-			
+
 		} else {
 			LOGGER.info(auth.getName() + " is instance of OAuth2AuthenticationToken");
 			String nameNumber = auth.getName();
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			email = foundOauth2.getEmail();
-			
+
 			LOGGER.info(foundOauth2.getBalance());
 			if (Objects.isNull(foundOauth2.getBalance())) {
 				available = 0.0f;
@@ -110,21 +108,20 @@ public class MakePaymentController {
 
 		if (findFconnectionByPayerUsernameService.findByPayerUsername(email).get(0).getEmail() == "N_A") {
 			LOGGER.info("No connection for " + email);
-
-		}else if (findBankAccountByUserEmailService.findBankAccountByUserEmail(email).get(0).getIban() == "N_A") {
-			LOGGER.info(email + " dispay list is empty");
 		} else {
 			LOGGER.info("Connection found for " + email);
 			connectionList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(email));
-			
-			LOGGER.info(email + " Iban account added to dispay list");
-			bankAccountList.addAll(findBankAccountByUserEmailService.findBankAccountByUserEmail(email));
-
 		}
 
+		if (findBankAccountByUserEmailService.findBankAccountByUserEmail(email).get(0).getIban() == "N_A") {
+			LOGGER.info("No bank account " + email);
+		} else {
+			LOGGER.info("Iban found for " + email);
+			bankAccountList.addAll(findBankAccountByUserEmailService.findBankAccountByUserEmail(email));
+		}
 
 		LOGGER.info(connectionList);
-		
+
 		model.addAttribute("bankaccounts", bankAccountList);
 		model.addAttribute("econnections", connectionList);
 		model.addAttribute("available", available);
@@ -138,8 +135,8 @@ public class MakePaymentController {
 	@PostMapping("/makepayment")
 	public ModelAndView createConnection(ViewPayment payment, Users euser, BindingResult bindingResult,
 			Authentication auth, Model model) {
-		//LOGGER.info("post method transaction "+viewTransaction);
-		LOGGER.info("post method payment "+payment);
+		// LOGGER.info("post method transaction "+viewTransaction);
+		LOGGER.info("post method payment " + payment);
 		LOGGER.info("post method");
 
 		ModelAndView result = null;
@@ -149,28 +146,27 @@ public class MakePaymentController {
 
 		List<PaymybuddyUserDetails> connectionList = new ArrayList<>();
 		List<EbankAccount> bankAccountList = new ArrayList<>();
-		
+
 		String payerEmail;
 		Timestamp u = new Timestamp(System.currentTimeMillis());
 		Float availableBalance = 0.0f;
-		
+
 		Float transactionFee;
 		Float paymentFee;
 		Float feeRate = 0.05f;
 
-		
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			payerEmail = auth.getName();
-			
+
 			availableBalance = findPaymybuddyUserDetailsService.findByEmail(payerEmail).getBalance();
-			
+
 		} else {
 			LOGGER.info(auth.getName() + " is instance of OAuth2AuthenticationToken");
 			String nameNumber = auth.getName();
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			payerEmail = foundOauth2.getEmail();
-			
+
 			LOGGER.info(foundOauth2.getBalance());
 			if (Objects.isNull(foundOauth2.getBalance())) {
 				availableBalance = 0.0f;
@@ -180,107 +176,108 @@ public class MakePaymentController {
 			}
 
 		}
-		
-		PaymybuddyUserDetails payer = findPaymybuddyUserDetailsService.findByEmail(ePayment.getPayeeEmail());
-		LOGGER.info("Payer details "+payer);
 
-		if (findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail).get(0).getEmail()=="N_A") {
-			LOGGER.info(payerEmail+" not registered");
-			result = new ModelAndView("redirect:/makepayment?error=true");
-		} else if (findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail).get(0).getIban() == "N_A") {
-			LOGGER.info(payerEmail + " has no bank account");
-			result = new ModelAndView("redirect:/makepayment?error=true");
-		}
-		else {
-			LOGGER.info(payerEmail+" registered");
-			connectionList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail));
-			bankAccountList.addAll(findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail)); 
-			
-			for (EbankAccount a : bankAccountList) {
+		PaymybuddyUserDetails payer = findPaymybuddyUserDetailsService.findByEmail(payerEmail);
+		LOGGER.info("Payer details " + payer);
+
+		/*
+		 * if
+		 * (findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail).get(0)
+		 * .getEmail()=="N_A") { LOGGER.info(payerEmail+" not registered"); result = new
+		 * ModelAndView("redirect:/makepayment?error=true"); } else if
+		 * (findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail).get
+		 * (0).getIban() == "N_A") { LOGGER.info(payerEmail + " has no bank account");
+		 * result = new ModelAndView("redirect:/makepayment?error=true"); } else {
+		 */
+		LOGGER.info(payerEmail + " registered");
+		connectionList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail));
+		bankAccountList.addAll(findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail));
+
+		for (EbankAccount a : bankAccountList) {
+			LOGGER.info(payment.getConnection() + " compare " + a.getIban());
+			if (Objects.equals(a.getIban(), payment.getConnection())) {
 				LOGGER.info("bank transfer");
-				LOGGER.info(payment.getConnection()+" compare "+a.getIban());
-				if (Objects.equals(a.getIban(), payment.getConnection())) {
-					
-					u.setTime(System.currentTimeMillis());
 
-					LOGGER.info(u);
-					eTransaction.setAmount(payment.getAmount());
-					eTransaction.setDate(u);
-					eTransaction.setDescription(payment.getDescription());
-					eTransaction.setFromBank(false);
-					eTransaction.setBankAccount(a);
-					
-					LOGGER.info("balance before transfert :"+availableBalance);
-					availableBalance= availableBalance -eTransaction.getAmount();
-					LOGGER.info("balance after transfert :"+availableBalance);
+				u.setTime(System.currentTimeMillis());
 
-					payer.setBalance(availableBalance);
-					LOGGER.info("Updated payer's balance "+payer);
+				LOGGER.info(u);
+				eTransaction.setAmount(payment.getAmount());
+				eTransaction.setDate(u);
+				eTransaction.setDescription(payment.getDescription());
+				eTransaction.setFromBank(false);
+				eTransaction.setBankAccount(a);
+				LOGGER.info(eTransaction);
 
-					transactionFee = eTransaction.getAmount()*feeRate;
-					eTransaction.setFee(transactionFee);
-					
-					LOGGER.info("Loading transfer details "+eTransaction);
-					saveTransferService.saveTransfer(eTransaction);
+				LOGGER.info("balance before transfert :" + availableBalance);
+				availableBalance = availableBalance - eTransaction.getAmount();
+				LOGGER.info("balance after transfert :" + availableBalance);
 
-					savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(payer);
+				payer.setBalance(availableBalance);
+				LOGGER.info("Updated payer's balance " + payer);
 
-					
-				}
+				transactionFee = eTransaction.getAmount() * feeRate;
+				eTransaction.setFee(transactionFee);
+
+				LOGGER.info("Loading transfer details " + eTransaction);
+				saveTransferService.saveTransfer(eTransaction);
+
+				savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(payer);
+
 			}
-			
-			for (PaymybuddyUserDetails c : connectionList) {
-				LOGGER.info("in app payment");
-				LOGGER.info(payment.getConnection()+" compare "+c.getEmail());
-				if (Objects.equals(c.getEmail(), payment.getConnection())) {
-
-					u.setTime(System.currentTimeMillis());
-
-					LOGGER.info(u);
-					ePayment.setPayeeEmail(c.getEmail());
-					ePayment.setPaymentDate(u);
-					ePayment.setAmount(payment.getAmount());
-					ePayment.setDescription(payment.getDescription());
-
-					ePayment.setPayerEmail(payerEmail);
-					LOGGER.info("New payment for " + payerEmail);
-					LOGGER.info(ePayment);
-
-					LOGGER.info("balance before payment :"+availableBalance);
-					availableBalance= availableBalance - ePayment.getAmount();
-					LOGGER.info("balance after payment :"+availableBalance);
-					
-					payer.setBalance(availableBalance );
-					LOGGER.info("Updated payer's balance "+payer);
-
-					PaymybuddyUserDetails updatePayeeBalance = findPaymybuddyUserDetailsService
-							.findByEmail(ePayment.getPayeeEmail());
-					LOGGER.info("payee's old balance "+updatePayeeBalance.getBalance());
-					
-					Float oldPayeeBalance ;
-					if(updatePayeeBalance.getBalance()==null) {
-						oldPayeeBalance = 0.0f;
-					}else {
-						oldPayeeBalance = updatePayeeBalance.getBalance();
-					} 
-
-					updatePayeeBalance.setBalance(oldPayeeBalance + ePayment.getAmount());
-					LOGGER.info("Updated payee's balance "+updatePayeeBalance);
-
-					paymentFee = ePayment.getAmount()*feeRate;
-					LOGGER.info(paymentFee);
-					ePayment.setFee(paymentFee);
-					
-					savePaymentServiceAtMakePaymentController.savePayment(ePayment);
-					savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(updatePayeeBalance);
-					savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(payer);
-
-				}
-			}
-
-			result = new ModelAndView("redirect:/makepayment?success=true");
-
 		}
+
+		for (PaymybuddyUserDetails c : connectionList) {
+			LOGGER.info(payment.getConnection() + " compare " + c.getEmail());
+			if (Objects.equals(c.getEmail(), payment.getConnection())) {
+				LOGGER.info("internal app payment");
+
+				u.setTime(System.currentTimeMillis());
+
+				LOGGER.info(u);
+				ePayment.setPayeeEmail(c.getEmail());
+				ePayment.setPaymentDate(u);
+				ePayment.setAmount(payment.getAmount());
+				ePayment.setDescription(payment.getDescription());
+
+				ePayment.setPayerEmail(payerEmail);
+				LOGGER.info("New payment for " + payerEmail);
+				LOGGER.info(ePayment);
+
+				LOGGER.info("balance before payment :" + availableBalance);
+				availableBalance = availableBalance - ePayment.getAmount();
+				LOGGER.info("balance after payment :" + availableBalance);
+
+				payer.setBalance(availableBalance);
+				LOGGER.info("Updated payer's balance " + payer);
+
+				PaymybuddyUserDetails updatePayeeBalance = findPaymybuddyUserDetailsService
+						.findByEmail(ePayment.getPayeeEmail());
+				LOGGER.info("payee's old balance " + updatePayeeBalance.getBalance());
+
+				Float oldPayeeBalance;
+				if (updatePayeeBalance.getBalance() == null) {
+					oldPayeeBalance = 0.0f;
+				} else {
+					oldPayeeBalance = updatePayeeBalance.getBalance();
+				}
+
+				updatePayeeBalance.setBalance(oldPayeeBalance + ePayment.getAmount());
+				LOGGER.info("Updated payee's balance " + updatePayeeBalance);
+
+				paymentFee = ePayment.getAmount() * feeRate;
+				LOGGER.info(paymentFee);
+				ePayment.setFee(paymentFee);
+
+				savePaymentServiceAtMakePaymentController.savePayment(ePayment);
+				savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(updatePayeeBalance);
+				savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(payer);
+
+			}
+		}
+
+		result = new ModelAndView("redirect:/makepayment?success=true");
+
+//		}
 
 		model.addAttribute("econnections", connectionList);
 		model.addAttribute("available", availableBalance);

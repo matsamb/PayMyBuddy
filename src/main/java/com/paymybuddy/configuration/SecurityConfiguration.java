@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/admin").hasAnyRole("ADMIN").antMatchers("/user")
 				.hasAnyRole("ADMIN", "USER")
-				.antMatchers("/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
+				.antMatchers("/transactions","/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
 				.and() 
 				.formLogin()
