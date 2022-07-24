@@ -5,16 +5,9 @@ CREATE DATABASE IF NOT EXISTS prodPaymybuddy;
 /*CREATE DATABASE IF NOT EXISTS testPaymybuddy; */ 
 
 USE prodpaymybuddy;
+/*
 
-CREATE TABLE IF NOT EXISTS persistent_logins(
-	username VARCHAR(64) NOT NULL,
-    series VARCHAR(64) NOT NULL,
-    token VARCHAR(64) NOT NULL,
-    last_used TIMESTAMP NOT NULL,
-    PRIMARY KEY (series)
-    )
-
-/*CREATE TABLE IF NOT EXISTS users(
+CREATE TABLE IF NOT EXISTS users(
 	username VARCHAR (50) NOT NULL,
 	password VARCHAR (64) NOT NULL,
 	enabled BOOLEAN NOT NULL,
@@ -27,4 +20,4 @@ CREATE TABLE IF NOT EXISTS authorities(
 	
 	CONSTRAINT fk_authorities_users FOREIGN KEY (fk_username) REFERENCES users (username)
 		
-);*/
+); */

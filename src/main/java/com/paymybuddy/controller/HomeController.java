@@ -256,6 +256,7 @@ public class HomeController {
 		pConex.keySet().stream().sorted().toList().get(0);
 		pagedConex.getPage();
 
+		model.addAttribute("numberOfPages", pagedConex.getPageCount());
 		model.addAttribute("paginationRange", paginationRange);
 		model.addAttribute("available", available);
 		model.addAttribute("pConex", pConex);

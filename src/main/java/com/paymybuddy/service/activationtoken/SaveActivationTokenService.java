@@ -1,4 +1,4 @@
-package com.paymybuddy.service;
+package com.paymybuddy.service.activationtoken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,14 +9,14 @@ import com.paymybuddy.entity.ActivationToken;
 import com.paymybuddy.repository.ActivationTokenRepository;
 
 @Service
-public class ActivationTokenService {
+public class SaveActivationTokenService {
 
 	public static Logger logger = LogManager.getLogger("ActivationTokenService");	
 	
 	@Autowired
 	private ActivationTokenRepository activationTokenRepository;
 	
-	ActivationTokenService (ActivationTokenRepository activationTokenRepository){
+	SaveActivationTokenService (ActivationTokenRepository activationTokenRepository){
 		this.activationTokenRepository = activationTokenRepository;
 	}
 	

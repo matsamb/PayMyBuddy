@@ -2,7 +2,10 @@ package com.paymybuddy.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +18,7 @@ public class LoginController{
 	private final Logger loginControllerLogger = LogManager.getLogger("LoginController");
 	
 	PaymybuddyUserDetailsService userDetails;
-
+	
 	@GetMapping("/login")
 	public String login() {	
 		loginControllerLogger.info("Log In page displayed");
@@ -23,7 +26,8 @@ public class LoginController{
 	}
 
 	@PostMapping("/login")
-	public ModelAndView checkUsers() {	
+	public ModelAndView checkUsers(Boolean remember, BindingResult bindingResult) {	
+
 		return new ModelAndView("redirect:/home?size=3&page=1");
 	}
 	

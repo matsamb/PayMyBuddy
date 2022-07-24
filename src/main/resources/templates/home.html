@@ -215,24 +215,18 @@ body {
 				</div>
 				<div class="col-md-6" id="mostmenu">
 					<div class="col-md-1" id="hmenu">
-						<h3>
-							Home
-						</h3>
+						<h3>Home</h3>
 					</div>
-				<!--  <div class="col-md-1" id="hmenu">
+					<!--  <div class="col-md-1" id="hmenu">
 						<h3>
 						<a th:href="@{/maketransfer}" href="/maketransfer" > Transfer</a>
 						</h3>
-					</div> -->	
+					</div> -->
 					<div class="col-md-1" id="hmenu">
-						<h3>
-							Profile
-						</h3>
+						<h3>Profile</h3>
 					</div>
 					<div class="col-md-1" id="hmenu">
-						<h3>
-							Contact
-						</h3>
+						<h3>Contact</h3>
 					</div>
 					<div class="col-md-1" id="hmenu">
 						<h3>
@@ -250,7 +244,8 @@ body {
 
 			<div class="row" id="sub_menu">
 				<p>
-					<em id="home"> Home / </em><em id="home"><a th:href="@{/maketransfer}" href="/maketransfer" > Transfer</a></em>
+					<em id="home"> Home / </em><em id="home"><a
+						th:href="@{/maketransfer}" href="/maketransfer"> Transfer</a></em>
 				</p>
 			</div>
 
@@ -260,7 +255,7 @@ body {
 	</section>
 
 	<section id="section_two">
-		<div class="container"  >
+		<div class="container">
 
 			<div class="row" id="section_two_cap">
 				<p>
@@ -294,8 +289,8 @@ body {
 						<div id="amountP">
 
 							<p>
-								BALANCE : <strong th:text="${available}"
-									th:style="${available} >0 ? 'color:green;'"></strong>
+								BALANCE : <strong th:text="${available}" th:name="avail"
+									th:style="${available >0 }? 'color:green;':'color: red;'"></strong>
 							</p>
 						</div>
 
@@ -340,22 +335,23 @@ body {
 								<th>Description</th>
 								<th>Amount</th>
 							</tr>
-							<tr th:if="${connections.isEmpty}">
-								<td colspan="3">No registered connection</td>
+							<tr th:if="${econnections=='noConnection'}">
+								<td colspan="3"> No payment(s) or transaction(s) </td>
 							</tr>
 							<tr th:each="connection, stat: ${pConex.get(activePage.page)}"
 								th:style="${stat.odd}? 'background-color: rgba(245, 245, 245, 255);'">
 
-								<td><span th:text="${connection.connection}">Connection</span></td>
-								<td><span th:text="${connection.description}">Description</span></td>
-								<td><span th:text="${connection.amount}">Amount</span></td>
-								<!-- th:style="${connection.amount} le 0.0 ? 'color: red;'" -->
+								<td><span th:text="${connection.connection}"
+									th:style="${connection.amount le 0.0 }? 'color: red;':'color: green;'">Connection</span></td>
+								<td><span th:text="${connection.description}"
+									th:style="${connection.amount le 0.0 }? 'color: red;':'color: green;'">Description</span></td>
+								<td><span th:text="${connection.amount}"
+									th:style="${connection.amount le 0.0 }? 'color: red;':'color: green;'">Amount</span></td>
 							</tr>
 						</table>
 					</div>
 
 					<div class="paging">
-
 						<span id="pageindex"> <a th:if="${activePage.page>1}"
 							th:href="@{/home(size=${pagedConex.getPageSize},page=1)}">FIRST</a>
 							<span th:unless="${activePage.page>1}">FIRST</span>
@@ -367,13 +363,13 @@ body {
 							th:href="@{/home(size=${pagedConex.getPageSize},page=${pageCount})}"
 							th:text="${pageCount}" th:name="${pageCount}" th:field="*{page}"></a>
 						</span> <span id="pageindex"> <a
-							th:if="${activePage.page lt pagedConex.pageCount}"
+							th:if="${activePage.page lt numberOfPages}"
 							th:href="@{/home(size=${pagedConex.pageSize},page=${activePage.page+1})}">NEXT</a>
-							<span th:unless="${activePage.page lt pagedConex.pageCount}">NEXT</span>
+							<span th:unless="${activePage.page lt numberOfPages}">NEXT</span>
 						</span> <span id="pageindex"> <a
-							th:if="${activePage.page lt pagedConex.pageCount}"
+							th:if="${activePage.page lt numberOfPages}"
 							th:href="@{/home(size=${pagedConex.pageSize},page=${pagedConex.pageCount})}">LAST</a>
-							<span th:unless="${activePage.page lt pagedConex.pageCount}">LAST</span>
+							<span th:unless="${activePage.page lt numberOfPages}">LAST</span>
 						</span>
 
 					</div>

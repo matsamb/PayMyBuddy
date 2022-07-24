@@ -1,13 +1,9 @@
 package com.paymybuddy.controller;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.activation.MimeType;
-
-import org.apache.catalina.startup.Tomcat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.paymybuddy.dto.ViewUser;
 import com.paymybuddy.entity.ActivationToken;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.service.ActivationTokenService;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
+import com.paymybuddy.service.activationtoken.SaveActivationTokenService;
 import com.paymybuddy.service.email.EmailSenderService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.UserRole;
-
-import lombok.AllArgsConstructor;
 
 @Controller
 //@AllArgsConstructor
@@ -40,7 +34,7 @@ public class SignInController {
 	SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService;
 
 	@Autowired
-	ActivationTokenService activationTokenService;
+	SaveActivationTokenService saveActivationTokenService;
 	
 	@Autowired
 	EmailSenderService emailSenderService;
@@ -49,11 +43,11 @@ public class SignInController {
 	PaymybuddyPasswordEncoder paymybuddyPasswordEncoder;
 	
 	SignInController(SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService		
-				,ActivationTokenService activationTokenService
+				,SaveActivationTokenService saveActivationTokenService
 				,EmailSenderService emailSenderService
 			){
 		this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
-		this.activationTokenService = activationTokenService;
+		this.saveActivationTokenService = saveActivationTokenService;
 		this.emailSenderService = emailSenderService;
 	}
 	
@@ -115,7 +109,7 @@ public class SignInController {
 			activationToken.setUser(buddyUser);
 			activationToken.setToken(token);
 			
-			activationTokenService.saveActivationToken(activationToken);
+			saveActivationTokenService.saveActivationToken(activationToken);
 			
 			int port = 9080;
 			String address = activationToken.getUser().getEmail();

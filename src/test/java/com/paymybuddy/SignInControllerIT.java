@@ -1,5 +1,6 @@
 package com.paymybuddy;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -7,6 +8,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.sql.Timestamp;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -21,16 +24,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
 
 import com.paymybuddy.dto.ViewUser;
+import com.paymybuddy.entity.ActivationToken;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
+import com.paymybuddy.service.activationtoken.SaveActivationTokenService;
+import com.paymybuddy.service.email.EmailSenderService;
 import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
-import com.paymybuddy.service.users.UserRole;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 //@WebMvcTest(SignInController.class)
-class PayMyBuddyApplicationTests {
+class SignInControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -39,9 +44,15 @@ class PayMyBuddyApplicationTests {
 
 	@MockBean
 	private SavePaymybuddyUserDetailsService mockSavePaymybuddyUserDetailsService;
+	
+	@MockBean
+	private SaveActivationTokenService mockSaveActivationTokenService;
 
 	@MockBean
 	private PaymybuddyUserDetailsService mockPaymybuddyUserDetailsService;
+	
+	@MockBean
+	private EmailSenderService mockEmailSenderService;
 	
 	@MockBean
 	private PaymybuddyPasswordEncoder mockPaymybuddyPasswordEncoder;
@@ -49,12 +60,6 @@ class PayMyBuddyApplicationTests {
 	@MockBean
 	private PasswordEncoder mockPasswordEncoder;
 	
-	
-	@Test
-	void contextLoads() {
-	}
-	
-	@Disabled
 	@Test
 	@WithMockUser(username="max"
 	, password = /*{Bcrypt}*/ "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q"
@@ -72,12 +77,20 @@ class PayMyBuddyApplicationTests {
 		when(result.getFieldValue("password")).thenReturn(neweuser.getPassword());
 		
 		UserDetails max = new PaymybuddyUserDetails();
-		//((PaymybuddyUserDetails) max).setEmail("max");
-		//((PaymybuddyUserDetails) max).setUsername("max");
-		//((PaymybuddyUserDetails) max).setPassword("m456");
-		//((PaymybuddyUserDetails) max).setBalance(0.0f);
+	/*	((PaymybuddyUserDetails) max).setEmail("max");
+		((PaymybuddyUserDetails) max).setUsername("max");
+		((PaymybuddyUserDetails) max).setPassword("m456");
+		((PaymybuddyUserDetails) max).setBalance(0.0f);
 		((PaymybuddyUserDetails) max).setUserRole(UserRole.USER);
-		((PaymybuddyUserDetails) max).setEnabled(true);
+		((PaymybuddyUserDetails) max).setEnabled(true);*/
+		
+		ActivationToken token = new ActivationToken();
+		Timestamp startTime = new Timestamp(System.currentTimeMillis());
+		Timestamp endTime = new Timestamp(System.currentTimeMillis()+60*1000);
+		token.setUser((PaymybuddyUserDetails) max);
+		token.setStartTime(startTime);
+		token.setExpirationTime(endTime);
+		token.setToken(anyString());
 				
 		when(mockPaymybuddyUserDetailsService
 				.loadUserByUsername("max"))
@@ -96,7 +109,10 @@ class PayMyBuddyApplicationTests {
 			.andExpect(view().name("redirect:/signinconfirm"));
 
 		verify(mockSavePaymybuddyUserDetailsService, times(1)).savePaymybuddyUserDetails((PaymybuddyUserDetails)max);
+		//verify(mockSaveActivationTokenService, times(1)).saveActivationToken(token);
+		//verify(mockEmailSenderService, times(1)).send(null,message);
 
+		
 	}
 
 }

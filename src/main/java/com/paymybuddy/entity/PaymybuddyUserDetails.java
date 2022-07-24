@@ -79,11 +79,11 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if(userRole.name()!=null) {
+/*		if(userRole.name()!=null) {
 			return Collections.singletonList( new SimpleGrantedAuthority(userRole.name()));
-		}else {
+		}else {*/
 			return Collections.singletonList( new SimpleGrantedAuthority("USER"));
-		}
+		//}
 		
 	}
 

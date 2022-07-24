@@ -10,8 +10,8 @@ import javax.validation.Payload;
 
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EmailValidation.class)
-public @interface ValidatedEmail {
+@Constraint(validatedBy = EmailPatternValidation.class)
+public @interface ValidatedEmailPattern {
 
 	String message() default "Invalid email";
     Class<?>[] groups() default {};

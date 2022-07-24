@@ -34,17 +34,17 @@ public class OAuth2Controller {
 
 	private final Logger LOGGER = LogManager.getLogger("OAuth2Controller");
 
-	@Autowired
-	OAuth2AuthorizedClientService rizedClientService;
+//	@Autowired
+//	OAuth2AuthorizedClientService rizedClientService;
 	
-	@Autowired
-	GoogleOAuth2UserRepository googleOAuth2UserRepository;
+//	@Autowired
+//	GoogleOAuth2UserRepository googleOAuth2UserRepository;
 	
-	@Autowired
-	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
+//	@Autowired
+//	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
 
-	@Autowired
-	PaymybuddyUserDetailsService paymybuddyUserDetailsService;
+//	@Autowired
+//	PaymybuddyUserDetailsService paymybuddyUserDetailsService;
 
 	@Autowired
 	PaymybuddyPasswordEncoder paymybuddyPasswordEncoder;

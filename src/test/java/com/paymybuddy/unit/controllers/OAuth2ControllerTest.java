@@ -2,9 +2,10 @@ package com.paymybuddy.unit.controllers;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,59 +15,40 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.paymybuddy.controller.SignInController;
+import com.paymybuddy.controller.OAuth2Controller;
 
+@Disabled
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SignInControllerTest {
-
+public class OAuth2ControllerTest {
+//TODO
 	@Autowired
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private SignInController signInController;
-
+	private OAuth2Controller oAuth2Controller;
+	
 	@BeforeEach
 	public void setUp(WebApplicationContext context) {
 		
 		mockMvc = MockMvcBuilders
-					.standaloneSetup(signInController)
+					.standaloneSetup(oAuth2Controller)
 					.build();
 		
 		mockMvc = MockMvcBuilders
 					.webAppContextSetup(context)
-					.defaultRequest(get("/signin"))
+					.defaultRequest(get("/oauth2"))
 					.apply(springSecurity())	//.defaultRequest(get("/signin"))
 					.build();
 		
 	}
 	
 	@Test
-	void contextLoads() {
-	}
-	
-	@Test
-	public void testGetSignin() throws Exception {
-	
+	public void test() throws Exception{
+		
 		mockMvc
-		.perform(get("/signin")).andExpect(status().isOk());
-				
+			.perform(get("/oauth2")).andExpect(status().isOk());
+		
 	}
 	
-	@Test
-	public void testPostSignin() throws Exception {
-	
-		mockMvc
-		.perform(post("/signin")).andExpect(status().isOk());
-				
-	}
-	
-	@Test
-	public void testGetSigninConfirm() throws Exception {
-	
-		mockMvc
-		.perform(get("/signinconfirm")).andExpect(status().isOk());
-				
-	}
-
 }

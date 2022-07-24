@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,15 @@ public class ActivationToken {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	private Integer id;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "user_email")
+	//@Column(nullable = false)
 	private PaymybuddyUserDetails user;
 
 	@Column(nullable = false)
-	String token;
+	private String token;
 	@Column(nullable = false)
 	private Timestamp startTime;
 	private Timestamp expirationTime;

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
@@ -39,8 +40,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/admin").hasAnyRole("ADMIN").antMatchers("/user")
 				.hasAnyRole("ADMIN", "USER")
-				.antMatchers("/transactions","/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
+				.antMatchers(/*"/transactions",*/"/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
+				.and()
+				.rememberMe()//.tokenRepository(persistentTokenRepository())
+				.tokenRepository(persistentTokenRepository())
+				//.userDetailsService(paymybuddyUserDetailsService)
+				.key("macrokey")
+				.tokenValiditySeconds(120)//.tokenValiditySeconds(60)
 				.and() 
 				.formLogin()
 					.loginPage("/login") 
@@ -51,14 +58,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.loginPage("/login")
 					.defaultSuccessUrl("/oauth2")
 					.failureUrl("/login?error=true")
-				.and() 
+				.and()
+				.httpBasic()
+				.and()
 				.logout()//.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout=true")
 				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(false).permitAll()
-				.and()
-				.rememberMe().tokenRepository(persistentTokenRepository())//.tokenValiditySeconds(60)
-
+				
 		;
 		
 	}
