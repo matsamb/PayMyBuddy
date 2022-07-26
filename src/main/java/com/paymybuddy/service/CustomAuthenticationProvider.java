@@ -28,7 +28,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		final String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
+		final String username = (authentication.getPrincipal() == null) ? "NotOAuth2User" : authentication.getName();
+
 		LOGGER.info("start anthentication");
 		if (username.isEmpty()) {
 			LOGGER.info("invalid login details");

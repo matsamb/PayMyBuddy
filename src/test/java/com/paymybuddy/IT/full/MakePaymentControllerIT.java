@@ -1,4 +1,4 @@
-package com.paymybuddy;
+package com.paymybuddy.IT.full;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -46,8 +46,8 @@ import com.paymybuddy.service.users.UserRole;
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(username = "max"
-//, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
-		, authorities = "USER")
+, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
+, authorities = "USER")
 public class MakePaymentControllerIT {
 
 	@Autowired

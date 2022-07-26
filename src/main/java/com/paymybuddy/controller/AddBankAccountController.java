@@ -35,7 +35,7 @@ import lombok.AllArgsConstructor;
 @RolesAllowed("USER")
 @Controller
 @AllArgsConstructor
-public class AddBankAccount {
+public class AddBankAccountController {
 
 	final static Logger LOGGER = LogManager.getLogger("AddBankAccount");
 

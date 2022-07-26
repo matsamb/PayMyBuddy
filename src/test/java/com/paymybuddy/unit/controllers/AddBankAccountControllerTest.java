@@ -1,11 +1,11 @@
 package com.paymybuddy.unit.controllers;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,39 +15,49 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.paymybuddy.controller.OAuth2Controller;
+import com.paymybuddy.controller.AddBankAccountController;
+import com.paymybuddy.controller.AddConnectionController;
 
-@Disabled
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OAuth2ControllerTest {
-//TODO
+public class AddBankAccountControllerTest {
+
 	@Autowired
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private OAuth2Controller oAuth2Controller;
+	private AddBankAccountController addBankAccountController;
 	
 	@BeforeEach
 	public void setUp(WebApplicationContext context) {
 		
 		mockMvc = MockMvcBuilders
-					.standaloneSetup(oAuth2Controller)
+					.standaloneSetup(addBankAccountController)
 					.build();
 		
 		mockMvc = MockMvcBuilders
 					.webAppContextSetup(context)
-					.defaultRequest(get("/oauth2"))
-					.apply(springSecurity())	//.defaultRequest(get("/signin"))
+					.defaultRequest(get("/addbankaccount"))
+					.apply(springSecurity())
 					.build();
 		
 	}
-
+	
 	@Test
-	public void test() throws Exception{
+	public void getAddBankAccount() throws Exception {
 		
 		mockMvc
-			.perform(get("/oauth2")).andExpect(status().isOk());
+			.perform(get("/addbankaccount").with(user("max").password("pass").roles("USER")))
+			.andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void errorGetAddBankAccountWithOutAuthentication() throws Exception {
+		
+		mockMvc
+			.perform(get("/addbankaccount"))
+			.andExpect(status().isUnauthorized());
 		
 	}
 	

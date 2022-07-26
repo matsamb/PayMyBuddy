@@ -1,4 +1,4 @@
-package com.paymybuddy;
+package com.paymybuddy.IT.component;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

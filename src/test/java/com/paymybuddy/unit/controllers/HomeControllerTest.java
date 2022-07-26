@@ -43,16 +43,7 @@ public class HomeControllerTest {
 					.build();
 		
 	}
-	
-	//@Disabled
-	@Test
-	public void getHome() throws Exception{
 		
-		mockMvc
-			.perform(get("/home").with(user("max").password("pass").roles("USER")))
-			.andExpect(status().isOk());
-	}
-	
 	@Test
 	public void errorGetHomeWithOutAuthentication() throws Exception{
 		

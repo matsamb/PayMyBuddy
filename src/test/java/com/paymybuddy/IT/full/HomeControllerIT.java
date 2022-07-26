@@ -1,4 +1,4 @@
-package com.paymybuddy;
+package com.paymybuddy.IT.full;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -44,33 +45,29 @@ public class HomeControllerIT {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService;
+	private FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService;
 
 	@MockBean
-	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
+	private FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
 
 	@MockBean
-	FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService;
+	private FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService;
 
 	@MockBean
-	FindPaymentByPayerService findPaymentByPayerService;
+	private FindPaymentByPayerService findPaymentByPayerService;
 
 	@MockBean
-	FindPaymentByPayeeService findPaymentByPayeeService;
+	private FindPaymentByPayeeService findPaymentByPayeeService;
 
 	@MockBean
-	FindBankAccountByUserEmailService findBankAccountByUserEmailService;
+	private FindBankAccountByUserEmailService findBankAccountByUserEmailService;
 
 	@MockBean
-	FindTransactionByBankAccountService findTransactionByBankAccountService;
+	private FindTransactionByBankAccountService findTransactionByBankAccountService;
 	
 	@BeforeEach
 	public void setUp(WebApplicationContext context) {
-		
-/*		mockMvc = MockMvcBuilders
-					.standaloneSetup(homeController)
-					.build();*/
-		
+
 		mockMvc = MockMvcBuilders
 					.webAppContextSetup(context)
 					.defaultRequest(get("/home"))
@@ -91,10 +88,8 @@ public class HomeControllerIT {
 		UserDetails max = new PaymybuddyUserDetails();
 			((PaymybuddyUserDetails) max).setEmail("max");
 			((PaymybuddyUserDetails) max).setUsername("max");
-			/*	((PaymybuddyUserDetails) max).setPassword("m456");
-			((PaymybuddyUserDetails) max).setBalance(0.0f);*/
+			((PaymybuddyUserDetails) max).setBalance(20f);
 			((PaymybuddyUserDetails) max).setUserRole(UserRole.USER);
-			//((PaymybuddyUserDetails) max).setEnabled(true);
 
 		List<PaymybuddyUserDetails> findConnectionList = new ArrayList<>();
 		findConnectionList.add((PaymybuddyUserDetails)max);
@@ -119,7 +114,6 @@ public class HomeControllerIT {
 		foundAccountList.add(bankAccount);
 
 		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max")).thenReturn(foundAccountList);
-	//	when(findPaymentByPayeeService.findByPayee("max")).thenReturn(payPaymentList);
 		
 		Etransaction etransaction = new Etransaction();
 		etransaction.setBankAccount(bankAccount);
