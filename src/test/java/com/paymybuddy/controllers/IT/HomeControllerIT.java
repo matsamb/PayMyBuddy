@@ -1,12 +1,15 @@
-package com.paymybuddy.IT.full;
+package com.paymybuddy.controllers.IT;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -120,8 +124,13 @@ public class HomeControllerIT {
 		etransaction.setFromBank(false);
 		etransaction.setAmount(5f);
 		List<Etransaction> foundTransactionList = new ArrayList<>();
-		foundTransactionList.add(etransaction);
-		foundTransactionList.add(etransaction);
+		foundTransactionList.add(etransaction); 
+	
+		Etransaction etransaction2 = new Etransaction();
+		etransaction2.setBankAccount(bankAccount);
+		etransaction2.setFromBank(true);
+		etransaction2.setAmount(5f);
+		foundTransactionList.add(etransaction2);
 		
 		when(findTransactionByBankAccountService.findTransactionByBankAccount(bankAccount)).thenReturn(foundTransactionList);
 		
@@ -131,5 +140,77 @@ public class HomeControllerIT {
 			.andExpect(status().isOk())
 			;
 	}
+	
+/*	@Test
+	public void getHome2() throws Exception{
+		
+		BindingResult activePage = mock(BindingResult.class);
+		when(activePage.getFieldValue("page")).thenReturn(1);
+		
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		HashMap<String,Object> attributes = new HashMap<>();
+		max.setName("max"); 
+		attributes.put("email", "max");
+		max.setAttributes(attributes);	
+
+		//	max.setEmail("max");
+			max.setUsername("max");
+		//	max.setBalance(20f);
+			max.setUserRole(UserRole.USER);
+
+			PaymybuddyUserDetails nax = new PaymybuddyUserDetails();
+			HashMap<String,Object> nattributes = new HashMap<>();
+			nax.setName("nax"); 
+			nattributes.put("email", "nax");
+			nax.setAttributes(nattributes);	
+
+			//	max.setEmail("max");
+			nax.setUsername("nax");
+			//	max.setBalance(20f);
+			nax.setUserRole(UserRole.USER);
+
+			
+		List<PaymybuddyUserDetails> findConnectionList = new ArrayList<>();
+		findConnectionList.add(nax);
+		findConnectionList.add(nax); 
+
+		when(findOauth2PaymybuddyUserDetailsService.findByName("max")).thenReturn(max);
+		when(findPaymybuddyUserDetailsService.findByEmail("max")).thenReturn(max);
+		when(findFconnectionByPayerUsernameService.findByPayerUsername("max")).thenReturn(findConnectionList);
+		
+		Epayment payment = new Epayment();
+		payment.setAmount(5f);
+		List<Epayment> payPaymentList = new ArrayList<>();
+		payPaymentList.add(payment);
+		payPaymentList.add(payment);
+		
+		when(findPaymentByPayerService.findByPayer("max")).thenReturn(payPaymentList);
+		when(findPaymentByPayeeService.findByPayee("max")).thenReturn(payPaymentList);
+
+		EbankAccount bankAccount = new EbankAccount();
+		bankAccount.setIban("man");
+		List<EbankAccount> foundAccountList = new ArrayList<>();
+		foundAccountList.add(bankAccount);
+		foundAccountList.add(bankAccount);
+
+		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max")).thenReturn(foundAccountList);
+		
+		Etransaction etransaction = new Etransaction();
+		etransaction.setBankAccount(bankAccount);
+		etransaction.setFromBank(false);
+		etransaction.setAmount(5f);
+		List<Etransaction> foundTransactionList = new ArrayList<>();
+		foundTransactionList.add(etransaction);
+		etransaction.setFromBank(true);
+		foundTransactionList.add(etransaction);
+		
+		when(findTransactionByBankAccountService.findTransactionByBankAccount(bankAccount)).thenReturn(foundTransactionList);
+		
+		
+		mockMvc
+			.perform(get("/home").with(oauth2Login().oauth2User(max)))
+			.andExpect(status().isOk())
+			;
+	}*/
 
 }

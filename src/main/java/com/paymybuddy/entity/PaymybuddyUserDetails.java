@@ -247,7 +247,7 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	}
 
 	public void setAttributes(HashMap<String, Object> attributes) {
-		this.attributes = (HashMap<String, Object>) Map.copyOf(attributes);
+		this.attributes = /*(HashMap<String, Object>) *//*Map.copyOf(*/attributes/*)*/;
 	}
 
 	@Override

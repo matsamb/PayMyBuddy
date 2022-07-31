@@ -1,27 +1,17 @@
 package com.paymybuddy.controller;
 
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.annotation.security.RolesAllowed;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.paymybuddy.dto.ViewConnection;
 import com.paymybuddy.dto.ViewIban;
 import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
@@ -30,12 +20,8 @@ import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 
-import lombok.AllArgsConstructor;
+public class AddBankAccountController2 {
 
-@RolesAllowed("USER")
-@Controller
-//@AllArgsConstructor
-public class AddBankAccountController {
 
 	final static Logger LOGGER = LogManager.getLogger("AddBankAccount");
 
@@ -51,7 +37,7 @@ public class AddBankAccountController {
 	@Autowired
 	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
 
-	AddBankAccountController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
+	AddBankAccountController2(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
 			 ,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService	
 			 ,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService
 			 ){ 
@@ -108,7 +94,7 @@ public class AddBankAccountController {
 		LOGGER.info("iban "+iban);
 		
 		EbankAccount currentUserBankAccount = new EbankAccount();
-		Set<EbankAccount> currentUserBankAccountSet = new HashSet<>();
+//		Set<EbankAccount> currentUserBankAccountSet = new HashSet<>();
 		PaymybuddyUserDetails currentUser = findPaymybuddyUserDetailsService.findByEmail(loggedUserEmail);
 		LOGGER.info(currentUser);
 		
@@ -117,8 +103,8 @@ public class AddBankAccountController {
 		LOGGER.info(iban);
 		saveBankAccountService.saveBankAccount(currentUserBankAccount);
 		
-		currentUserBankAccountSet.add(currentUserBankAccount);
-		currentUser.setMybankAccount(currentUserBankAccountSet);
+//		currentUserBankAccountSet.add(currentUserBankAccount);
+//		currentUser.setMybankAccount(currentUserBankAccountSet);
 		LOGGER.info("loading into database "+currentUser);
 		
 		savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(currentUser);
@@ -128,4 +114,5 @@ public class AddBankAccountController {
 
 	}
 
+	
 }

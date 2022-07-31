@@ -8,20 +8,16 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationProvider;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import com.paymybuddy.service.CustomAuthenticationProvider;
 import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
  
 @Configuration
@@ -44,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(/*"/transactions",*/"/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
 				.and()
-				.rememberMe()//.tokenRepository(persistentTokenRepository())
+				.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				//.userDetailsService(paymybuddyUserDetailsService)
 				.key("macrokey")
@@ -81,9 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-//		auth.authenticationProvider(authProvider());
-				
+						
 		auth.userDetailsService(paymybuddyUserDetailsService).passwordEncoder(passwordEncoder());
 		
 		auth.jdbcAuthentication().dataSource(dataSource)
@@ -91,17 +85,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		        .usersByUsernameQuery("select username, password, true from users where username = ?")
 		        .authoritiesByUsernameQuery("select fk_username, authority from authorities where fk_username = ? ") ;
 		
-		/*auth.inMemoryAuthentication()
-		  	.withUser("user").password(passwordEncoder().encode("u123")).roles("USER")
-		  	.and()
-		  	.withUser("admin").password(passwordEncoder().encode("a123")).roles("ADMIN","USER"); 
-		 */
-	
-	}
-
-	@Bean
-	public CustomAuthenticationProvider authProvider() {
-		return new CustomAuthenticationProvider();
 	}
 
 	@Bean

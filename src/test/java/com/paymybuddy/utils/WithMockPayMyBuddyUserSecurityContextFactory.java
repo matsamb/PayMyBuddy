@@ -10,11 +10,11 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.users.UserRole;
 
-public class WithMockCustomUserSecurityContextFactory 
-	implements WithSecurityContextFactory<WithMockCustomUser> {
+public class WithMockPayMyBuddyUserSecurityContextFactory 
+	implements WithSecurityContextFactory<WithMockPayMyBuddyUser> {
 
 	@Override
-	public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
+	public SecurityContext createSecurityContext(WithMockPayMyBuddyUser annotation) {
 			SecurityContext context = SecurityContextHolder.createEmptyContext();
 
 			PaymybuddyUserDetails principal =

@@ -1,10 +1,10 @@
 /*DROP database IF EXISTS prodPaymybuddy;
-DROP database IF EXISTS testPaymybuddy;*/
+DROP database IF EXISTS testPaymybuddy;
 
 CREATE DATABASE IF NOT EXISTS prodPaymybuddy;
-/*CREATE DATABASE IF NOT EXISTS testPaymybuddy; */ 
+CREATE DATABASE IF NOT EXISTS testPaymybuddy; */
 
-USE prodpaymybuddy;
+/*USE testpaymybuddy;
 /*
 
 CREATE TABLE IF NOT EXISTS users(

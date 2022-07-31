@@ -1,5 +1,6 @@
 package com.paymybuddy.unit.controllers;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -11,13 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.paymybuddy.controller.OAuth2Controller;
+import com.paymybuddy.utils.WithMockPayMyBuddyUser;
 
-@Disabled
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OAuth2ControllerTest {
@@ -47,7 +49,7 @@ public class OAuth2ControllerTest {
 	public void test() throws Exception{
 		
 		mockMvc
-			.perform(get("/oauth2")).andExpect(status().isOk());
+			.perform(get("/oauth2").with(oauth2Login())).andExpect(status().isOk());
 		
 	}
 	

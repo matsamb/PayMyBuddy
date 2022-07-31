@@ -1,4 +1,4 @@
-package com.paymybuddy.IT.full;
+package com.paymybuddy.controllers.IT;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -74,12 +75,16 @@ public class AddBankAccountControllerIT {
 
 	public void postAddconnectionAndVerifySavePaymybuddyUserServiceUsedOnce() throws Exception {
 
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("max");
+		max.setUsername("max");
+
 		mockMvc
 			.perform(post("/addbankaccount"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/addbankaccount?success=true"));
 		
-		verify(savePaymybuddyUserDetailsService, times(1)).savePaymybuddyUserDetails(new PaymybuddyUserDetails("N_A"));
+		verify(savePaymybuddyUserDetailsService, times(1)).savePaymybuddyUserDetails(max);
 		
 	}	
 	

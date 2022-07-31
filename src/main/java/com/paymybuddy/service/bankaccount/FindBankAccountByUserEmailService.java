@@ -52,7 +52,4 @@ public class FindBankAccountByUserEmailService {
 		return result;
 	}
 	
-	
-	
-	
 }

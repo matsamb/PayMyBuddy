@@ -1,4 +1,4 @@
-package com.paymybuddy.IT.full;
+package com.paymybuddy.controllers.IT;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;

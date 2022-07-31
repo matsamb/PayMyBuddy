@@ -6,6 +6,8 @@ import javax.mail.internet.MimeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.Name;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -43,55 +45,6 @@ public class EmailSenderService implements IemailSenderService{
 			logger.info("email not sent",m);
 		}
 
-		
-		/*
-		try {
-			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-			//JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-					
-			simpleMailMessage.setTo(to);
-			simpleMailMessage.setFrom("buddy@test.com");
-			simpleMailMessage.setSubject("Paymybuddy account activation");
-			simpleMailMessage.setText(email);
-			
-			javaMailSender.send(simpleMailMessage);
-		}catch(MailException m) {
-			logger.info("email not sent",m);
-		}		*/
 	}
-	
-	//@Override
-	public void send(SimpleMailMessage simpleMessage) throws MailException {
-	
-		try {
-			javaMailSender.send(simpleMessage);
-		}catch(MailException m) {
-			logger.info("email not sent",m);
-		}
-		
-		
-	}
-	
-	
-	public void sendMimeMessage(MimeMessage mimeMessage) throws MailException {
-		
-		try {
-			javaMailSender.send(mimeMessage);
-		}catch(MailException m) {
-			logger.info("email not sent",m);
-		}
-		
-		
-	}
-
-	//@Override
-	public void send(SimpleMailMessage... simpleMessages) throws MailException {
-		try {
-			javaMailSender.send(simpleMessages);
-		}catch(MailException m) {
-			logger.info("emails not sent",m);
-		}
-	}
-
 
 }

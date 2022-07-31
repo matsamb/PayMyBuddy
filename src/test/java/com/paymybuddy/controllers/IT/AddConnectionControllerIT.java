@@ -1,4 +1,4 @@
-package com.paymybuddy.IT.full;
+package com.paymybuddy.controllers.IT;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

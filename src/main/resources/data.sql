@@ -1,4 +1,4 @@
-use prodpaymybuddy;
+/*use prodpaymybuddy;*/
 /*
 INSERT IGNORE INTO users (username,password,enabled) VALUES ("matappmail@gmail.com","$2y$10$ujB1dszKMoAfo8XxUiyQZu2PRmAIVzHIB9bMh7onNdN.Hf2vzHiOm",true);
 INSERT IGNORE INTO users (username,password,enabled) VALUES ("admin","$2y$10$2xknJbWkHatoQgPdao9KbeB03ZqFDEixx375DC1abfUNafMfasHgW",true);
