@@ -42,18 +42,21 @@ public class FindBankAccountByUserEmailServiceTest {
 	@Test
 	public void givenMaxWithTwoBankAccount_whenFindBankAccountServiceIsCalled_thenItSHouldReturnMaxAsUser() throws Exception {
 
-		UserDetails max = new PaymybuddyUserDetails();
-		((PaymybuddyUserDetails) max).setEmail("max");
-		((PaymybuddyUserDetails) max).setUsername("max");
-		((PaymybuddyUserDetails) max).setBalance(20f);
-		((PaymybuddyUserDetails) max).setUserRole(UserRole.USER);
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("max");
+		max.setUsername("max");
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
 		
 		EbankAccount bankAccount = new EbankAccount();
-		bankAccount.setIban("man");
-		bankAccount.setUser((PaymybuddyUserDetails) max);
+		bankAccount.setIban("TE3554631986511117541111116");
+		bankAccount.setUser(max);
 		List<EbankAccount> foundAccountList = new ArrayList<>();
-		foundAccountList.add(bankAccount);
-		foundAccountList.add(bankAccount);
+		EbankAccount bankAccount2 = new EbankAccount();
+		foundAccountList.add((EbankAccount) bankAccount.clone());
+		bankAccount2.setIban("OP3554631986511117541111116");
+		bankAccount2.setUser(max);
+		foundAccountList.add(bankAccount2);
 
 		when(bankAccountRepository.findAll()).thenReturn(foundAccountList);
 
@@ -63,21 +66,25 @@ public class FindBankAccountByUserEmailServiceTest {
 
 	}
 
+	
 	@Test
-	public void givenMaxWithTwoBankAccount_whenFindBankAccountServiceIsCalled_thenItSHouldReturnAsizeTwoList() throws Exception {
+	public void givenMaxWithTwoBankAccount_whenFindBankAccountByUserEmailServiceIsCalled_thenItSHouldReturnAsizeTwoList() throws Exception {
 
-		UserDetails max = new PaymybuddyUserDetails();
-		((PaymybuddyUserDetails) max).setEmail("max");
-		((PaymybuddyUserDetails) max).setUsername("max");
-		((PaymybuddyUserDetails) max).setBalance(20f);
-		((PaymybuddyUserDetails) max).setUserRole(UserRole.USER);
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("max");
+		max.setUsername("max");
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
 		
 		EbankAccount bankAccount = new EbankAccount();
-		bankAccount.setIban("man");
-		bankAccount.setUser((PaymybuddyUserDetails) max);
+		bankAccount.setIban("TE3554631986511117541111116");
+		bankAccount.setUser(max);
 		List<EbankAccount> foundAccountList = new ArrayList<>();
-		foundAccountList.add(bankAccount);
-		foundAccountList.add(bankAccount);
+		EbankAccount bankAccount2 = new EbankAccount();
+		foundAccountList.add(bankAccount); 
+		bankAccount2.setIban("OP3554631986511117541111116");
+		bankAccount2.setUser(max);
+		foundAccountList.add(bankAccount2);
 
 		when(bankAccountRepository.findAll()).thenReturn(foundAccountList);
 

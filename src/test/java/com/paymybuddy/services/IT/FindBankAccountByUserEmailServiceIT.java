@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.activation.DataSource;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ import com.paymybuddy.service.users.UserRole;
 @SpringBootTest
 //@DataJpaTest
 //@WithUserDetails("dax@dax.dax")
-public class FindBankAccountServiceIT {
+public class FindBankAccountByUserEmailServiceIT {
 
 	@Autowired
 	private FindBankAccountByUserEmailService findBankAccountByUserEmailService;
@@ -64,77 +65,90 @@ public class FindBankAccountServiceIT {
 	public void init() {
 
 		jdbcTemplate.execute("use testpaymybuddy;");
-		
-		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
-		( max).setEmail("nax@nax.nax");
-		( max).setUsername("nax");
+
 		PaymybuddyPasswordEncoder p = new PaymybuddyPasswordEncoder();
+	
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("nax@nax.nax");
+		max.setUsername("nax");
 		max.setPassword(p.getPasswordEncoder().encode("nax"));
-		( max).setBalance(20f);
-		( max).setUserRole(UserRole.USER);
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
+		max.setEnabled(true);
 		
 		paymybuddyUserDetailsRepository.save( max);
 		
 		EbankAccount bankAccount = new EbankAccount();
 		bankAccount.setIban("TE3554631986511117541111115");
 		bankAccount.setUser(max);
+		EbankAccount bankAccount2 = new EbankAccount();
 	
-		bankAccountRepository.save(bankAccount);
+//		bankAccountRepository.save(bankAccount);
 
 		
 		List<EbankAccount> foundAccountList = new ArrayList<>();
 		foundAccountList.add(bankAccount);
-		bankAccount.setIban("TE3554631986511117541111116");
-		foundAccountList.add(bankAccount);
+		bankAccount2.setIban("OP3554631986511117541111116");
+		bankAccount2.setUser(max);
+		foundAccountList.add(bankAccount2);
 
-		bankAccountRepository.save(bankAccount);
+		bankAccountRepository.saveAll(foundAccountList);
 
 	}
 
-	//@Disabled
 	@Test
 	@WithMockUser(roles="USER")
 	public void givenMaxWithTwoBankAccount_whenFindBankAccountServiceIsCalled_thenItSHouldReturnMaxAsUser() throws Exception {
 
 		jdbcTemplate.execute("use testpaymybuddy;");
 
-		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
-		( max).setEmail("nax@nax.nax");
-		( max).setUsername("nax");
 		PaymybuddyPasswordEncoder p = new PaymybuddyPasswordEncoder();
+
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("nax@nax.nax");
+		max.setUsername("nax");
 		max.setPassword(p.getPasswordEncoder().encode("nax"));
-		( max).setBalance(20f);
-		( max).setUserRole(UserRole.USER);
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
+		max.setEnabled(true);
 		
 		paymybuddyUserDetailsRepository.save( max);
 				
-	//	List<EbankAccount> found = findBankAccountByUserEmailService.findBankAccountByUserEmail("max@max.max");
-/*
-		paymybuddyUserDetailsRepository.delete( max);
+		List<EbankAccount> found = findBankAccountByUserEmailService.findBankAccountByUserEmail("nax@nax.nax");
+
 		bankAccountRepository.delete(found.get(0));
 		bankAccountRepository.delete(found.get(1));
-		*/
-	//	assertThat(found.get(0).getUser()).isEqualTo(max);
+
+		paymybuddyUserDetailsRepository.delete( max);
+		
+		assertThat(found.get(0).getUser()).isEqualTo(max);
 		
 	}
 
-	@Disabled
 	@Test
 	@WithMockUser(roles="USER")
 	public void givenMaxWithTwoBankAccount_whenFindBankAccountServiceIsCalled_thenItSHouldReturnAsizeTwoList() throws Exception {
 
-		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
-		( max).setEmail("nax@nax.nax");
-		( max).setUsername("max");
-		( max).setBalance(20f);
-		( max).setUserRole(UserRole.USER);
+		jdbcTemplate.execute("use testpaymybuddy;");
 		
-		List<EbankAccount> found = findBankAccountByUserEmailService.findBankAccountByUserEmail("max@max.max");
+		PaymybuddyPasswordEncoder p = new PaymybuddyPasswordEncoder();
+		
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("nax@nax.nax");
+		max.setUsername("nax");
+		max.setPassword(p.getPasswordEncoder().encode("nax"));
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
+		max.setEnabled(true);
 
-/*		paymybuddyUserDetailsRepository.delete( max);
+		
+		List<EbankAccount> found = findBankAccountByUserEmailService.findBankAccountByUserEmail("nax@nax.nax");
+
 		bankAccountRepository.delete(found.get(0));
 		bankAccountRepository.delete(found.get(1));
-*/
+
+		paymybuddyUserDetailsRepository.delete( max);
+
 		assertThat(found.size()).isEqualTo(2);
 
 	}

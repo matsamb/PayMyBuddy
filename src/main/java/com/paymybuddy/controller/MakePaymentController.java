@@ -70,7 +70,7 @@ public class MakePaymentController {
 	SaveTransferService saveTransferService;
 
 	@GetMapping("/makepayment")
-	public String getAddConnection(ViewPayment payment, Users euser, BindingResult bindingResult, Authentication auth,
+	public String getAddConnection(ViewPayment payment, Users euser/*, BindingResult bindingResult*/, Authentication auth,
 			Model model) {
 
 		LOGGER.info("get method");

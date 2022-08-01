@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.bankaccount.SaveBankAccountService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
+import com.paymybuddy.utils.WithMockPayMyBuddyUser;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -58,7 +59,7 @@ public class AddBankAccountControllerIT {
 	@WithMockUser(username="max"
 	, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
 	, authorities ={"USER","ADMIN"})
-	public void getAddconnection() throws Exception {
+	public void getAddbankaccount() throws Exception {
 		
 		mockMvc
 			.perform(get("/addbankaccount"))
@@ -69,15 +70,14 @@ public class AddBankAccountControllerIT {
 	
 	@Test
 //	@WithUserDetails("max@max.max")
-	@WithMockUser(username="max"
+	@WithMockPayMyBuddyUser(email="max",username="max"
 	, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
-	, authorities ={"USER","ADMIN"})
+	)
+	public void postAddBankAccountAndVerifySavePaymybuddyUserServiceUsedOnce() throws Exception {
 
-	public void postAddconnectionAndVerifySavePaymybuddyUserServiceUsedOnce() throws Exception {
-
-		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
-		max.setEmail("max");
-		max.setUsername("max");
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails("N_A");
+		//max.setEmail("max");
+		//max.setUsername("max");
 
 		mockMvc
 			.perform(post("/addbankaccount"))

@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -52,7 +53,9 @@ public class AddConnectionControllerIT {
 	}
 	
 	@Test
-	@WithUserDetails("max@max.max")
+	@WithMockUser(username="max"
+	, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
+	, authorities ={"USER","ADMIN"})
 	public void getAddconnection() throws Exception {
 		
 		mockMvc
@@ -63,7 +66,9 @@ public class AddConnectionControllerIT {
 	}
 	
 	@Test
-	@WithUserDetails("max@max.max")
+	@WithMockUser(username="max"
+	, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
+	, authorities ={"USER","ADMIN"})
 	public void postAddconnection() throws Exception {
 		
 		mockMvc

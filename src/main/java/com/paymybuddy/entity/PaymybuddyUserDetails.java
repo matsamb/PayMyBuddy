@@ -266,7 +266,10 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 		}		
 		
 		if(attributes!=null) {
-			copy.attributes=(HashMap<String, Object>) Map.copyOf(attributes);
+			copy.attributes.put("email", attributes.get("email"));
+			copy.attributes.put("name", attributes.get("name"));
+			copy.attributes.put("username", attributes.get("username"));
+
 		}
 
 			copy.mybankAccount=mybankAccount;
