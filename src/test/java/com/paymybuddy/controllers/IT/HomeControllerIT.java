@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,10 +45,10 @@ import com.paymybuddy.service.users.UserRole;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class HomeControllerIT {
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@MockBean
 	private FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService;
 
@@ -68,48 +69,42 @@ public class HomeControllerIT {
 
 	@MockBean
 	private FindTransactionByBankAccountService findTransactionByBankAccountService;
-	
+
 	@BeforeEach
 	public void setUp(WebApplicationContext context) {
 
-		mockMvc = MockMvcBuilders
-					.webAppContextSetup(context)
-					.defaultRequest(get("/home"))
-					.apply(springSecurity())	//.defaultRequest(get("/signin"))
-					.build();
-		
+		mockMvc = MockMvcBuilders.webAppContextSetup(context).defaultRequest(get("/home")).apply(springSecurity()) // .defaultRequest(get("/signin"))
+				.build();
+
 	}
-	
+
+	// @Disabled
 	@Test
-	@WithMockUser(username="max"
-	, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
-	, authorities ={"USER","ADMIN"})
-	public void getHome() throws Exception{
-		
-		BindingResult activePage = mock(BindingResult.class);
-		when(activePage.getFieldValue("page")).thenReturn(1);
-		
-		UserDetails max = new PaymybuddyUserDetails();
-			((PaymybuddyUserDetails) max).setEmail("max");
-			((PaymybuddyUserDetails) max).setUsername("max");
-			((PaymybuddyUserDetails) max).setBalance(20f);
-			((PaymybuddyUserDetails) max).setUserRole(UserRole.USER);
+	@WithMockUser(roles = "USER")
+	public void getHome() throws Exception {
+
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("max@max.max");
+		max.setUsername("max");
+		max.setEnabled(true);
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
 
 		List<PaymybuddyUserDetails> findConnectionList = new ArrayList<>();
-		findConnectionList.add((PaymybuddyUserDetails)max);
-		findConnectionList.add((PaymybuddyUserDetails)max);
+		findConnectionList.add(max);
+		findConnectionList.add(max);
 
-		when(findPaymybuddyUserDetailsService.findByEmail("max")).thenReturn((PaymybuddyUserDetails)max);
-		when(findFconnectionByPayerUsernameService.findByPayerUsername("max")).thenReturn((List<PaymybuddyUserDetails>)findConnectionList);
-		
+		when(findPaymybuddyUserDetailsService.findByEmail("max@max.max")).thenReturn(max);
+		when(findFconnectionByPayerUsernameService.findByPayerUsername("max")).thenReturn(findConnectionList);
+
 		Epayment payment = new Epayment();
 		payment.setAmount(5f);
 		List<Epayment> payPaymentList = new ArrayList<>();
 		payPaymentList.add(payment);
 		payPaymentList.add(payment);
-		
-		when(findPaymentByPayerService.findByPayer("max")).thenReturn(payPaymentList);
-		when(findPaymentByPayeeService.findByPayee("max")).thenReturn(payPaymentList);
+
+		when(findPaymentByPayerService.findByPayer("max@max.max")).thenReturn(payPaymentList);
+		when(findPaymentByPayeeService.findByPayee("max@max.max")).thenReturn(payPaymentList);
 
 		EbankAccount bankAccount = new EbankAccount();
 		bankAccount.setIban("man");
@@ -117,100 +112,25 @@ public class HomeControllerIT {
 		foundAccountList.add(bankAccount);
 		foundAccountList.add(bankAccount);
 
-		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max")).thenReturn(foundAccountList);
-		
+		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max@max.max")).thenReturn(foundAccountList);
+
 		Etransaction etransaction = new Etransaction();
 		etransaction.setBankAccount(bankAccount);
 		etransaction.setFromBank(false);
 		etransaction.setAmount(5f);
 		List<Etransaction> foundTransactionList = new ArrayList<>();
-		foundTransactionList.add(etransaction); 
-	
+		foundTransactionList.add(etransaction);
+
 		Etransaction etransaction2 = new Etransaction();
 		etransaction2.setBankAccount(bankAccount);
 		etransaction2.setFromBank(true);
 		etransaction2.setAmount(5f);
 		foundTransactionList.add(etransaction2);
-		
-		when(findTransactionByBankAccountService.findTransactionByBankAccount(bankAccount)).thenReturn(foundTransactionList);
-		
-		
-		mockMvc
-			.perform(get("/home"))
-			.andExpect(status().isOk())
-			;
+
+		when(findTransactionByBankAccountService.findTransactionByBankAccount(bankAccount))
+				.thenReturn(foundTransactionList);
+
+		mockMvc.perform(get("/home").param("page", "1")).andExpect(status().isOk());
 	}
-	
-/*	@Test
-	public void getHome2() throws Exception{
-		
-		BindingResult activePage = mock(BindingResult.class);
-		when(activePage.getFieldValue("page")).thenReturn(1);
-		
-		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
-		HashMap<String,Object> attributes = new HashMap<>();
-		max.setName("max"); 
-		attributes.put("email", "max");
-		max.setAttributes(attributes);	
-
-		//	max.setEmail("max");
-			max.setUsername("max");
-		//	max.setBalance(20f);
-			max.setUserRole(UserRole.USER);
-
-			PaymybuddyUserDetails nax = new PaymybuddyUserDetails();
-			HashMap<String,Object> nattributes = new HashMap<>();
-			nax.setName("nax"); 
-			nattributes.put("email", "nax");
-			nax.setAttributes(nattributes);	
-
-			//	max.setEmail("max");
-			nax.setUsername("nax");
-			//	max.setBalance(20f);
-			nax.setUserRole(UserRole.USER);
-
-			
-		List<PaymybuddyUserDetails> findConnectionList = new ArrayList<>();
-		findConnectionList.add(nax);
-		findConnectionList.add(nax); 
-
-		when(findOauth2PaymybuddyUserDetailsService.findByName("max")).thenReturn(max);
-		when(findPaymybuddyUserDetailsService.findByEmail("max")).thenReturn(max);
-		when(findFconnectionByPayerUsernameService.findByPayerUsername("max")).thenReturn(findConnectionList);
-		
-		Epayment payment = new Epayment();
-		payment.setAmount(5f);
-		List<Epayment> payPaymentList = new ArrayList<>();
-		payPaymentList.add(payment);
-		payPaymentList.add(payment);
-		
-		when(findPaymentByPayerService.findByPayer("max")).thenReturn(payPaymentList);
-		when(findPaymentByPayeeService.findByPayee("max")).thenReturn(payPaymentList);
-
-		EbankAccount bankAccount = new EbankAccount();
-		bankAccount.setIban("man");
-		List<EbankAccount> foundAccountList = new ArrayList<>();
-		foundAccountList.add(bankAccount);
-		foundAccountList.add(bankAccount);
-
-		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max")).thenReturn(foundAccountList);
-		
-		Etransaction etransaction = new Etransaction();
-		etransaction.setBankAccount(bankAccount);
-		etransaction.setFromBank(false);
-		etransaction.setAmount(5f);
-		List<Etransaction> foundTransactionList = new ArrayList<>();
-		foundTransactionList.add(etransaction);
-		etransaction.setFromBank(true);
-		foundTransactionList.add(etransaction);
-		
-		when(findTransactionByBankAccountService.findTransactionByBankAccount(bankAccount)).thenReturn(foundTransactionList);
-		
-		
-		mockMvc
-			.perform(get("/home").with(oauth2Login().oauth2User(max)))
-			.andExpect(status().isOk())
-			;
-	}*/
 
 }

@@ -37,24 +37,4 @@ public class PaymybuddyUserDetailsService implements UserDetailsService/*, OAuth
 		return new PaymybuddyUserDetails("N_A");
 	}
 
-/*	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-	
-		userRequest.getAccessToken().getScopes();
-		
-		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
-		String email = ((PaymybuddyUserDetails)currentAuth.getPrincipal()).getEmail();
-		PaymybuddyUserDetails loadedUser = usersRepository
-									.findByEmail(email)
-				.orElseThrow(() -> new UsernameNotFoundException(email + " not found"));
-		if (loadedUser.getEnabled() == true) {
-			OAuth2User currentUser = (OAuth2User) User.withUsername(loadedUser.getEmail()).password(loadedUser.getPassword())
-					.authorities(new SimpleGrantedAuthority("ROLE_USER")).build();
-
-			return currentUser;
-		}
-		return new PaymybuddyUserDetails("N_A");
-
-	}*/
-
 }

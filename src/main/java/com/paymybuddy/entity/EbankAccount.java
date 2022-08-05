@@ -44,6 +44,24 @@ public class EbankAccount implements Cloneable {
 	public void setUser(PaymybuddyUserDetails user) {
 		this.user = (PaymybuddyUserDetails) user.clone();
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(iban);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EbankAccount other = (EbankAccount) obj;
+		return Objects.equals(iban, other.iban);
+	}
+	
 	
 	public Object clone() {
 		EbankAccount copy = null;
@@ -61,5 +79,5 @@ public class EbankAccount implements Cloneable {
 		
 		return copy;
 	}
-	
+
 }

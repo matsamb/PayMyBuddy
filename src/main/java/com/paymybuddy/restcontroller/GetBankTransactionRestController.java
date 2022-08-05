@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymybuddy.dto.JsonBankAccount;
 import com.paymybuddy.dto.JsonTransaction;
 import com.paymybuddy.entity.Etransaction;
+import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.bankaccount.FindBankAccountByIbanService;
 import com.paymybuddy.service.transfer.FindAllTransactionsService;
 import com.paymybuddy.service.transfer.FindTransactionByBankAccountService;
@@ -29,12 +30,12 @@ public class GetBankTransactionRestController {
 
 	private static final Logger LOGGER = LogManager.getLogger("GetBankTransactionRestController");
 	
-	@Autowired
+/*	@Autowired
 	FindTransactionByBankAccountService findTransactionByBankAccountService;
 	
 	@Autowired
 	FindBankAccountByIbanService findBankAccountByIbanService;
-	
+*/	
 	@Autowired
 	FindAllTransactionsService findAllTransactionsService;
 	
@@ -42,7 +43,7 @@ public class GetBankTransactionRestController {
 	SaveTransferService saveTransferService;
 	
 	@GetMapping("/transactions")
-	public Iterable<JsonTransaction> getUnprocessedTransactions(){
+	public Iterable<JsonTransaction> getPendingTransactions(){
 		
 		List<JsonTransaction> JsonTransactionList = new ArrayList<>();
 
@@ -54,13 +55,16 @@ public class GetBankTransactionRestController {
 			JsonTransaction jsonTransaction = new JsonTransaction();
 			JsonBankAccount jsonbankAccount = new JsonBankAccount();
 			for(Etransaction e: findAllTransactionsService.findAllTransactions()) {
-				if(Objects.isNull(e.getBankTransactionId()) && e.getFromBank()==false) {
+				if(e.getBankTransactionId()==-3 && e.getFromBank()==false) {
 					jsonTransaction.setTransactionId(e.getTransactionId());
 					jsonTransaction.setAmount(e.getAmount());
-					jsonTransaction.setDescription(e.getDescription());
+					jsonTransaction.setDescription(e.getDescription()); 
 					
 					jsonbankAccount.setIban(e.getBankAccount().getIban());
-					jsonbankAccount.setUserEmail(e.getBankAccount().getUser().getEmail());
+					LOGGER.info("current bank account "+e.getBankAccount());
+					LOGGER.info("current user bank account "+e.getBankAccount().getUser());
+
+					jsonbankAccount.setUserEmail("buddyApp");
 					
 					jsonTransaction.setBankAccount((JsonBankAccount) jsonbankAccount.clone());
 					e.setBankTransactionId(-1);

@@ -20,12 +20,6 @@ import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 public class LoginController{
 	
 	private final Logger loginControllerLogger = LogManager.getLogger("LoginController");
-		
-	@Autowired
-	private SavePaymybuddyUserDetailsService SavePaymybuddyUserDetailsService;
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	
 	@GetMapping("/login")
 	public String login() {	
@@ -34,7 +28,7 @@ public class LoginController{
 	}
 
 	@PostMapping("/login")
-	public ModelAndView checkUsers(Boolean remember, BindingResult bindingResult) {	
+	public ModelAndView checkUsers(/*Boolean remember, BindingResult bindingResult*/) {	
 
 		return new ModelAndView("redirect:/home?size=3&page=1");
 	}

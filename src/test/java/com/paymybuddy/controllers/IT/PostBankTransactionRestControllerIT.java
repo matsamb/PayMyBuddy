@@ -1,4 +1,4 @@
-/*package com.paymybuddy.unit.controllers;
+package com.paymybuddy.controllers.IT;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,7 +36,7 @@ import com.paymybuddy.utils.WithMockPayMyBuddyUser;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PostBankTransactionRestControllerTest {
+public class PostBankTransactionRestControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -65,11 +65,12 @@ public class PostBankTransactionRestControllerTest {
 	}
 	
 	@Test
-	@WithMockPayMyBuddyUser( email="max", username = "max", password = "max")
-	public void postTest() throws Exception{
+	@WithMockUser(roles = "USER")
+	public void givenAnewTransaction_whenPosted_thenUserShouldBeSavedOnce() throws Exception{
 		
 		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
 		max.setEmail("max");
+		max.setName("max");
 		max.setUsername("max");
 		max.setBalance(20f);
 		max.setUserRole(UserRole.USER);
@@ -80,6 +81,7 @@ public class PostBankTransactionRestControllerTest {
 		ebank.setUser(max);
 		
 		Etransaction eTransaction = new Etransaction();
+		eTransaction.setTransactionId(1);
 		eTransaction.setBankAccount(ebank);
 		eTransaction.setAmount(16f);
 		eTransaction.setBankTransactionId(3);
@@ -92,15 +94,64 @@ public class PostBankTransactionRestControllerTest {
 		when(findTransactionByBankAccountService.findTransactionByBankAccount(ebank)).thenReturn(transactionList);
 		
 		mockMvc
-			.perform(post("/transactions"/*?iban=OK1154631111123651111965411*//*).with(httpBasic("max", "max"))
+			.perform(post("/transactions")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content("{\"transactionId\":43,\"description\":\"sturdy\",\"amount\":24.0,\"bankAccount\":{\"iban\":\"OK1154631111123651111965411\",\"userEmail\":\"max\"}}")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 		
 		verify(savePaymybuddyUserDetailsService, times(1))
-			.savePaymybuddyUserDetails(new PaymybuddyUserDetails());
+			.savePaymybuddyUserDetails(max);
+	}
+	
+	@Test
+	@WithMockUser(roles = "USER")
+	public void givenAnewTransaction_whenPosted_thenNewTransactionShouldBeSavedOnce() throws Exception{
+		
+		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
+		max.setEmail("max");
+		max.setName("max");
+		max.setUsername("max");
+		max.setBalance(20f);
+		max.setUserRole(UserRole.USER);
+
+		
+		EbankAccount ebank = new EbankAccount();
+		ebank.setIban("OK1154631111123651111965411");
+		ebank.setUser(max);
+		
+		Etransaction eTransaction = new Etransaction();
+		eTransaction.setTransactionId(1);
+		eTransaction.setBankAccount(ebank);
+		eTransaction.setAmount(16f);
+		eTransaction.setBankTransactionId(3);
+		eTransaction.setFromBank(false);
+		
+		Etransaction newTransaction = new Etransaction();
+		newTransaction.setDescription("sturdy");
+		newTransaction.setBankAccount(ebank);
+		newTransaction.setAmount(24f);
+		newTransaction.setFee(1.2f);
+		newTransaction.setBankTransactionId(43);
+		newTransaction.setFromBank(true);
+		
+
+		
+		List<Etransaction> transactionList = new ArrayList<>();
+		transactionList.add(eTransaction);
+		
+		when(findBankAccountByIbanService.findBankAccountByIban("OK1154631111123651111965411")).thenReturn(ebank);		
+		when(findTransactionByBankAccountService.findTransactionByBankAccount(ebank)).thenReturn(transactionList);
+		
+		mockMvc
+			.perform(post("/transactions")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"transactionId\":43,\"description\":\"sturdy\",\"amount\":24.0,\"bankAccount\":{\"iban\":\"OK1154631111123651111965411\",\"userEmail\":\"max\"}}")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk());
+		
+		verify(saveTransferService, times(1))
+			.saveTransfer(newTransaction);
 	}
 	
 }
-*/

@@ -1,4 +1,4 @@
-package com.paymybuddy.service;
+/*package com.paymybuddy.service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -52,4 +52,4 @@ public class RememberMeServiceImpl implements IrememberMeService {
 		
 	}
 
-}
+}*/

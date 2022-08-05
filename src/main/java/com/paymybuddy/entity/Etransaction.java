@@ -2,6 +2,7 @@ package com.paymybuddy.entity;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Objects;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -60,6 +61,26 @@ public class Etransaction implements Cloneable {
 		}
 
 		return copy;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(amount, bankAccount, bankTransactionId, description, fee, fromBank, transactionId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Etransaction other = (Etransaction) obj;
+		return Objects.equals(amount, other.amount) && Objects.equals(bankAccount, other.bankAccount)
+				&& Objects.equals(bankTransactionId, other.bankTransactionId)
+				&& Objects.equals(description, other.description) && Objects.equals(fee, other.fee)
+				&& Objects.equals(fromBank, other.fromBank) && Objects.equals(transactionId, other.transactionId);
 	}
 
 }

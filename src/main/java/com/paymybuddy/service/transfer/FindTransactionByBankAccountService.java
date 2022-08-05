@@ -43,10 +43,10 @@ public class FindTransactionByBankAccountService {
 					result.add(t);
 				}
 			}
-			if(result.isEmpty()) {
-				LOGGER.info("No transaction found for :"+a);
-				result.add(transaction);
-			}
+		}
+		if(result.isEmpty()) {
+			LOGGER.info("No transaction found for :"+a);
+			result.add(transaction);
 		}
 
 		return result;

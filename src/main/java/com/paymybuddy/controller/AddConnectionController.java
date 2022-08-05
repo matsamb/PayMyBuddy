@@ -44,9 +44,11 @@ public class AddConnectionController {
 
 	@Autowired
 	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
+	
+	
 
 	 AddConnectionController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
-			 ,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService	
+			 ,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService
 			 ,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService
 			 ){ 
 		 this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
@@ -70,7 +72,7 @@ public class AddConnectionController {
 		LOGGER.debug(viewConnection);
 		LOGGER.info("addconnection page displayed and connection posted");
 		LOGGER.debug(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
-		
+				
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			loggedUserEmail = auth.getName();
@@ -96,7 +98,10 @@ public class AddConnectionController {
 					.findByEmail(loggedUserEmail);
 
 			Set<PaymybuddyUserDetails> connectionSet = new HashSet<>();
+			if((currentUser.getMyconnection())!= null) {
 			connectionSet = currentUser.getMyconnection();
+			
+			}
 			LOGGER.debug(connectionSet);
 			connectionSet.add(userToAdd);
 

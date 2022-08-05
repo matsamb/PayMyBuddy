@@ -42,7 +42,7 @@ import lombok.AllArgsConstructor;
 
 @RolesAllowed("USER")
 @Controller
-@AllArgsConstructor
+//@AllArgsConstructor
 public class MakePaymentController {
 //TODO : payment status in case of new non validated connection
 
@@ -69,6 +69,22 @@ public class MakePaymentController {
 	@Autowired
 	SaveTransferService saveTransferService;
 
+	MakePaymentController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService
+			,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService
+			,FindBankAccountByUserEmailService findBankAccountByUserEmailService
+			,FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService
+			,SavePaymentService savePaymentServiceAtMakePaymentController
+			,SaveTransferService saveTransferService
+			,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService){
+		this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
+		this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
+		this.findBankAccountByUserEmailService = findBankAccountByUserEmailService;
+		this.findFconnectionByPayerUsernameService = findFconnectionByPayerUsernameService;
+		this.savePaymentServiceAtMakePaymentController = savePaymentServiceAtMakePaymentController;
+		this.saveTransferService = saveTransferService;
+		this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
+	}
+	
 	@GetMapping("/makepayment")
 	public String getAddConnection(ViewPayment payment, Users euser/*, BindingResult bindingResult*/, Authentication auth,
 			Model model) {
@@ -96,13 +112,13 @@ public class MakePaymentController {
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			email = foundOauth2.getEmail();
 
-			LOGGER.info(foundOauth2.getBalance());
-			if (Objects.isNull(foundOauth2.getBalance())) {
+			//LOGGER.info(foundOauth2.getBalance());
+			/*if (Objects.isNull(foundOauth2.getBalance())) {
 				available = 0.0f;
-			} else {
+			} else {*/
 				available = foundOauth2.getBalance();
 
-			}
+			//}
 
 		}
 
@@ -154,7 +170,7 @@ public class MakePaymentController {
 		Float transactionFee;
 		Float paymentFee;
 		Float feeRate = 0.05f;
-
+		
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			payerEmail = auth.getName();
@@ -167,13 +183,13 @@ public class MakePaymentController {
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			payerEmail = foundOauth2.getEmail();
 
-			LOGGER.info(foundOauth2.getBalance());
-			if (Objects.isNull(foundOauth2.getBalance())) {
+		//	LOGGER.info(foundOauth2.getBalance());
+		/*	if (Objects.isNull(foundOauth2.getBalance())) {
 				availableBalance = 0.0f;
-			} else {
+			} else {*/
 				availableBalance = foundOauth2.getBalance();
 
-			}
+			//}
 
 		}
 
@@ -205,6 +221,7 @@ public class MakePaymentController {
 				eTransaction.setDate(u);
 				eTransaction.setDescription(payment.getDescription());
 				eTransaction.setFromBank(false);
+				eTransaction.setBankTransactionId(-3);
 				eTransaction.setBankAccount(a);
 				LOGGER.info(eTransaction);
 
@@ -255,11 +272,11 @@ public class MakePaymentController {
 				LOGGER.info("payee's old balance " + updatePayeeBalance.getBalance());
 
 				Float oldPayeeBalance;
-				if (updatePayeeBalance.getBalance() == null) {
-					oldPayeeBalance = 0.0f;
-				} else {
+			//	if (updatePayeeBalance.getBalance() == null) {
+			//		oldPayeeBalance = 0.0f;
+			//	} else {
 					oldPayeeBalance = updatePayeeBalance.getBalance();
-				}
+			//	}
 
 				updatePayeeBalance.setBalance(oldPayeeBalance + ePayment.getAmount());
 				LOGGER.info("Updated payee's balance " + updatePayeeBalance);
@@ -282,7 +299,7 @@ public class MakePaymentController {
 		model.addAttribute("econnections", connectionList);
 		model.addAttribute("available", availableBalance);
 
-		System.out.println(payment.getDescription() + " and " + payment.getConnection());
+//		System.out.println(payment.getDescription() + " and " + payment.getConnection());
 
 		return result;
 

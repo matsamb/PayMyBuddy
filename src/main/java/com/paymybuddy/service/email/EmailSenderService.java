@@ -1,5 +1,7 @@
 package com.paymybuddy.service.email;
 
+import java.io.IOException;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -26,6 +28,8 @@ public class EmailSenderService implements IemailSenderService{
 	
 	@Autowired
 	JavaMailSenderImpl javaMailSender;
+
+	private static String sent;
 	
 	@Override
 	@Async
@@ -40,11 +44,18 @@ public class EmailSenderService implements IemailSenderService{
 			mimeMessageHelper.setText(email, true);
 			
 			javaMailSender.send(mimeMessage);
+			
+			sent = to+"_"+email;
 		
 		} catch (MessagingException m) {
 			logger.info("email not sent",m);
 		}
 
+	}
+	
+	public String getSent() {
+		return sent;
+		
 	}
 
 }

@@ -50,14 +50,16 @@ public class AddBankAccountController {
 
 	@Autowired
 	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
-
+	
 	AddBankAccountController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
 			 ,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService	
+			 ,SaveBankAccountService saveBankAccountService
 			 ,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService
 			 ){ 
 		 this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
 		 this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
 		 this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
+		 this.saveBankAccountService = saveBankAccountService;
 	 }
 
 	@GetMapping("/addbankaccount")
@@ -79,7 +81,7 @@ public class AddBankAccountController {
 		LOGGER.debug(viewIban);
 		LOGGER.info("addbankaccount page displayed and bank account posted");
 //		LOGGER.debug(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
-		
+				
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			loggedUserEmail = auth.getName();

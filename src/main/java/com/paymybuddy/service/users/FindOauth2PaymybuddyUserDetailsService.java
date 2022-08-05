@@ -25,7 +25,7 @@ public class FindOauth2PaymybuddyUserDetailsService {
 	public PaymybuddyUserDetails findByName(String nameNumber) {
 		List<PaymybuddyUserDetails> user = paymybuddyUserDetailsRepository.findAll();
 		PaymybuddyUserDetails result = new PaymybuddyUserDetails("N_A");
-
+int count = 0;
 		if (user.isEmpty()) {
 			LOGGER.info("User not found");
 
@@ -34,9 +34,13 @@ public class FindOauth2PaymybuddyUserDetailsService {
 				if (Objects.equals(p.getName(), nameNumber)) {
 					result = p;
 					LOGGER.info("User "+result.getEmail()+" found");
+					count++;
 				}
 			}
 
+		}
+		if (count>0) {
+			LOGGER.info("User not found");
 		}
 		return result;
 	}

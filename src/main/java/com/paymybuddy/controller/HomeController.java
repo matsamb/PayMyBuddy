@@ -67,13 +67,20 @@ public class HomeController {
 	@Autowired
 	FindTransactionByBankAccountService findTransactionByBankAccountService;
 
-	HomeController(FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService,
-			FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService,
-			FindPaymentByPayerService findPaymentByPayerService, FindPaymentByPayeeService findPaymentByPayeeService) {
+	HomeController(FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService
+			,FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService
+			,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService
+			,FindPaymentByPayerService findPaymentByPayerService
+			,FindBankAccountByUserEmailService findBankAccountByUserEmailService
+			,FindTransactionByBankAccountService findTransactionByBankAccountService
+			,FindPaymentByPayeeService findPaymentByPayeeService) {
+		this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
 		this.findFconnectionByPayerUsernameService = findFconnectionByPayerUsernameService;
 		this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
 		this.findPaymentByPayerService = findPaymentByPayerService;
 		this.findPaymentByPayeeService = findPaymentByPayeeService;
+		this.findBankAccountByUserEmailService = findBankAccountByUserEmailService;
+		this.findTransactionByBankAccountService = findTransactionByBankAccountService;
 	}
 
 	@RolesAllowed("USER")

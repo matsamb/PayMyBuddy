@@ -64,7 +64,7 @@ public class PostBankTransactionRestController {
 
 			LOGGER.info("IBAN: " + jsonTransaction.getBankAccount().getIban() + " found");
 
-			EbankAccount ebankAccount = findBankAccountByIbanService
+			EbankAccount ebankAccount = findBankAccountByIbanService 
 					.findBankAccountByIban(jsonTransaction.getBankAccount().getIban());
 			LOGGER.info("Found :" + ebankAccount);
 

@@ -54,7 +54,7 @@ public class MailActivationController {
 		}
 		
 		LOGGER.info("token " + token + " expired");
-		return "tokenexpired";
+		return "redirect:/tokenexpired";
 
 	}
 
