@@ -35,62 +35,64 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-//@Data
+@Data
 @AllArgsConstructor
 public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4692176737626072920L;	
-	
-	//@Pattern(regexp="[\\w-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}",
-	//        message="{invalid.email}")          
-	//@ValidatedEmail
+	private static final long serialVersionUID = 4692176737626072920L;
+
+	// @Pattern(regexp="[\\w-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}",
+	// message="{invalid.email}")
+	// @ValidatedEmail
 	@Id
 	private String email;
-	
+
 	private String username;
-	
+
 	private String name;
-	
+
 	private String password;
 
 	private Float balance;
-	
-	@ManyToMany (fetch = FetchType.EAGER)
-	@JoinTable(name = "myconnection"
-			,joinColumns = {@JoinColumn(name ="payer_email",referencedColumnName = "email")}
-			//,inverseJoinColumns = {@JoinColumn(name ="payee_email",referencedColumnName = "email")}
-			)
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "myconnection", joinColumns = {
+			@JoinColumn(name = "payer_email", referencedColumnName = "email") }
+	// ,inverseJoinColumns = {@JoinColumn(name ="payee_email",referencedColumnName =
+	// "email")}
+	)
 	private Set<PaymybuddyUserDetails> myconnection;
-	
-	@OneToMany (fetch = FetchType.EAGER, mappedBy = "user")
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<EbankAccount> mybankAccount;
-	
+
 	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
-	
+
 	private Boolean enabled;
-	
+
 	private Boolean locked;
 
 	private HashMap<String, Object> attributes;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-/*		if(userRole.name()!=null) {
-			return Collections.singletonList( new SimpleGrantedAuthority(userRole.name()));
-		}else {*/
-			return Collections.singletonList( new SimpleGrantedAuthority("USER"));
-		//}
-		
+		/*
+		 * if(userRole.name()!=null) { return Collections.singletonList( new
+		 * SimpleGrantedAuthority(userRole.name())); }else {
+		 */
+		return Collections.singletonList(new SimpleGrantedAuthority("USER"));
+		// }
+
 	}
 
 	public PaymybuddyUserDetails(String email) {
 		this.email = email;
 	}
-	
+
 	@Override
 	public String getPassword() {
 		return password;
@@ -122,7 +124,6 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 		return true;
 	}
 
-
 	@Override
 	public Map<String, Object> getAttributes() {
 		if (this.attributes == null) {
@@ -135,20 +136,18 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 		return Map.copyOf(attributes);
 	}
 
-
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this.hashCode() == obj.hashCode())
 			return true;
-	/*	if (obj== null)
-			return false;*/
+		/*
+		 * if (obj== null) return false;
+		 */
 		if (getClass() != obj.getClass())
 			return false;
 		PaymybuddyUserDetails other = (PaymybuddyUserDetails) obj;
@@ -177,31 +176,29 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	}
 
 	public Set<PaymybuddyUserDetails> getMyconnection() {
-/*		if(myconnection.isEmpty()==false) {
-		Set<PaymybuddyUserDetails> t = new HashSet<>();
-		t.addAll(Set.copyOf(myconnection));		
-		return t;
-		}else {*/
-			return myconnection;
-		//}
+		/*
+		 * if(myconnection.isEmpty()==false) { Set<PaymybuddyUserDetails> t = new
+		 * HashSet<>(); t.addAll(Set.copyOf(myconnection)); return t; }else {
+		 */
+		return myconnection;
+		// }
 	}
 
 	public void setMyconnection(Set<PaymybuddyUserDetails> myconnection) {
 		Set<PaymybuddyUserDetails> t = new HashSet<>();
-		t.addAll(Set.copyOf(myconnection));		
+		t.addAll(Set.copyOf(myconnection));
 		this.myconnection = t;
 	}
 
 	public Set<EbankAccount> getMybankAccount() {
-/*		if(mybankAccount.isEmpty()==false) {
-			Set<EbankAccount> t = new HashSet<>();
-			t.addAll(Set.copyOf(mybankAccount));	
-			return t;
-		}else {*/
-			return mybankAccount;
-			//return (HashSet<EbankAccount>)Set.copyOf(mybankAccount);
-		//}
-		
+		/*
+		 * if(mybankAccount.isEmpty()==false) { Set<EbankAccount> t = new HashSet<>();
+		 * t.addAll(Set.copyOf(mybankAccount)); return t; }else {
+		 */
+		return mybankAccount;
+		// return (HashSet<EbankAccount>)Set.copyOf(mybankAccount);
+		// }
+
 	}
 
 	public void setMybankAccount(Set<EbankAccount> mybankAccount) {
@@ -247,7 +244,12 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	}
 
 	public void setAttributes(HashMap<String, Object> attributes) {
-		this.attributes = /*(HashMap<String, Object>) *//*Map.copyOf(*/attributes/*)*/;
+		if (this.attributes == null) {
+			this.attributes = new HashMap<>();
+			this.attributes.put("email", attributes.get("email"));// = attributes;
+			this.attributes.put("name", attributes.get("name"));
+			this.attributes.put("username", attributes.get("username"));
+		}
 	}
 
 	@Override
@@ -257,25 +259,29 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 
 	public Object clone() {
 		PaymybuddyUserDetails copy = null;
-		
+
 		try {
 			copy = (PaymybuddyUserDetails) super.clone();
-			
-		}catch(CloneNotSupportedException e) {
+
+		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
-		}		
-		
-		if(attributes!=null) {
+		}
+
+		if (attributes != null) {
 			copy.attributes.put("email", attributes.get("email"));
 			copy.attributes.put("name", attributes.get("name"));
 			copy.attributes.put("username", attributes.get("username"));
 
 		}
 
-			copy.mybankAccount=mybankAccount;
-
-			copy.myconnection=myconnection;
+		if (mybankAccount != null) {
+			copy.mybankAccount = Set.copyOf(mybankAccount);
+		}
 		
+		if (myconnection != null) {
+			copy.myconnection = Set.copyOf(myconnection);
+		}
+
 		return copy;
 	}
 

@@ -73,6 +73,8 @@ public class OAuth2ControllerIT {
 		HashMap<String,Object> attributes = new HashMap<>();
 		max.setName("max"); 
 		attributes.put("email", "max");
+		attributes.put("name", "max");
+		attributes.put("username", "max");
 		max.setAttributes(attributes);	
 		
 		when(mockFindPaymybuddyUserDetailsService.findByEmail("max")).thenReturn(max);
@@ -91,6 +93,9 @@ public class OAuth2ControllerIT {
 		HashMap<String,Object> attributes = new HashMap<>();
 		max.setName("max"); 
 		attributes.put("email", "N_A");
+		attributes.put("name", "N_A");
+		attributes.put("username", "N_A");
+
 		max.setAttributes(attributes);	
 		
 		when(mockFindPaymybuddyUserDetailsService.findByEmail("N_A")).thenReturn(max);

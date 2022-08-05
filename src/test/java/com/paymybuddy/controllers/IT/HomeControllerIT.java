@@ -80,11 +80,13 @@ public class HomeControllerIT {
 
 	// @Disabled
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(username="max"
+	, password = "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q" //{Bcrypt}
+	, authorities ={"USER","ADMIN"})
 	public void getHome() throws Exception {
 
 		PaymybuddyUserDetails max = new PaymybuddyUserDetails();
-		max.setEmail("max@max.max");
+		max.setEmail("max");
 		max.setUsername("max");
 		max.setEnabled(true);
 		max.setBalance(20f);
@@ -94,7 +96,7 @@ public class HomeControllerIT {
 		findConnectionList.add(max);
 		findConnectionList.add(max);
 
-		when(findPaymybuddyUserDetailsService.findByEmail("max@max.max")).thenReturn(max);
+		when(findPaymybuddyUserDetailsService.findByEmail("max")).thenReturn(max);
 		when(findFconnectionByPayerUsernameService.findByPayerUsername("max")).thenReturn(findConnectionList);
 
 		Epayment payment = new Epayment();
@@ -103,8 +105,8 @@ public class HomeControllerIT {
 		payPaymentList.add(payment);
 		payPaymentList.add(payment);
 
-		when(findPaymentByPayerService.findByPayer("max@max.max")).thenReturn(payPaymentList);
-		when(findPaymentByPayeeService.findByPayee("max@max.max")).thenReturn(payPaymentList);
+		when(findPaymentByPayerService.findByPayer("max")).thenReturn(payPaymentList);
+		when(findPaymentByPayeeService.findByPayee("max")).thenReturn(payPaymentList);
 
 		EbankAccount bankAccount = new EbankAccount();
 		bankAccount.setIban("man");
@@ -112,7 +114,7 @@ public class HomeControllerIT {
 		foundAccountList.add(bankAccount);
 		foundAccountList.add(bankAccount);
 
-		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max@max.max")).thenReturn(foundAccountList);
+		when(findBankAccountByUserEmailService.findBankAccountByUserEmail("max")).thenReturn(foundAccountList);
 
 		Etransaction etransaction = new Etransaction();
 		etransaction.setBankAccount(bankAccount);
