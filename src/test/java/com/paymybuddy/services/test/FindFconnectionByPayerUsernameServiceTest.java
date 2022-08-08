@@ -67,7 +67,7 @@ public class FindFconnectionByPayerUsernameServiceTest {
 
 		List<PaymybuddyUserDetails> connectionList = new ArrayList<>();
 		connectionList.add(nax);
-		connectionList.add(sax);
+
 		
 		max.setMyconnection(connectionList.stream().collect(Collectors.toSet()));
 

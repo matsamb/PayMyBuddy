@@ -9,9 +9,11 @@ import javax.validation.constraints.NotNull;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class PersistentLogins {
 
 	@Id
@@ -25,6 +27,18 @@ public class PersistentLogins {
 	private String token; 
     
 	@NotNull
-	private Timestamp lastUsed;  
-	
+	private Timestamp lastUsed;
+
+	public Timestamp getLastUsed() {
+		if(lastUsed != null) {
+		return (Timestamp) lastUsed.clone();
+		}else {
+			return null;
+		}
+	}
+
+	public void setLastUsed(Timestamp lastUsed) {
+		this.lastUsed = (Timestamp) lastUsed.clone();
+	} 
+
 }

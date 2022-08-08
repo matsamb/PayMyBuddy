@@ -15,9 +15,9 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.paymybuddy.entity.GoogleOAuth2User;
+//import com.paymybuddy.entity.GoogleOAuth2User;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.repository.GoogleOAuth2UserRepository;
+//import com.paymybuddy.repository.GoogleOAuth2UserRepository;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
 import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
@@ -83,12 +83,12 @@ public class OAuth2Controller {
 			LOGGER.info("User not registered, loading into database initiated");
 
 			PaymybuddyUserDetails buddyUserDetails = new PaymybuddyUserDetails();
-			GoogleOAuth2User OauthUser = new GoogleOAuth2User();
+//			GoogleOAuth2User OauthUser = new GoogleOAuth2User();
 			LOGGER.info(buddyUserDetails);
 			LOGGER.info(email);
 			buddyUserDetails.setEmail(email);
-			OauthUser.setEmail(email);
-			buddyUserDetails.setName(authentication.getName());
+//			OauthUser.setEmail(email);
+			buddyUserDetails.setName(authentication.getPrincipal().getAttribute("name"));
 			LOGGER.info(buddyUserDetails);
 
 			PasswordEncoder passWordEncoder = paymybuddyPasswordEncoder.getPasswordEncoder();

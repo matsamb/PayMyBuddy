@@ -1,5 +1,6 @@
 package com.paymybuddy.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -20,7 +21,12 @@ import lombok.Setter;
 //@Component
 @Data
 @NoArgsConstructor
-public class EbankAccount implements Cloneable {
+public class EbankAccount implements Serializable, Cloneable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Pattern(regexp="[A-Z]{2}\\w{2} ?\\w{5} ?\\w{4} ?\\w{4} ?\\w{4} ?\\w{4} ?[\\w]{0,2}",//real with digit "/[A-Z]{2}\\d{2} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?[\\d]{0,2}/gm"
 	        message="{invalid.iban}")  
@@ -37,8 +43,11 @@ public class EbankAccount implements Cloneable {
 	}
 	
 	public PaymybuddyUserDetails getUser() {
-		//return (PaymybuddyUserDetails) user.clone();
-		return this.user;
+		if(user!=null) {
+		return (PaymybuddyUserDetails) this.user.clone();
+		}else {
+			return null;
+		}
 	}
 
 	public void setUser(PaymybuddyUserDetails user) {

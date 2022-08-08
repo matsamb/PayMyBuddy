@@ -34,8 +34,8 @@ public class MailActivationController {
 	@GetMapping("accountactivation") // ?token=<token>
 	public String updatePaymybuddyUserDetails(@RequestParam String token) {
 
-		ActivationToken activationToken = new ActivationToken();
-		activationToken = findActivationTokenByTokenService.findByToken(token);
+		ActivationToken activationToken /*= new ActivationToken();
+		activationToken*/ = findActivationTokenByTokenService.findByToken(token);
 		LOGGER.info("account validation token " + token + " found");
 		
 		Timestamp activationTime = new Timestamp(System.currentTimeMillis());
@@ -43,8 +43,8 @@ public class MailActivationController {
 		if (activationToken.getExpirationTime().compareTo(activationTime) > 0
 				&& activationToken.getUser().getEnabled() == false) {
 			
-			PaymybuddyUserDetails updatedPaymybuddyUserDetails = new PaymybuddyUserDetails();
-			updatedPaymybuddyUserDetails = activationToken.getUser();
+			PaymybuddyUserDetails updatedPaymybuddyUserDetails /*= new PaymybuddyUserDetails();
+			updatedPaymybuddyUserDetails*/ = activationToken.getUser();
 			updatedPaymybuddyUserDetails.setEnabled(true);
 			
 			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(updatedPaymybuddyUserDetails);

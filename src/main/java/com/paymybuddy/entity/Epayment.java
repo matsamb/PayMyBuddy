@@ -16,39 +16,49 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-//@AllArgsConstructor
 @NoArgsConstructor
-public class Epayment {
-
+public class Epayment implements Cloneable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	Integer id;
-	
-	@Column(name="payer_email")
-	String payerEmail;
-	
-	@Column(name="payee_email")
-	String payeeEmail;
-	
-	String description;
-	
-	Float amount;
-	
-	Float fee;
-	
-	Timestamp paymentDate;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@Column(name = "payer_email")
+	private String payerEmail;
+
+	@Column(name = "payee_email")
+	private String payeeEmail;
+
+	private String description;
+
+	private Float amount;
+
+	private Float fee;
+
+	private Timestamp paymentDate;
+
 	public Epayment(String payerEmail) {
 		this.payerEmail = payerEmail;
 	}
-	
+
 	public Epayment(String payeeEmail, String description, Float amount) {
 		this.payeeEmail = payeeEmail;
 		this.description = description;
 		this.amount = amount;
 	}
-	
+
+	public Timestamp getPaymentDate() {
+		if (paymentDate != null) {
+			return (Timestamp) paymentDate.clone();
+		} else {
+			return null;
+		}
+	}
+
+	public void setPaymentDate(Timestamp paymentDate) {
+		this.paymentDate = (Timestamp) paymentDate.clone();
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(amount, description, fee, id, payeeEmail, payerEmail);
@@ -68,20 +78,17 @@ public class Epayment {
 				&& Objects.equals(payeeEmail, other.payeeEmail) && Objects.equals(payerEmail, other.payerEmail);
 	}
 
-	
 	public Object clone() {
 		Epayment copy = null;
-		
+
 		try {
 			copy = (Epayment) super.clone();
-			
-		}catch(CloneNotSupportedException e) {
+
+		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
-		}	
-		copy.setPaymentDate((Timestamp)paymentDate.clone());
+		}
+		copy.paymentDate = (Timestamp) paymentDate.clone();
 		return copy;
 	}
 
-	
-	
 }

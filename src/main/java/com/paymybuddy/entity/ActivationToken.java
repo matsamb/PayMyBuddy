@@ -2,6 +2,7 @@ package com.paymybuddy.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -37,13 +38,51 @@ public class ActivationToken {
 	private Timestamp expirationTime;
 	
 	public ActivationToken(String token, PaymybuddyUserDetails user, Timestamp startTime) {
-		super();
 		
 		this.token = token;
-		this.user = user;
-		this.startTime = startTime;
+		this.user = (PaymybuddyUserDetails) user.clone();
+		this.startTime = (Timestamp) startTime.clone();
 	}
-	
-	
+
+	public PaymybuddyUserDetails getUser() {
+		return (PaymybuddyUserDetails) user.clone();
+	}
+
+	public void setUser(PaymybuddyUserDetails user) {
+		this.user = (PaymybuddyUserDetails) user.clone();
+	}
+
+	public Timestamp getStartTime() {
+		return (Timestamp) startTime.clone();
+	}
+
+	public void setStartTime(Timestamp startTime) {
+		this.startTime = (Timestamp) startTime.clone();
+	}
+
+	public Timestamp getExpirationTime() {
+		return (Timestamp) expirationTime.clone();
+	}
+
+	public void setExpirationTime(Timestamp expirationTime) {
+		this.expirationTime = (Timestamp) expirationTime.clone();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(token, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ActivationToken other = (ActivationToken) obj;
+		return Objects.equals(token, other.token) && Objects.equals(user, other.user);
+	}
 
 }

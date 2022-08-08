@@ -91,7 +91,7 @@ public class OAuth2ControllerIT {
 			 	
 		PaymybuddyUserDetails max = new PaymybuddyUserDetails("N_A");
 		HashMap<String,Object> attributes = new HashMap<>();
-		max.setName("max"); 
+		max.setName("N_A"); 
 		attributes.put("email", "N_A");
 		attributes.put("name", "N_A");
 		attributes.put("username", "N_A");

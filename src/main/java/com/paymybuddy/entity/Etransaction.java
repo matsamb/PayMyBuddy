@@ -50,6 +50,26 @@ public class Etransaction implements Cloneable {
 		this.bankTransactionId = bankTransactionId;
 	}
 
+	public EbankAccount getBankAccount() {
+		return (EbankAccount) bankAccount.clone();
+	}
+
+	public void setBankAccount(EbankAccount bankAccount) {
+		this.bankAccount = (EbankAccount) bankAccount.clone();
+	}
+
+	public Timestamp getDate() {
+		if (date != null) {
+			return (Timestamp) date.clone();
+		} else {
+			return null;
+		}
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = (Timestamp) date.clone();
+	}
+
 	public Object clone() {
 		Etransaction copy = null;
 
@@ -59,6 +79,9 @@ public class Etransaction implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
+
+		copy.date = (Timestamp) date.clone();
+		copy.bankAccount = (EbankAccount) bankAccount.clone();
 
 		return copy;
 	}

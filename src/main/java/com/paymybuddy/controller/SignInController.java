@@ -101,7 +101,7 @@ public class SignInController {
 			
 			ActivationToken activationToken = new ActivationToken();
 			String token = UUID.randomUUID().toString();
-			int tokenMinuteLength = 1;
+			long tokenMinuteLength = 1;
 			Timestamp startTime = new Timestamp(System.currentTimeMillis());
 			Timestamp endTime = new Timestamp(System.currentTimeMillis()+tokenMinuteLength*60*1000);
 			activationToken.setStartTime(startTime);

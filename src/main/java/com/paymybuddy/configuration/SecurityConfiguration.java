@@ -30,21 +30,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	PaymybuddyUserDetailsService paymybuddyUserDetailsService;
 
-	JdbcDaoImpl jdbcDaoImpl;
-
 	@Override
 	public void configure(HttpSecurity httpSecurity) throws Exception {
 
-		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/admin").hasAnyRole("ADMIN").antMatchers("/user")
+		httpSecurity.csrf().disable()
+				.authorizeRequests().antMatchers("/admin").hasAnyRole("ADMIN").antMatchers("/user")
 				.hasAnyRole("ADMIN", "USER")
-				.antMatchers(/*"/transactions",*/"/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
+				.antMatchers("/resources/**", "/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
 				.and()
 				.rememberMe()
-				.tokenRepository(persistentTokenRepository())
-				//.userDetailsService(paymybuddyUserDetailsService)
-				.key("macrokey")
-				.tokenValiditySeconds(120)//.tokenValiditySeconds(60)
+				.userDetailsService(paymybuddyUserDetailsService)
 				.and() 
 				.formLogin()
 					.loginPage("/login") 
@@ -58,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				.httpBasic()
 				.and()
-				.logout()//.logoutUrl("/logout")
+				.logout()
 				.logoutSuccessUrl("/login?logout=true")
 				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(false).permitAll()

@@ -1,4 +1,4 @@
-package com.paymybuddy.entity;
+/*package com.paymybuddy.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public class GoogleOAuth2User implements OAuth2User {
 
 	public void setId(String id) {
 		this.id = id;
-	}*/
+	}*//*
 
 	@Override
 	public String getName() {
@@ -78,5 +78,6 @@ public class GoogleOAuth2User implements OAuth2User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}*/
+	}*//*
 }
+*/

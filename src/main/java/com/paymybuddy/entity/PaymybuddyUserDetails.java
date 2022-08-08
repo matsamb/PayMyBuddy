@@ -36,13 +36,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4692176737626072920L;
+	private static final long serialVersionUID = 1L;
 
 	// @Pattern(regexp="[\\w-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}",
 	// message="{invalid.email}")
@@ -141,13 +141,13 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 		return this.name;
 	}
 
-	@Override
+/*	@Override
 	public boolean equals(Object obj) {
 		if (this.hashCode() == obj.hashCode())
 			return true;
-		/*
-		 * if (obj== null) return false;
-		 */
+		
+		if (Objects.isNull(obj)) return false;
+		
 		if (getClass() != obj.getClass())
 			return false;
 		PaymybuddyUserDetails other = (PaymybuddyUserDetails) obj;
@@ -157,7 +157,7 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	@Override
 	public int hashCode() {
 		return Objects.hash(email);
-	}
+	}*/
 
 	public String getEmail() {
 		return email;
@@ -176,12 +176,11 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	}
 
 	public Set<PaymybuddyUserDetails> getMyconnection() {
-		/*
-		 * if(myconnection.isEmpty()==false) { Set<PaymybuddyUserDetails> t = new
-		 * HashSet<>(); t.addAll(Set.copyOf(myconnection)); return t; }else {
-		 */
-		return myconnection;
-		// }
+		if(myconnection != null) {
+		return Set.copyOf(myconnection);
+		}else {
+			return null;
+		}
 	}
 
 	public void setMyconnection(Set<PaymybuddyUserDetails> myconnection) {
@@ -191,14 +190,12 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	}
 
 	public Set<EbankAccount> getMybankAccount() {
-		/*
-		 * if(mybankAccount.isEmpty()==false) { Set<EbankAccount> t = new HashSet<>();
-		 * t.addAll(Set.copyOf(mybankAccount)); return t; }else {
-		 */
-		return mybankAccount;
-		// return (HashSet<EbankAccount>)Set.copyOf(mybankAccount);
-		// }
 
+		if(mybankAccount != null) {
+		return Set.copyOf(mybankAccount);
+		}else {
+			return null;
+		}
 	}
 
 	public void setMybankAccount(Set<EbankAccount> mybankAccount) {
@@ -283,6 +280,24 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 		}
 
 		return copy;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, name, username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PaymybuddyUserDetails other = (PaymybuddyUserDetails) obj;
+		return Objects.equals(email, other.email) && Objects.equals(name, other.name)
+				&& Objects.equals(username, other.username);
 	}
 
 }

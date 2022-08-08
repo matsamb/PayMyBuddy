@@ -1,35 +1,29 @@
 package com.paymybuddy.service.email;
 
-import java.io.IOException;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.Name;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-
 @Service
-@AllArgsConstructor
 public class EmailSenderService implements IemailSenderService{
 
 	private static Logger logger = LogManager.getLogger("EmailSenderService");
 	
 	@Autowired
-	JavaMailSenderImpl javaMailSender;
+	private JavaMailSenderImpl javaMailSender;
 
-	private static String sent;
+	public String sent;
+	
+	EmailSenderService(JavaMailSenderImpl javaMailSender){
+		this.javaMailSender = javaMailSender;
+	}
 	
 	@Override
 	@Async
@@ -54,8 +48,7 @@ public class EmailSenderService implements IemailSenderService{
 	}
 	
 	public String getSent() {
-		return sent;
-		
+		return sent;		
 	}
 
 }
