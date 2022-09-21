@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,12 +27,11 @@ import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.PaymybuddyPasswordEncoder;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
-import com.paymybuddy.utils.WithMockPayMyBuddyUser;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OAuth2ControllerIT {
-//TODO
+
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -53,15 +51,11 @@ public class OAuth2ControllerIT {
 
 	@BeforeEach
 	public void setUp(WebApplicationContext context) {
-		
-	/*	mockMvc = MockMvcBuilders
-					.webAppContextSetup(context)
-					.build();*/
-		
+
 		mockMvc = MockMvcBuilders
 					.webAppContextSetup(context)
 					.defaultRequest(get("/signin"))
-					.apply(springSecurity())	//.defaultRequest(get("/signin"))
+					.apply(springSecurity())
 					.build();
 		
 	}

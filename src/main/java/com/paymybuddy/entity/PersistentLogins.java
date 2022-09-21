@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

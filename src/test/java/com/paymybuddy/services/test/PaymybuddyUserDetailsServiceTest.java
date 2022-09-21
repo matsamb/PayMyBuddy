@@ -20,7 +20,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.repository.PaymybuddyUserDetailsRepository;
-import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.UserRole;
 
@@ -110,6 +109,7 @@ public class PaymybuddyUserDetailsServiceTest {
 		userList.add(nax);
 		
 		UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class,() -> {
+					@SuppressWarnings("unused")
 					UserDetails result = paymybuddyUserDetailsService.loadUserByUsername("max");
 				});
 

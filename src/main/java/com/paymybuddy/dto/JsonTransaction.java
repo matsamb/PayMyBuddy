@@ -2,8 +2,6 @@ package com.paymybuddy.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.paymybuddy.entity.EbankAccount;
-
 import lombok.Data;
 
 @Component

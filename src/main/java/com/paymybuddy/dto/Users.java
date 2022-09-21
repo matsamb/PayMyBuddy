@@ -1,6 +1,5 @@
 package com.paymybuddy.dto;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;

@@ -2,7 +2,6 @@ package com.paymybuddy.controllers.IT;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,11 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -73,19 +68,9 @@ public class AddBankAccountControllerIT {
 	public void postAddBankAccountAndVerifySavePaymybuddyUserServiceUsedOnce() throws Exception {
 
 		PaymybuddyUserDetails max = new PaymybuddyUserDetails("N_A");
-		//max.setEmail("max");
-		//max.setUsername("max");
 		
 		mockMvc
-			.perform(post("/addbankaccount")
-/*					.param("country", "OP")
-					.param("controlkey", "45")
-					.param("bankcode", "31654")
-					.param("branch", "5478")
-					.param("accountnumberA", "6325")
-					.param("accountnumberB", "9731")
-					.param("accountnumberC", "5726")
-					.param("accountkey", "31")*/)
+			.perform(post("/addbankaccount"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/addbankaccount?success=true"));
 		

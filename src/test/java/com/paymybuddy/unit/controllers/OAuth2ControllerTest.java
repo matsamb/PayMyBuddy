@@ -6,24 +6,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.paymybuddy.controller.OAuth2Controller;
-import com.paymybuddy.utils.WithMockPayMyBuddyUser;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OAuth2ControllerTest {
-//TODO
+
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -40,7 +37,7 @@ public class OAuth2ControllerTest {
 		mockMvc = MockMvcBuilders
 					.webAppContextSetup(context)
 					.defaultRequest(get("/oauth2"))
-					.apply(springSecurity())	//.defaultRequest(get("/signin"))
+					.apply(springSecurity())
 					.build();
 		
 	}

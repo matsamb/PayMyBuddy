@@ -2,23 +2,8 @@ package com.paymybuddy.utils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.HashMap;
-import java.util.Set;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
-import com.paymybuddy.entity.EbankAccount;
-import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.users.UserRole;
 
 
@@ -41,11 +26,5 @@ public @interface WithMockPayMyBuddyUser{
 	boolean enabled() default true;
 	
 	boolean locked() default false;
-	
-	//HashSet<PaymybuddyUserDetails> myconnection() default f;
-	
-	//HashSet<EbankAccount> mybankAccount() default d;
-	
-	//HashMap<String, Object> attributes() default a;
 
 }

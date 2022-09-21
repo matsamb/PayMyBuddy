@@ -9,19 +9,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymybuddy.dto.JsonTransaction;
-import com.paymybuddy.dto.ViewPayment;
 import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.Etransaction;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.service.bankaccount.FindBankAccountByIbanService;
-import com.paymybuddy.service.bankaccount.SaveBankAccountService;
 import com.paymybuddy.service.transfer.FindTransactionByBankAccountService;
 import com.paymybuddy.service.transfer.SaveTransferService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
@@ -29,7 +25,6 @@ import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 @RestController
 @RolesAllowed("USER")
 public class PostBankTransactionRestController {
-//todo : upadate balance for inbound payment
 
 	private static final Logger LOGGER = LogManager.getLogger("PostBankTransactionRestController");
 
@@ -59,8 +54,6 @@ public class PostBankTransactionRestController {
 			return ResponseEntity.noContent().build();
 		} else if (findBankAccountByIbanService.findBankAccountByIban(jsonTransaction.getBankAccount().getIban())
 				.getUser().getEmail() != "N_A") {
-
-//TODO : check if transaction not all ready loaded
 
 			LOGGER.info("IBAN: " + jsonTransaction.getBankAccount().getIban() + " found");
 

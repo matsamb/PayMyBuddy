@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.sql.Timestamp;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,13 +33,10 @@ import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@WebMvcTest(SignInController.class)
 class SignInControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
-	/*@Autowired
-	private SignInController signInController;*/
 
 	@MockBean
 	private SavePaymybuddyUserDetailsService mockSavePaymybuddyUserDetailsService;
@@ -63,7 +59,7 @@ class SignInControllerIT {
 	@Test
 	@WithMockUser(username="max"
 	, password = /*{Bcrypt}*/ "$2a$10$NXBSSouHIS/yq0NQCrFADuInO6IqS0XYNVmu7kfl.zTDrzH93gI4q"
-	, authorities ="USER")//"USER","ADMIN"})
+	, authorities ="USER")
 	public void GivenNewUserMaxWithPassWordm456_WhenPostingSignIn_ThenUserDetailsShouldBeSavedOnce() throws Exception {
 
 		BindingResult result = mock(BindingResult.class);
@@ -77,13 +73,7 @@ class SignInControllerIT {
 		when(result.getFieldValue("password")).thenReturn(neweuser.getPassword());
 		
 		UserDetails max = new PaymybuddyUserDetails();
-	/*	((PaymybuddyUserDetails) max).setEmail("max");
-		((PaymybuddyUserDetails) max).setUsername("max");
-		((PaymybuddyUserDetails) max).setPassword("m456");
-		((PaymybuddyUserDetails) max).setBalance(0.0f);
-		((PaymybuddyUserDetails) max).setUserRole(UserRole.USER);
-		((PaymybuddyUserDetails) max).setEnabled(true);*/
-		
+
 		ActivationToken token = new ActivationToken();
 		Timestamp startTime = new Timestamp(System.currentTimeMillis());
 		Timestamp endTime = new Timestamp(System.currentTimeMillis()+60*1000);
@@ -96,7 +86,6 @@ class SignInControllerIT {
 				.loadUserByUsername("max"))
 			.thenReturn(max);
 		
-		// password : m456
 		when(mockPaymybuddyPasswordEncoder.getPasswordEncoder())
 		.thenReturn(mockPasswordEncoder);
 		
@@ -109,9 +98,6 @@ class SignInControllerIT {
 			.andExpect(view().name("redirect:/signinconfirm"));
 
 		verify(mockSavePaymybuddyUserDetailsService, times(1)).savePaymybuddyUserDetails((PaymybuddyUserDetails)max);
-		//verify(mockSaveActivationTokenService, times(1)).saveActivationToken(token);
-		//verify(mockEmailSenderService, times(1)).send(null,message);
-
 		
 	}
 

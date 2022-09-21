@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.paymybuddy</groupId>
 	<artifactId>paymybuddy</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<name>PayMyBuddy</name>
 	<description>money transaction</description>
 	<properties>
@@ -98,16 +98,7 @@
 	</dependencies>
 
 	<profiles>
-		<!-- 		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<build.profile.id>dev</build.profile.id>
-				<profileActive>dev</profileActive>
-			</properties>
-		</profile> -->
+
 		<profile>
 			<id>test</id>
 
@@ -193,17 +184,6 @@
 						<goals>
 							<goal>test</goal>
 						</goals>
-
-					<!-- 	<phase>integration-test</phase>
-						<configuration>
-							<excludes>
-								<exclude>*none</exclude>
-
-							</excludes>
-							<includes>
-								<include>**/*IT.java</include>
-							</includes>
-						</configuration> -->
 					</execution>
 				</executions>
 			</plugin>
@@ -211,7 +191,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<!--		<version>3.0.0-M7</version>  -->
 				<dependencies>
 					<dependency>
 						<groupId>org.junit.platform</groupId>
@@ -245,22 +224,6 @@
 				</configuration>
 				<version>0.8.8</version>
 				<executions>
-
-					<!--			<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-
-					<execution>
-						<id>jacoco-report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-
-					</execution> -->
-
 					<!-- Unit coverage -->
 					<execution>
 						<id>before-unit-tests</id>

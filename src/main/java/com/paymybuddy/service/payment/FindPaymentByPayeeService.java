@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.entity.Epayment;
 import com.paymybuddy.repository.PaymentRepository;
 
-import lombok.AllArgsConstructor;
-
 @Service
-//@AllArgsConstructor
 public class FindPaymentByPayeeService {
 	
 	private static final Logger LOGGER = LogManager.getLogger("FindPaymentByPayeeService");

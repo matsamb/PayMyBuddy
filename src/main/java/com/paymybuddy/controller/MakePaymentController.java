@@ -2,7 +2,6 @@ package com.paymybuddy.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,9 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.paymybuddy.dto.Users;
 import com.paymybuddy.dto.ViewPayment;
-import com.paymybuddy.dto.ViewTransaction;
 import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.Epayment;
 import com.paymybuddy.entity.Etransaction;
@@ -38,13 +33,9 @@ import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 
-import lombok.AllArgsConstructor;
-
 @RolesAllowed("USER")
 @Controller
-//@AllArgsConstructor
 public class MakePaymentController {
-//TODO : payment status in case of new non validated connection
 
 	private final static Logger LOGGER = LogManager.getLogger("MakePaymentController");
 
@@ -69,13 +60,12 @@ public class MakePaymentController {
 	@Autowired
 	SaveTransferService saveTransferService;
 
-	MakePaymentController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService
-			,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService
-			,FindBankAccountByUserEmailService findBankAccountByUserEmailService
-			,FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService
-			,SavePaymentService savePaymentServiceAtMakePaymentController
-			,SaveTransferService saveTransferService
-			,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService){
+	MakePaymentController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService,
+			SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService,
+			FindBankAccountByUserEmailService findBankAccountByUserEmailService,
+			FindFconnectionByPayerUsernameService findFconnectionByPayerUsernameService,
+			SavePaymentService savePaymentServiceAtMakePaymentController, SaveTransferService saveTransferService,
+			FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService) {
 		this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
 		this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
 		this.findBankAccountByUserEmailService = findBankAccountByUserEmailService;
@@ -84,14 +74,12 @@ public class MakePaymentController {
 		this.saveTransferService = saveTransferService;
 		this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
 	}
-	
+
 	@GetMapping("/makepayment")
-	public String getAddConnection(ViewPayment payment, Users euser/*, BindingResult bindingResult*/, Authentication auth,
-			Model model) {
+	public String getAddConnection(ViewPayment payment, Users euser/* , BindingResult bindingResult */,
+			Authentication auth, Model model) {
 
 		LOGGER.info("get method");
-
-		// Epayment ePayment = new Epayment();
 
 		List<PaymybuddyUserDetails> connectionList = new ArrayList<>();
 		List<EbankAccount> bankAccountList = new ArrayList<>();
@@ -112,14 +100,7 @@ public class MakePaymentController {
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			email = foundOauth2.getEmail();
 
-			//LOGGER.info(foundOauth2.getBalance());
-			/*if (Objects.isNull(foundOauth2.getBalance())) {
-				available = 0.0f;
-			} else {*/
-				available = foundOauth2.getBalance();
-
-			//}
-
+			available = foundOauth2.getBalance();
 		}
 
 		if (findFconnectionByPayerUsernameService.findByPayerUsername(email).get(0).getEmail() == "N_A") {
@@ -151,7 +132,7 @@ public class MakePaymentController {
 	@PostMapping("/makepayment")
 	public ModelAndView createConnection(ViewPayment payment, Users euser, BindingResult bindingResult,
 			Authentication auth, Model model) {
-		// LOGGER.info("post method transaction "+viewTransaction);
+
 		LOGGER.info("post method payment " + payment);
 		LOGGER.info("post method");
 
@@ -170,7 +151,7 @@ public class MakePaymentController {
 		Float transactionFee;
 		Float paymentFee;
 		Float feeRate = 0.05f;
-		
+
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			payerEmail = auth.getName();
@@ -183,28 +164,13 @@ public class MakePaymentController {
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			payerEmail = foundOauth2.getEmail();
 
-		//	LOGGER.info(foundOauth2.getBalance());
-		/*	if (Objects.isNull(foundOauth2.getBalance())) {
-				availableBalance = 0.0f;
-			} else {*/
-				availableBalance = foundOauth2.getBalance();
-
-			//}
+			availableBalance = foundOauth2.getBalance();
 
 		}
 
 		PaymybuddyUserDetails payer = findPaymybuddyUserDetailsService.findByEmail(payerEmail);
 		LOGGER.info("Payer details " + payer);
 
-		/*
-		 * if
-		 * (findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail).get(0)
-		 * .getEmail()=="N_A") { LOGGER.info(payerEmail+" not registered"); result = new
-		 * ModelAndView("redirect:/makepayment?error=true"); } else if
-		 * (findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail).get
-		 * (0).getIban() == "N_A") { LOGGER.info(payerEmail + " has no bank account");
-		 * result = new ModelAndView("redirect:/makepayment?error=true"); } else {
-		 */
 		LOGGER.info(payerEmail + " registered");
 		connectionList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail));
 		bankAccountList.addAll(findBankAccountByUserEmailService.findBankAccountByUserEmail(payerEmail));
@@ -272,11 +238,7 @@ public class MakePaymentController {
 				LOGGER.info("payee's old balance " + updatePayeeBalance.getBalance());
 
 				Float oldPayeeBalance;
-			//	if (updatePayeeBalance.getBalance() == null) {
-			//		oldPayeeBalance = 0.0f;
-			//	} else {
-					oldPayeeBalance = updatePayeeBalance.getBalance();
-			//	}
+				oldPayeeBalance = updatePayeeBalance.getBalance();
 
 				updatePayeeBalance.setBalance(oldPayeeBalance + ePayment.getAmount());
 				LOGGER.info("Updated payee's balance " + updatePayeeBalance);
@@ -294,12 +256,8 @@ public class MakePaymentController {
 
 		result = new ModelAndView("redirect:/makepayment?success=true");
 
-//		}
-
 		model.addAttribute("econnections", connectionList);
 		model.addAttribute("available", availableBalance);
-
-//		System.out.println(payment.getDescription() + " and " + payment.getConnection());
 
 		return result;
 

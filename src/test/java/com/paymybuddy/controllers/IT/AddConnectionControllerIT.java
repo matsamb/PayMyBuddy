@@ -10,9 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -57,7 +54,7 @@ public class AddConnectionControllerIT {
 		mockMvc = MockMvcBuilders
 					.webAppContextSetup(context)
 					.defaultRequest(get("/addconnection"))
-					.apply(springSecurity())	//.defaultRequest(get("/signin"))
+					.apply(springSecurity())
 					.build();
 		
 	}
@@ -112,10 +109,7 @@ public class AddConnectionControllerIT {
 		max.setUsername("nax");
 		max.setBalance(20f);
 		max.setUserRole(UserRole.USER);
-/*		List<PaymybuddyUserDetails> maxset = new ArrayList<>();
-		maxset.add(nax);
-		max.setMyconnection(maxset.stream().collect(Collectors.toSet()));
-*/		
+		
 		List<EbankAccount> bankset = new ArrayList<>();
 		EbankAccount maxbank = new EbankAccount("AP1154631111123651111965411");
 		maxbank.setUser(max);

@@ -7,9 +7,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,24 +16,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Pattern;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.thymeleaf.expression.Maps;
-
 import com.paymybuddy.service.users.UserRole;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Data
-//@AllArgsConstructor
 public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable {
 
 	/**
@@ -44,9 +35,6 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	 */
 	private static final long serialVersionUID = 1L;
 
-	// @Pattern(regexp="[\\w-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}",
-	// message="{invalid.email}")
-	// @ValidatedEmail
 	@Id
 	private String email;
 
@@ -61,8 +49,6 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "myconnection", joinColumns = {
 			@JoinColumn(name = "payer_email", referencedColumnName = "email") }
-	// ,inverseJoinColumns = {@JoinColumn(name ="payee_email",referencedColumnName =
-	// "email")}
 	)
 	private Set<PaymybuddyUserDetails> myconnection;
 
@@ -80,12 +66,8 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		/*
-		 * if(userRole.name()!=null) { return Collections.singletonList( new
-		 * SimpleGrantedAuthority(userRole.name())); }else {
-		 */
+
 		return Collections.singletonList(new SimpleGrantedAuthority("USER"));
-		// }
 
 	}
 
@@ -140,24 +122,6 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 	public String getName() {
 		return this.name;
 	}
-
-/*	@Override
-	public boolean equals(Object obj) {
-		if (this.hashCode() == obj.hashCode())
-			return true;
-		
-		if (Objects.isNull(obj)) return false;
-		
-		if (getClass() != obj.getClass())
-			return false;
-		PaymybuddyUserDetails other = (PaymybuddyUserDetails) obj;
-		return Objects.equals(email, other.email);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(email);
-	}*/
 
 	public String getEmail() {
 		return email;

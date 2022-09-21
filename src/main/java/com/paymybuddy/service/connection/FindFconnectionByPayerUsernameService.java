@@ -2,12 +2,9 @@ package com.paymybuddy.service.connection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.entity.PaymybuddyUserDetails;

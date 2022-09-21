@@ -1,10 +1,8 @@
 package com.paymybuddy.controllers.IT;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,9 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,14 +21,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.paymybuddy.dto.Users;
-import com.paymybuddy.dto.ViewPayment;
-import com.paymybuddy.dto.ViewUser;
 import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.Epayment;
 import com.paymybuddy.entity.Etransaction;
@@ -169,12 +159,6 @@ public class MakePaymentControllerIT {
 		when(findPaymybuddyUserDetailsService.findByEmail("max")).thenReturn(max);
 		when(findOauth2PaymybuddyUserDetailsService.findByName("nameNumber")).thenReturn(max);
 
-/*		List<PaymybuddyUserDetails> findConnectionList = new ArrayList<>();
-		findConnectionList.add((PaymybuddyUserDetails) max);
-		findConnectionList.add((PaymybuddyUserDetails) max);
-
-		when(findFconnectionByPayerUsernameService.findByPayerUsername("max")).thenReturn(findConnectionList);
-*/
 		EbankAccount bankAccount = new EbankAccount();
 		bankAccount.setIban("iban");
 		List<EbankAccount> foundAccountList = new ArrayList<>();
@@ -193,13 +177,8 @@ public class MakePaymentControllerIT {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/makepayment?success=true"));
 
-	//	verify(saveTransferService, times(1)).saveTransfer(transactionCase);
-	//	verify(savePaymybuddyUserDetailsService, times(1)).savePaymybuddyUserDetails(max);
-
 	}
-	
-	
-	//@Disabled
+
 	@Test
 	public void givenAPayment_whenPostMakePaymentIsCalled_thenPaymentShouldBeSavedOnce() throws Exception {
 

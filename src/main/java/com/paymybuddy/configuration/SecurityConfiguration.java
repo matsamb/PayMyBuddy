@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -38,9 +37,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/resources/**", "/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
-//				.and()
-//				.rememberMe()
-//				.userDetailsService(paymybuddyUserDetailsService)
 				.and() 
 				.formLogin()
 					.loginPage("/login") 
@@ -60,7 +56,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.invalidateHttpSession(false).permitAll()
 				.and()
 				.rememberMe()
-				//.userDetailsService(paymybuddyUserDetailsService)
 				.tokenRepository(persistentTokenRepository())
 				
 		;

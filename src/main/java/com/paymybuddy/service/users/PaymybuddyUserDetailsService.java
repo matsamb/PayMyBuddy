@@ -1,24 +1,18 @@
 package com.paymybuddy.service.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.repository.PaymybuddyUserDetailsRepository;
 
 @Service
-public class PaymybuddyUserDetailsService implements UserDetailsService/*, OAuth2UserService<OAuth2UserRequest, OAuth2User>*/ {
+public class PaymybuddyUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	PaymybuddyUserDetailsRepository usersRepository;

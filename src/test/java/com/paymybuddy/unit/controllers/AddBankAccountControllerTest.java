@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.paymybuddy.controller.AddBankAccountController;
-import com.paymybuddy.controller.AddConnectionController;
 
 @SpringBootTest
 @AutoConfigureMockMvc

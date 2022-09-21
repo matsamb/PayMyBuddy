@@ -1,8 +1,6 @@
 package com.paymybuddy.service.email;
 
-import org.springframework.mail.MailSender;
-
-public interface IemailSenderService /*extends MailSender */{
+public interface IemailSenderService {
 
 	public void send(String recipient, String email);
 	

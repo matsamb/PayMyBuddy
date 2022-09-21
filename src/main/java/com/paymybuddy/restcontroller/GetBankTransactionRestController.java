@@ -2,8 +2,6 @@ package com.paymybuddy.restcontroller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import javax.annotation.security.RolesAllowed;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,10 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymybuddy.dto.JsonBankAccount;
 import com.paymybuddy.dto.JsonTransaction;
 import com.paymybuddy.entity.Etransaction;
-import com.paymybuddy.entity.PaymybuddyUserDetails;
-import com.paymybuddy.service.bankaccount.FindBankAccountByIbanService;
 import com.paymybuddy.service.transfer.FindAllTransactionsService;
-import com.paymybuddy.service.transfer.FindTransactionByBankAccountService;
 import com.paymybuddy.service.transfer.SaveTransferService;
 
 import lombok.AllArgsConstructor;
@@ -29,13 +24,7 @@ import lombok.AllArgsConstructor;
 public class GetBankTransactionRestController {
 
 	private static final Logger LOGGER = LogManager.getLogger("GetBankTransactionRestController");
-	
-/*	@Autowired
-	FindTransactionByBankAccountService findTransactionByBankAccountService;
-	
-	@Autowired
-	FindBankAccountByIbanService findBankAccountByIbanService;
-*/	
+
 	@Autowired
 	FindAllTransactionsService findAllTransactionsService;
 	
@@ -82,14 +71,5 @@ public class GetBankTransactionRestController {
 		return JsonTransactionList;
 				
 	}
-	
-/*	@GetMapping("/banktransaction")//?iban=<iban>
-	public Iterable<Etransaction> getIbanTransactions(@RequestParam String iban){
-		
-		return findTransactionByBankAccountService.findTransactionByBankAccount(
-				findBankAccountByIbanService.findBankAccountByIban(iban));
-		
-	}*/
-
 	
 }

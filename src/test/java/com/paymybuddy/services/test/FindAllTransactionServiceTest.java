@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import com.paymybuddy.entity.EbankAccount;
@@ -19,7 +18,6 @@ import com.paymybuddy.entity.Etransaction;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
 import com.paymybuddy.repository.TransactionRepository;
 import com.paymybuddy.service.transfer.FindAllTransactionsService;
-import com.paymybuddy.service.transfer.FindTransactionByBankAccountService;
 import com.paymybuddy.service.users.UserRole;
 
 @ExtendWith(MockitoExtension.class)

@@ -1,7 +1,6 @@
 package com.paymybuddy.controller;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
@@ -11,17 +10,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.paymybuddy.dto.ViewConnection;
 import com.paymybuddy.dto.ViewIban;
 import com.paymybuddy.entity.EbankAccount;
 import com.paymybuddy.entity.PaymybuddyUserDetails;
@@ -30,11 +24,8 @@ import com.paymybuddy.service.users.FindOauth2PaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.FindPaymybuddyUserDetailsService;
 import com.paymybuddy.service.users.SavePaymybuddyUserDetailsService;
 
-import lombok.AllArgsConstructor;
-
 @RolesAllowed("USER")
 @Controller
-//@AllArgsConstructor
 public class AddBankAccountController {
 
 	final static Logger LOGGER = LogManager.getLogger("AddBankAccount");
@@ -80,7 +71,6 @@ public class AddBankAccountController {
 
 		LOGGER.debug(viewIban);
 		LOGGER.info("addbankaccount page displayed and bank account posted");
-//		LOGGER.debug(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
 				
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
@@ -94,8 +84,6 @@ public class AddBankAccountController {
 
 		}
 		
-//		LOGGER.trace(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
-
 		ibanBuilder.append(viewIban.getCountry());
 		ibanBuilder.append(viewIban.getControlkey());
 		ibanBuilder.append(viewIban.getBankcode());

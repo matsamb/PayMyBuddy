@@ -8,8 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.paymybuddy.dto.JsonBankAccount;
-import com.paymybuddy.dto.JsonTransaction;
 import com.paymybuddy.entity.Etransaction;
 import com.paymybuddy.repository.TransactionRepository;
 
