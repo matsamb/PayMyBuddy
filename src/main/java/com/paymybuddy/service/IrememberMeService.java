@@ -1,4 +1,4 @@
-package com.paymybuddy.service;
+/*package com.paymybuddy.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,3 +16,4 @@ public interface IrememberMeService extends RememberMeServices {
 		Authentication successfulAuthentication);
 	
 }
+*/

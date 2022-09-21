@@ -231,11 +231,12 @@ public class HomeController {
 		viewPaymentList.add((ViewPayment) viewPayment.clone());
 		viewPaymentList.add((ViewPayment) viewPayment.clone());
 
-		LOGGER.info("");
+/*		LOGGER.info("");
 		paymentList.forEach(System.out::println);
 		connList.forEach(System.out::println);
 		viewPaymentList.forEach(System.out::println);
 		LOGGER.info("");
+*/		
 		List<Object> econex = new ArrayList<>();
 		econex.addAll(List.copyOf(viewPaymentList));
 

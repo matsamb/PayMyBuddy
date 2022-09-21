@@ -38,9 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/resources/**", "/tokenexpired", "/accountactivation", "/signinconfirm","*/icon_google", "/signin", "/login").permitAll()
 				.anyRequest().authenticated().and().sessionManagement()
-				.and()
-				.rememberMe()
-				.userDetailsService(paymybuddyUserDetailsService)
+//				.and()
+//				.rememberMe()
+//				.userDetailsService(paymybuddyUserDetailsService)
 				.and() 
 				.formLogin()
 					.loginPage("/login") 
@@ -58,6 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/login?logout=true")
 				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(false).permitAll()
+				.and()
+				.rememberMe()
+				//.userDetailsService(paymybuddyUserDetailsService)
+				.tokenRepository(persistentTokenRepository())
 				
 		;
 		
