@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -46,13 +48,13 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 
 	private Float balance;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.REMOVE)
 	@JoinTable(name = "myconnection", joinColumns = {
 			@JoinColumn(name = "payer_email", referencedColumnName = "email") }
 	)
 	private Set<PaymybuddyUserDetails> myconnection;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
 	private Set<EbankAccount> mybankAccount;
 
 	@Enumerated(EnumType.STRING)
