@@ -191,15 +191,15 @@ public class MakePaymentController {
 				eTransaction.setBankAccount(a);
 				LOGGER.info(eTransaction);
 
+				transactionFee = eTransaction.getAmount() * feeRate;
+				eTransaction.setFee(transactionFee);
+				
 				LOGGER.info("balance before transfert :" + availableBalance);
-				availableBalance = availableBalance - eTransaction.getAmount();
+				availableBalance = availableBalance - eTransaction.getAmount()- transactionFee;
 				LOGGER.info("balance after transfert :" + availableBalance);
 
 				payer.setBalance(availableBalance);
 				LOGGER.info("Updated payer's balance " + payer);
-
-				transactionFee = eTransaction.getAmount() * feeRate;
-				eTransaction.setFee(transactionFee);
 
 				LOGGER.info("Loading transfer details " + eTransaction);
 				saveTransferService.saveTransfer(eTransaction);
@@ -226,8 +226,12 @@ public class MakePaymentController {
 				LOGGER.info("New payment for " + payerEmail);
 				LOGGER.info(ePayment);
 
+				paymentFee = ePayment.getAmount() * feeRate;
+				LOGGER.info(paymentFee);
+				ePayment.setFee(paymentFee);
+				
 				LOGGER.info("balance before payment :" + availableBalance);
-				availableBalance = availableBalance - ePayment.getAmount();
+				availableBalance = availableBalance - ePayment.getAmount() - paymentFee;
 				LOGGER.info("balance after payment :" + availableBalance);
 
 				payer.setBalance(availableBalance);
@@ -242,10 +246,6 @@ public class MakePaymentController {
 
 				updatePayeeBalance.setBalance(oldPayeeBalance + ePayment.getAmount());
 				LOGGER.info("Updated payee's balance " + updatePayeeBalance);
-
-				paymentFee = ePayment.getAmount() * feeRate;
-				LOGGER.info(paymentFee);
-				ePayment.setFee(paymentFee);
 
 				savePaymentServiceAtMakePaymentController.savePayment(ePayment);
 				savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(updatePayeeBalance);
