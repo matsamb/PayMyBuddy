@@ -8,4 +8,4 @@ UML
 
 Physical Data Model
 
-![image](https://user-images.githubusercontent.com/96872503/192108219-bddcf5d7-70ca-4813-b887-3f9d8a3cbf54.png)
+![image](https://user-images.githubusercontent.com/96872503/192108489-0f8a3324-50d3-4598-8103-bbd1bb32ce79.png)
