@@ -1,7 +1,5 @@
 # PayMyBuddy
 
-port : 9080
-
 UML
 
 ![image](https://user-images.githubusercontent.com/96872503/192107496-c74e537a-1bdd-4afa-a051-e815ef584656.png)
