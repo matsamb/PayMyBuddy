@@ -36,17 +36,14 @@ public class AddConnectionController {
 
 	@Autowired
 	FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService;
-	
-	
 
-	 AddConnectionController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService 
-			 ,SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService
-			 ,FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService
-			 ){ 
-		 this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
-		 this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
-		 this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
-	 }
+	AddConnectionController(FindPaymybuddyUserDetailsService findPaymybuddyUserDetailsService,
+			SavePaymybuddyUserDetailsService savePaymybuddyUserDetailsService,
+			FindOauth2PaymybuddyUserDetailsService findOauth2PaymybuddyUserDetailsService) {
+		this.findPaymybuddyUserDetailsService = findPaymybuddyUserDetailsService;
+		this.savePaymybuddyUserDetailsService = savePaymybuddyUserDetailsService;
+		this.findOauth2PaymybuddyUserDetailsService = findOauth2PaymybuddyUserDetailsService;
+	}
 
 	@GetMapping("/addconnection")
 	public String getAddConnection(Authentication auth, ViewConnection viewConnection, BindingResult binding) {
@@ -58,13 +55,13 @@ public class AddConnectionController {
 	public ModelAndView createConnection(Authentication auth, ViewConnection viewConnection, BindingResult binding) {
 
 		ModelAndView result;
-		
+
 		String loggedUserEmail;
 
 		LOGGER.debug(viewConnection);
 		LOGGER.info("addconnection page displayed and connection posted");
 		LOGGER.debug(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
-				
+
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			loggedUserEmail = auth.getName();
@@ -76,35 +73,34 @@ public class AddConnectionController {
 			loggedUserEmail = foundOauth2.getEmail();
 
 		}
-		
+
 		LOGGER.trace(findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()));
 
-		
 		if (findPaymybuddyUserDetailsService.findByEmail(viewConnection.getConnection()).getEmail() != "N_A") {
-			LOGGER.info("User "+viewConnection.getConnection()+" found");
+			LOGGER.info("User " + viewConnection.getConnection() + " found");
 
 			PaymybuddyUserDetails userToAdd = findPaymybuddyUserDetailsService
 					.findByEmail(viewConnection.getConnection());
-			
-			PaymybuddyUserDetails currentUser = findPaymybuddyUserDetailsService
-					.findByEmail(loggedUserEmail);
+
+			PaymybuddyUserDetails currentUser = findPaymybuddyUserDetailsService.findByEmail(loggedUserEmail);
 
 			Set<PaymybuddyUserDetails> connectionSet = new HashSet<>();
-			if((currentUser.getMyconnection())!= null) {
-			connectionSet = currentUser.getMyconnection();
 			
+			if ((currentUser.getMyconnection()) != null) {
+				for (PaymybuddyUserDetails p : currentUser.getMyconnection()) {
+					connectionSet.add(p);
+				}
 			}
 			LOGGER.debug(connectionSet);
 			connectionSet.add(userToAdd);
 
-			currentUser.setMyconnection(Set.copyOf(connectionSet));
+			currentUser.setMyconnection(connectionSet);
 			LOGGER.debug(currentUser);
-			
+
 			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(currentUser);
 			LOGGER.info(viewConnection + " added friend connection's list");
 			result = new ModelAndView("redirect:/addconnection?success=true");
 
-			
 		} else {
 			LOGGER.info(viewConnection + " is not  registered");
 			result = new ModelAndView("redirect:/addconnection?error=true");

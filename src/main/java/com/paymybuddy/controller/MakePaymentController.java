@@ -85,14 +85,14 @@ public class MakePaymentController {
 		List<EbankAccount> bankAccountList = new ArrayList<>();
 
 		String email;
-
-		Float available = 0.0f;
+		Float feeRate = 0.050f;
+		Float available = 0.000f;
 
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			email = auth.getName();
 
-			available = findPaymybuddyUserDetailsService.findByEmail(email).getBalance();
+			available = findPaymybuddyUserDetailsService.findByEmail(email).getBalance() * (1 - feeRate);
 
 		} else {
 			LOGGER.info(auth.getName() + " is instance of OAuth2AuthenticationToken");
@@ -100,7 +100,7 @@ public class MakePaymentController {
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			email = foundOauth2.getEmail();
 
-			available = foundOauth2.getBalance();
+			available = foundOauth2.getBalance() * (1 - feeRate);
 		}
 
 		if (findFconnectionByPayerUsernameService.findByPayerUsername(email).get(0).getEmail() == "N_A") {
@@ -146,17 +146,17 @@ public class MakePaymentController {
 
 		String payerEmail;
 		Timestamp u = new Timestamp(System.currentTimeMillis());
-		Float availableBalance = 0.0f;
+		Float availableBalance = 0.000f;
 
 		Float transactionFee;
 		Float paymentFee;
-		Float feeRate = 0.05f;
+		Float feeRate = 0.050f;
 
 		if (auth instanceof UsernamePasswordAuthenticationToken) {
 			LOGGER.info(auth.getName() + " is instance of UsernamePasswordAuthenticationToken");
 			payerEmail = auth.getName();
 
-			availableBalance = findPaymybuddyUserDetailsService.findByEmail(payerEmail).getBalance();
+			availableBalance = findPaymybuddyUserDetailsService.findByEmail(payerEmail).getBalance() * (1 - feeRate);
 
 		} else {
 			LOGGER.info(auth.getName() + " is instance of OAuth2AuthenticationToken");
@@ -164,7 +164,7 @@ public class MakePaymentController {
 			PaymybuddyUserDetails foundOauth2 = findOauth2PaymybuddyUserDetailsService.findByName(nameNumber);
 			payerEmail = foundOauth2.getEmail();
 
-			availableBalance = foundOauth2.getBalance();
+			availableBalance = foundOauth2.getBalance() * (1 - feeRate);
 
 		}
 
