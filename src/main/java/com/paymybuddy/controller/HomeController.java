@@ -92,7 +92,6 @@ public class HomeController {
 		LOGGER.info(activePage);
 
 		List<Epayment> paymentList = new ArrayList<>();
-		List<PaymybuddyUserDetails> connList = new ArrayList<>();
 		List<EbankAccount> bankAccountList = new ArrayList<>();
 
 		List<Object> viewPaymentList = new ArrayList<>();
@@ -123,7 +122,8 @@ public class HomeController {
 		}
 
 		if (findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail).get(0).getEmail() != "N_A") {
-			connList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail));
+		//	List<PaymybuddyUserDetails> connList = new ArrayList<>();
+		//	connList.addAll(findFconnectionByPayerUsernameService.findByPayerUsername(payerEmail));
 			LOGGER.info("connections found for " + payerEmail);
 
 			if (findPaymentByPayerService.findByPayer(payerEmail).get(0).getPayerEmail() != "N_A") {

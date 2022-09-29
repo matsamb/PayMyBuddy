@@ -95,7 +95,7 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return !this.locked ;
 	}
 
 	@Override
@@ -151,7 +151,9 @@ public class PaymybuddyUserDetails implements UserDetails, OAuth2User, Cloneable
 
 	public void setMyconnection(Set<PaymybuddyUserDetails> myconnection) {
 		Set<PaymybuddyUserDetails> t = new HashSet<>();
-		t.addAll(Set.copyOf(myconnection));
+		for(PaymybuddyUserDetails p : myconnection) {
+			t.add((PaymybuddyUserDetails)p.clone());
+		}
 		this.myconnection = t;
 	}
 

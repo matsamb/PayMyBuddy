@@ -57,11 +57,12 @@ public class OAuth2Controller {
 			String pass = passWordEncoder.encode(authentication.getName());// .substring(8);
 			buddyUserDetails.setPassword(pass);
 
-			buddyUserDetails.setBalance(0f);
+			buddyUserDetails.setBalance(100f);
 			LOGGER.info(buddyUserDetails);
 
 			buddyUserDetails.setUserRole(UserRole.USER);
 			buddyUserDetails.setEnabled(true);
+			buddyUserDetails.setLocked(false);
 
 			LOGGER.info(buddyUserDetails);
 			savePaymybuddyUserDetailsService.savePaymybuddyUserDetails(buddyUserDetails);
