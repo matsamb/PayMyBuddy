@@ -2,7 +2,7 @@
 
 UML
 
-![image](https://user-images.githubusercontent.com/96872503/192107496-c74e537a-1bdd-4afa-a051-e815ef584656.png)
+![image](https://user-images.githubusercontent.com/96872503/193075818-b0f95bc7-35cd-4c13-939b-163718123e34.png)
 
 Physical Data Model
 
